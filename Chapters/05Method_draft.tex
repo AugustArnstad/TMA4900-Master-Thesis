@@ -1,0 +1,22 @@
+Introduction to the methods:
+
+We want to combine the above described background, into a tool for relative variable importance in the bayesian framework. 
+
+\section{Variable importance in the Bayesian framework}
+EMPHASIZE THE SAMPLING FOCUS A BIT MORE, THIS IS KEY!
+The output of a Bayesian GLMM is a joint posterior distribution of the parameters. This distribution can be used to obtain samples of the parameters, to approximate the posterior distribution of each parameter. Each sample of a parameter can also be with respect to the samples of other parameters and the distributional variance, so that relative variable importance is obtained for each parameter. The resulting distribution of scaled samples can be seen as distribution of the relative importance of each parameter. Now we go more into depth of the calculations. 
+
+\section{Applying the relative weights method in the Bayesian framework}
+Before fitting the model, we apply the random weights approximation to the fixed effects of the model. From this, we obtain the lambda matrix and the transformed matrix Z. The model is then fitted using the model Z. Once samples of the fixed effects are drawn, the lambda matrix is used to transform the samples back from the orthogonal space to the original covariate space corresponding to the matrix X. It is these transformed samples that will constitute the posterior distribution of the fixed effects.
+
+\section{Handling the random effects}
+A random effect can be modeled by various covariance structures which must be specified before fitting the model. When a model fit has been obtained, we are able to draw samples of the vector $\alpha$. For each sample, the variance of $\alpha_j$ is calculated and a distribution of the posterior variance of the random effects is obtained. 
+
+\section{Handling the residual variance}
+When handling a GLMM fit, the residual variance must be handled properly. We model the additive dispersion using an additional random effect, thereby obtaining our estimation of $\simga_e^2$. Further, the distributional variance is specific to the link function being used and summarized in table 1, as stated in \citet{nakagawa2013general}.
+
+\section{Relevant calculations}
+From the samples of the joint posterior distribution, there are multiple calculations that can be performed. 
+We calculate the relative importance using this and this formula
+We calculate the $R^2$ using this and this formula
+We calculate the repeatability using this and this formula

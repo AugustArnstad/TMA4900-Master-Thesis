@@ -1,0 +1,619 @@
+
+The contents of this chapter is closely related to the authors work in \citet{Arnstad}, and therefore some text and subsections have been reused according to the guidelines set by institute of mathematical sciences at NTNU.
+
+\section{Linear regression models}
+In the following section we will follow the derivations and results of \citet{GLMM_book} and \citet{GLMM_book_old}, however the book might have used scalar notation.
+\subsection{Multiple linear regression}
+Linear regression aims to model the relationship between a response $y_i, i\in\{1, 2, ..., n\}$ and covariates $\mathbf{x}_i$, where $\mathbf{x}_i = (x_{i, 1}, x_{i, 2}, ..., x_{i, p})$, by estimating the regression coefficients $\boldsymbol{\beta} = (\beta_0, \beta_1, ..., \beta_p)$. The linear regression can be written in matrix form as
+\begin{equation}
+    \label{eq:lin_reg}
+    \mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon} \ , 
+\end{equation}
+where $\boldsymbol{\varepsilon}=(\varepsilon_1, \varepsilon_2, ..., \varepsilon_n)$ is the random error term. It is assumed that the response is independent, and the error term is independent and identically distributed(iid) following a normal distribution with mean zero and variance $\sigma^2$, \textit{i.e.} $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$. 
+By inspection one can state that, given the covariates $\mathbf{X}$, 
+\begin{equation}
+    \begin{split}
+        \mathbb{E}(\mathbf{y} \lvert \mathbf{X}) = \mathbb{E}(\mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}) = \mathbf{X}\boldsymbol{\beta} \ ,  \\
+        \text{Var}(\mathbf{y} \lvert \mathbf{X}) = \text{Var}(\mathbf{X}\boldsymbol{\beta}) + \text{Var}(\boldsymbol{\varepsilon}) = \text{Var}(\boldsymbol{\varepsilon}) = \sigma^2\mathbf{I} \ ,
+    \end{split}
+\end{equation}
+where $\mathbf{I} \in \mathbb{R}^{n \times n}$ is the identity matrix. 
+It is then straightforward to see that $\mathbf{y}$ follows the conditional normal distribution
+\begin{equation}
+    \mathbf{y} \lvert \mathbf{X} \sim \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \sigma^2 \mathbf{I})
+\end{equation}
+and from this distribution of $\mathbf{y}$ it can be shown that the likelihood function is expressed as
+\begin{equation}
+    \mathcal{L}(\boldsymbol{\beta}, \sigma^2 \lvert \mathbf{y}) \propto \sigma^{-n/2}\exp\left(-\frac{1}{2\sigma^2}(\mathbf{y}-\mathbf{X}\boldsymbol{\beta})^T(\mathbf{y}-\mathbf{X}\boldsymbol{\beta})\right)
+\end{equation}
+and that the maximum likelihood estimator (MLE) of $\boldsymbol{\beta}$, which maximizes the likelihood, is given by
+\begin{equation}
+    \label{eq:beta_hat}
+    \hat{\boldsymbol{\beta}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y} \ .
+\end{equation}
+
+\subsection{Qualitative covariates}
+\label{sec:qualitative}
+In many cases the covariates are qualitative, meaning they are categorical variables that can be grouped into different levels or factors.
+Qualitative covariates, unlike quantitative, cannot be measured numerically, and we must adjust our modelling to account for this.
+\subsection{Dummy encoding}
+A common approach to model qualitative data is to include dummy variables, which are assigned a value $1$ if the observation is in the respective category(factor) and $0$ otherwise.
+Given $N$ factors, it is standard practice to model $N-1$ dummy variables and let one factor be captured by the intercept to uniquely determine the model.
+Dummy encoding in this way retains the properties of the linear regression, and are limited by the same assumptions.
+The model for the response $y_i$, assuming no quantitative covariates, from group $j$ with dummy encoding is then given by
+\begin{equation}
+    y_i =  \beta_0 + \sum_{j=1}^{N-1} \beta_j x_{i,j} + \varepsilon_i \ ,
+\end{equation}
+where $\beta_j$ denotes the factor coefficient of observation $i$ and the dummy variable
+\begin{equation}
+    x_{i,j} = \begin{cases}
+        1 & \text{if observation $i$ is in group $j$} \\
+        0 & \text{otherwise}
+    \end{cases} \ .
+\end{equation}
+This way of modelling qualitative covariates is intuitive and easy to interpret, but it also assumes that factor specific effects are uniform and fixed across all levels and becomes cumbersome with many categorical covariates. 
+
+
+\subsection{Linear mixed models (LMM's)}
+\label{sec:LMM}
+Data often comes in clustered form, for example due to repeated measurements of the covariate over time. 
+Clustered data violate with the assumption of independent responses in linear regression and must be properly accounted for. One solution to this is to introduce random effects that are cluster specific, but independent of the fixed effects and the other clusters. Let the population contain $m$ underlying clusters, with $n_j\ , j=1, ..., m$ observations in each cluster, so that $\mathbf{y} \in \mathbb{R}^{(N \times 1)}$ where $N = \sum_{j=1}^m n_j $. Assume that we investigate $q$ random effects, including a random intercept and $q-1$ random slopes, such that the random effects vector can be written as 
+\begin{equation}
+    \label{eq:alpha}
+    \boldsymbol{\alpha} = (\boldsymbol{\alpha}_1, ..., \boldsymbol{\alpha}_{m})^T \ ,
+\end{equation}
+where each $\boldsymbol{\alpha}_j \in \mathbb{R}^{q \times 1}$ is assumed independent and represents the random effects for cluster $j$ and has length $q$. For a cluster $j$ the vector $\boldsymbol{\alpha}_j \sim \mathcal{N}_q(\mathbf{0}, \mathbf{Q})$ where $\mathbf{Q}$ is the $q \times q$ unknown covariance for the random effects, assumed to be positive definite. 
+If the random effects for each cluster are independent of each other, the covariance matrix $\mathbf{Q} = \text{diag}(\tau_0^2, ..., \tau_q^2)$.
+The linear mixed model now takes the form
+\begin{equation} \label{eq:LMM}
+    \mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{U}\boldsymbol{\alpha} + \boldsymbol{\varepsilon} \ ,
+\end{equation}
+where $\mathbf{X} \in \mathbb{R}^{N \times p}$ is the design matrix for the fixed effects, $\boldsymbol{\beta} \in \mathbb{R}^{p \times 1}$ are the regression coefficients for the fixed effects, $\mathbf{U} = \text{diag}(\mathbf{U_j}) \ , \in \mathbb{R}^{N \times q}$ is the design matrix for the random effects and $\mathbf{U}_j \in \mathbb{R}^{n_j \times q}$ is the design matrix for cluster $j$. 
+Since $\boldsymbol{\alpha}$ is a random variable, the parameter to estimate is the variance of each random effect $\mathbf{Q}_{kk}=\tau_k^2$ and their covariance $\mathbf{Q}_{k, l} = \tau_{k, l}$, where $k, l =1, ..., q$. 
+In this model the independence between clusters are conserved for the response as a whole, but it expresses the correlation that observations of the same cluster have through the random effects.
+As for the simple linear regression it is assumed that $\mathbf{X}\boldsymbol{\beta}$ is fixed, and that $\mathbf{U}$ is given, so they do not contribute to the model's variance. Therefore, the conditional expectation $\mathbb{E}(\mathbf{y} \lvert \mathbf{X}, \mathbf{U}) = \mathbf{X}\boldsymbol{\beta}$ is easily obtained, and the conditional variance can be calculated as
+\begin{equation} \label{eq:cond_var_LMM}
+    \text{Var}(\mathbf{y} \lvert \mathbf{X}, \mathbf{U}) = \text{Var}(\mathbf{X}\boldsymbol{\beta}  + \mathbf{U}\boldsymbol{\alpha} + \boldsymbol{\varepsilon}) = \mathbf{U}\text{Var}(\boldsymbol{\alpha})\mathbf{U}^T + \sigma^2\mathbf{I} = \mathbf{U}\mathbf{G}\mathbf{U}^T + \sigma^2\mathbf{I} \ ,
+\end{equation}
+where $\mathbf{I}\in \mathbb{R}^{N\times N}$ and $\mathbf{G} \in \mathbb{R}^{mq \times mq}$ is the block diagonal covariance matrix of the random effects, with $\mathbf{Q}_j$ along the diagonal for $j=1, ..., m$. 
+As we assume that the random effects are independent of the fixed effects, and that the random error term is iid for each observation, the conditional distribution of $\mathbf{y}$ follows that of a sum of independent normal distributions, \textit{i.e.}
+\begin{equation}
+    \mathbf{y} \lvert \mathbf{X}, \mathbf{U} \sim \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \mathbf{U}\mathbf{G}\mathbf{U}^T + \sigma^2\mathbf{I}) \ .
+\end{equation}
+
+
+
+
+\subsection{The Animal Model and quantitative genetics}
+\label{sec:animalmodel}
+% This is mostly from Kruuk, but I notice a bit of a difference when compared to Stenslands Bayesian animal model. Should I rather base my theory on Stensland?  
+To introduce the animal model and biological terminology, the section will rely heavily on the work of \citet{Kruuk2004} and \citet{ConnerHartl2004}. 
+The animal model is a mathematical model, used as a tool for quantitative genetic analysis in evolutionary biology where the aim is to explain the phenotypic variation in a population.
+A phenotype is defined as \textit{the outward appearance of an organism for a given characteristic} \citep{ConnerHartl2004}, such as eye color, height or behavior. 
+In an organism, the observed phenotypic trait is a result of the complex interaction between environment and genotype. 
+The genotype of a trait can be defined as \textit{the diploid pair of alleles present at a given locus}, and is the outcome of genetic inheritance \citep{ConnerHartl2004}. 
+As evolutionary biology seeks to explain diversity \citep{Kruuk2004}, decomposing the phenotypic variance is often an important task to better understand the contribution to diversity from genetic inheritance and environmental causes. %decomposition of the phenotypic variance could provide an explanation as to how much of. 
+The simplest partition is to define the phenotypic variance as the sum of the genetic variance and environmental variance \citep{ConnerHartl2004}. 
+However, for species that mate with other individuals in the population rather than self-fertilize, it is common to further decompose the genetic variance into three parts. 
+The total phenotypic variance can therefore be partitioned as
+\begin{equation}
+    \sigma^2_P = \sigma^2_G + \sigma^2_E = \sigma^2_A + \sigma^2_D + \sigma^2_I + \sigma^2_E \ ,
+\end{equation}
+where $\sigma^2_P$ is the \textbf{total phenotypic variance}, $\sigma^2_G$ is the \textbf{genetic variance}, $\sigma^2_E$ is the \textbf{environmental variance}, $\sigma^2_A$ is the \textbf{additive genetic variance}, $\sigma^2_D$ is the \textbf{dominance genetic variance} and $\sigma^2_I$ is the \textbf{interaction genetic variance} \citep{ConnerHartl2004}.
+The parameter of interest in the animal model is the additive genetic variance $\sigma^2_A$ \citep{Kruuk2004}, as the additive genetic effects are the only effects directly transferred to the offspring from its parents \citep{ConnerHartl2004}.
+Thus, the animal model aims to estimate $\sigma^2_A$ to gain inference on how changes in phenotypic values across generations occur, which is defined as phenotypic evolution \citep{ConnerHartl2004}.
+The animal model can be stated as a linear mixed model
+\begin{equation}
+    \mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{U}\boldsymbol{\alpha} + \boldsymbol{\varepsilon} \ ,
+\end{equation}
+where $\mathbf{y}$ is a vector of observations of the phenotypic trait, $\mathbf{X}$ the design matrix of the fixed effects, $\boldsymbol{\beta}$ the population coefficients, $\mathbf{U}$ the design matrix of the random effects, $\boldsymbol{\alpha}$ the vector of random effects (breeding values), and $\boldsymbol{\varepsilon}$ the vector of residuals.
+As in \Cref{sec:LMM} we let $\mathbf{G}$ denote the covariance matrix of the random effects, which in the animal model can be derived from the expected covariance between relatives \citep{Kruuk2004}.
+This derivation can be done by considering the coefficient of coancestry, $\Theta_{i,j}$, defined as \textit{the probability that an allele drawn at random from an individual $i$ will be identical by descent to an allele drawn at random from individual $j$} \citep{Kruuk2004}. 
+We use the coefficient of coancestry to define the expected covariance between relatives, or additive relationship matrix, as $\mathbf{A}_{i, j}=2\Theta_{i, j}$ and consequently $\mathbf{G}=\sigma^2_A\mathbf{A}$ \citep{Kruuk2004}.
+
+
+% Would it be correct to interpret this as meaning that all the covariance is explained by relatedness, and that the additive variance is a scalar? Or is there a more complex covariance structure that might be present?
+\subsection{Generalized linear mixed models(GLMMs)}
+The linear regression model can be generalized to include more complex relationships between the response and the covariates. 
+As seen, both for the linear regression and linear mixed model, the response is assumed to have a linear relationship with covariates, leading to a conditional normal distribution of the response.
+%The linear regression and linear mixed model assumes that the response can be modelled as a linear combination of the fixed and random effects which, as we have seen, leads to the conditional distribution of the response being a normal distribution.
+Instead of considering only the normal distribution as the distribution of the response, one can consider general responses belonging to the exponential family.
+Assume that each response $y_{i, j}$, where $j =1, ..., m$ denotes the cluster and $i=1, ..., n_j$, are conditionally independent given the fixed and random effects.
+Then, $y_{i, j}$ belongs to the univariate exponential family if
+\begin{equation}
+    f(y_{i, j} \lvert \theta_{i, j}, \phi) = \exp\left(\frac{(y_{i, j}\theta_{i, j} - b(\theta_{i, j}))}{a(\phi)} + c(y, \phi) \right) \ ,
+\end{equation}
+for some functions $a(\cdot), b(\cdot)$ and $c(\cdot)$, where $\theta_{i, j}$ is the parameter of the distribution, $\phi$ is a dispersion parameter and $\theta_{i, j}$ is a canonical parameter if $\phi$ is known \citep{GLMM_book_old}. 
+It is required for the function $b(\cdot)$ to be twice differentiable and for the density function $f(y_{i, j} \lvert \theta_{i, j}, \phi)$ to be normalizable.
+Two key properties, expectation and variance, of the exponential family can be derived by considering 
+\begin{equation}
+    \frac{d f(y)}{d\theta} = f(y \lvert \theta \phi) \left( (y-b'(\theta)) \frac{1}{a(\phi)} \right)  \ ,
+\end{equation}
+where we have left out indexing, and 
+\begin{equation}
+    \frac{d^2 f(y)}{d\theta^2} = f(y \lvert \theta, \phi) \left( (y-b'(\theta))^2 \frac{1}{a(\phi)^2} - b''(\theta)\frac{1}{a(\phi)} \right) \ .
+\end{equation}
+Now, as $\int_{\mathbb{R}} f(y \lvert \theta, \phi) dy = 1$, we have 
+\begin{equation}
+    \label{eq:expfam_expectation}
+    \frac{d}{d \theta} \int_{\mathbb{R}} f(y) dy  = \int_{\mathbb{R}} \frac{d f}{d\theta} dy = 0 \ ,
+\end{equation}
+and 
+\begin{equation}
+    \label{eq:expfam_variance}
+    \frac{d^2}{d \theta^2} \int_{\mathbb{R}} f(y) dy = \int_{\mathbb{R}} \frac{d^2 f}{d\theta^2} dy = -\frac{1}{a(\phi)} \int_{\mathbb{R}} b''(\theta)f(y) dy \ .
+\end{equation}
+Equations \eqref{eq:expfam_expectation} and \eqref{eq:expfam_variance} can be used to derive the relation 
+\begin{equation}
+    \begin{aligned}
+    \int_{\mathbb{R}} \frac{d f(y)}{d\theta} dy = \frac{1}{a(\phi)}\int_{\mathbb{R}} f(y) (y-b'(\theta)) dy &= \frac{1}{a(\phi)} \left(\mathbb{E}(Y \lvert \theta) - b'(\theta)\int_{\mathbb{R}}f(y)dy \right) \\
+    \implies \mathbb{E}(Y \lvert \theta) &= b'(\theta) \ ,
+    \end{aligned}
+\end{equation}
+and 
+\begin{equation}
+    \begin{aligned}
+    \int_{\mathbb{R}} \frac{d^2 f(y)}{d\theta^2} dy &= \int_{\mathbb{R}} f(y) \frac{1}{a(\phi)} \left( (y-b'(\theta))^2 - b''(\theta) \right) dy \\
+    &= \int_{\mathbb{R}} f(y) \frac{1}{a(\phi)} \left( (y-\mathbb{E}(Y))^2 - b''(\theta) \right) dy \\
+    &= \frac{1}{ a(\phi)} \left( \mathbb{E}(y-\mathbb{E}(Y))^2- b''(\theta) \int_{\mathbb{R}} f(y)dy \right) \\
+    & = \frac{1}{a(\phi)}\left( \text{Var}(Y) - b''(\theta) \right) \\
+    & \implies \text{Var}(Y \lvert \theta) = b''(\theta) \ .
+    \end{aligned}
+\end{equation}
+In the canonical form, the parameter $\theta_{i, j}$ coincides with the linear predictor $\eta_{i, j}$ defined as
+\begin{equation}
+    \theta_{i, j} = \eta_{i, j} = \mathbf{x}_{i, j}^T\boldsymbol{\beta} + \mathbf{u}_{i, j}^T \boldsymbol{\alpha}_j %= g(\mathbb{E}(y_{i, j} \lvert \theta_{i, j})) \ ,
+\end{equation}
+where $\mathbf{x}_{i, j}$ and $\mathbf{u}_{i, j}$ are the $i$-th columns of the submatrices $\mathbf{X}_{j}$ and $\mathbf{U}_{j}$ of the larger design matrices $\mathbf{X}$ and $\mathbf{U}$ respectively, for cluster $j$.
+To connect the linear predictor $\eta_{i, j}$ to the response, we define a monotonic, differentiable link function $g(\cdot)$ such that
+\begin{equation}
+    \mathbb{E}(Y_{i, j}) = \mu_{i, j} = g(\eta_{i, j}) \ .
+\end{equation} 
+Some examples of link functions are the identity function for the LMM, the logit function for logistic regression and the log function for Poisson regression.
+
+
+
+\section{Relative variable importance in linear regression} 
+In a regression setting with multiple regression coefficients, it is often desirable to be able to assign each coefficient with a measure of its relative importance to the model.
+The relative importance of predictor $X_i$ is defined in other words as the contribution to explained variance from $X_i$.
+Assigning relative importance is no trivial task, as correlation among covariates poses a challenge in assessing the relative importance of each covariate.
+\newline
+\newline
+\subsection{Correlation among covariates in linear regression}
+Correlation among covariates is to be expected, as it is natural in many scenarios. However, if the correlation is very strong, this poses some serious problems when interpreting the linear regression model.
+The covariates $\mathbf{x}_i$ in a linear regression are assumed to be linearly independent, so that the design matrix $\mathbf{X}$ has full rank.
+If the design matrix is not of full rank, that is one or more covariates are perfectly correlated, the model \eqref{eq:lin_reg} is said to be \textit{multicollinear} \citep{Poole_OFarrell_1971}. 
+From equation \eqref{eq:beta_hat} one can see that if the matrix $\mathbf{X}$ is not of full rank, the term $(\mathbf{X}^T\mathbf{X})^{-1}$ is not invertible and the MLE of $\boldsymbol{\beta}$ does not exist. 
+Further, the variance of the MLE of $\boldsymbol{\beta}$ grows as the correlation between covariates grows \citep[p. 116]{GLMM_book}. A larger variance in $\boldsymbol{\hat{\beta}}$ also leads to larger standard errors and larger $p$-values for $\boldsymbol{\hat{\beta}}$, making it hard to assess the model.
+Both coefficients and covariates affect the total marginal model variance, which can be decomposed as
+\begin{equation}
+    \label{eq:var_y_full}
+    \text{Var}(\mathbf{y}) = \text{Var}(\mathbf{X}\boldsymbol{\beta}) + \text{Var}(\boldsymbol{\varepsilon}) = \boldsymbol{\beta}^T\mathbf{V}\boldsymbol{\beta} + \sigma^2_{\varepsilon} = \sum_{j=1}^p\beta_j^2v_j +\sum_{j=1}^{p-1}\sum_{k=j+1}^{p} \beta_j\beta_k\sqrt{v_jv_k}\rho_{jk} + \sigma_{\varepsilon}^2 \ ,
+\end{equation}
+\citep{gromping_relaimpo} where $\mathbf{V} = \text{Cov}(\mathbf{X})$ is the $p \times p$ covariance matrix of the covariates which is assumed to be positive definite, $\boldsymbol{\beta}$ is the $p \times 1$ vector of regression coefficients, $v_j$ the regressor variances for $j=1, ..., p$ found along the diagonal of $\mathbf{V}$ and $\rho_{jk}$ the inter-regressor correlations between regressor $j$ and $k$.
+The middle term in \ref{eq:var_y_full} consist of the covariance between the covariates and this term makes it hard to assess the relative importance of each covariate. 
+To assign each covariate with an importance, we need to consider relative importance measures that can handle the correlation among covariates.
+% However, if the correlation is very strong, this poses some serious problems when interpreting the linear regression model.
+% The covariates $\mathbf{x}_i$ in a linear regression are assumed to be linearly independent, so that the design matrix $\mathbf{X}$ has full rank. If the design matrix is not of full rank, that is one or more covariates are perfectly correlated, the model \eqref{eq:lin_reg} is said to be \textit{multicollinear} \citep{Poole_OFarrell_1971}. 
+% From equation \eqref{eq:beta_hat} one can see that if the matrix $\mathbf{X}$ is not of full rank, the term $(\mathbf{X}^T\mathbf{X})^{-1}$ is not invertible and the MLE of $\boldsymbol{\beta}$ does not exist. 
+% Further, if the covariates $\mathbf{X}$ are highly correlated the matrix $(\mathbf{X}^T\mathbf{X})$ is ill-conditioned and the MLE of $\boldsymbol{\beta}$ is unstable numerically \citep{curto_pinto_2009}. 
+% This numerical unstability from including highly correlated covariates also "inflates the standard errors of the estimates" \citep{budescu1993dominance} and makes assesing the \textit{relative importance} of covariates difficult, which will be discussed later.
+
+\subsection{Relative importance measures}
+\label{sec:rel_imp}
+In \citet{gromping_relaimpo} two importance measures are advocated, namely LMG and Proportional marginal variance decomposition (PVMD).
+Before we describe the LMG, and another measure, relative weights, proposed by \citet{johnson_relative_weights}, we will first consider general aspects of decomposing the variance of a linear model.
+All the methods to be discussed analyze how the regressors compete to compose the models $R^2$ value. The $R^2$ is a very popular measure of how much of the variance in the response variable is explained by the model, since it is both intuitive and easy to interpret.
+In a frequentist framework, the $R^2$ is defined as
+\begin{equation}
+    R^2 = 1 - \frac{(\mathbf{y}-\mathbf{X}\boldsymbol{\beta})^T(\mathbf{y}-\mathbf{X}\boldsymbol{\beta})}{(\mathbf{y}-\bar{\mathbf{y}})^T(\mathbf{y}-\bar{\mathbf{y}})} \ ,
+\end{equation}
+where $\bar{\mathbf{y}}$ is the mean vector of $\mathbf{y}$. 
+Instead of referring to the $R^2$ value alone, going forward this thesis will focus on decomposing the $R^2$ of the linear regression model. 
+This decomposition is done in order to assess the relative importance, or variance explained, of each covariate in the model.
+In the case of uncorrelated covariates, 
+\begin{equation}
+    \text{Var}(\mathbf{y}) = \sum_{j=1}^p\beta_j^2v_j + \sigma_{\varepsilon}^2 \ ,
+\end{equation}
+and the $R^2$ is therefore consistent with the total variance of the response variable \citep{gromping_relaimpo}. 
+This consistency provides a natural decomposition of the $R^2$ in terms of contribution from each covariate, as each predictor $X_i$ contributes $\beta_i^2v_i$ to the total response variance.
+A naive decomposition of covariate importance is then starting with the empty model with $R^2=0$, and adding one covariate at a time. The increase in $R^2$ is then the importance of the covariate added.
+% The marginal variance of the response variable is given by
+% \begin{equation}
+%     \label{eq:var_y_full}
+%     \text{Var}(\mathbf{y}) = \text{Var}(\mathbf{X}\boldsymbol{\beta}) + \text{Var}(\boldsymbol{\varepsilon}) = \boldsymbol{\beta}^T\mathbf{V}\boldsymbol{\beta} + \sigma^2_{\varepsilon} = \sum_{j=1}^p\beta_j^2v_j +\sum_{j=1}^{p-1}\sum_{k=j+1}^{p} \beta_j\beta_k\sqrt{v_jv_k}\rho_{jk} + \sigma_{\varepsilon}^2 \ ,
+% \end{equation}
+%\citep{gromping_relaimpo} where $\mathbf{V} = \text{Cov}(\mathbf{X})$ is the $p \times p$ covariance matrix of the covariates which is assumed to be positive definite, $\boldsymbol{\beta}$ is the $p \times 1$ vector of regression coefficients, $v_j$ the regressor variances for $j=1, ..., p$ found along the diagonal of $\mathbf{V}$ and $\rho_{jk}$ the inter-regressor correlations between regressor $j$ and $k$.
+\newline
+\newline
+Due to the popularity of $R^2$, it is desirable to also be able to decompose the $R^2$ in the case of correlated covariates, such that it is consistent with the variance of the response.
+In (\ref{eq:var_y_full}) the response variance is split into three parts, the first two sums which comes from the regressors and the latter term which is the variance of the error. 
+It is the middle term that poses the problem of assigning importance to each covariate, since it contains the covariance between the covariates.
+The literature has established some conditions that relative importance measures should fulfill, so that they can be interpreted and compared in a sensible manner \citep{gromping_relaimpo}. As listed in \citet{gromping_relaimpo}, the methods should have
+\begin{enumerate}
+    \label{list:criteria}
+    \item \textbf{Proper decomposition}: The model variance should be decomposed into shares for each regressor that sum up to the total variance, and the method shall allocate the shares to each regressor.
+    \item \textbf{Non-negativity}: Each share of the variance should be non-negative.
+    \item \textbf{Exclusion}: If a regressor is excluded from the model, $\beta_j=0$, its share of the variance should be zero.
+    \item \textbf{Inclusion}: If a regressor is included in the model, $\beta_j \neq 0$, its share of the variance should be positive.
+\end{enumerate}
+Before moving on the such methods, some notation in accordance with \citet{gromping_relaimpo} will be introduced, namely
+\begin{equation}
+    \text{evar}(S) = \text{Var}(Y) - \text{Var}(Y \lvert X_j, j\in S) 
+\end{equation} 
+and
+\begin{equation}
+    \text{svar}(M \lvert S) = \text{evar}(M \cup S) - \text{evar}(S) \ ,
+\end{equation} 
+where $S$ is a subset of regressors, $\text{Var}(Y \lvert X_j, j\in S)$ denotes the variance of $Y$ conditioned on $X_j, j\in S$ being fixed, $\text{evar}(S)$ is the explained variance of the regressors in $S$ and $\text{svar}(M \lvert S)$ is the gain in variance explained by adding regressors from the subset $M$ to the model that already contains the regressors $S$. 
+
+\subsection{Naive decompositions}
+\label{sec:naive_decomp}
+To make it clear that some simple decompositions fail the conditions of relative importance measures, we will consider two naive approaches for decomposing the $R^2$. 
+We denote the $R^2$ of a linear regression with regressors $X_1, \dots, X_p$ as $R^2(\{1, \dots, p\})$ and the relative importance of regressor $X_i$ as $\text{RI}(\{i\})$
+\newline
+\newline
+The first naive method is to fit a model with all regressors $p$, and then fit a model with all regressors excluding regressor $i$. The relative importance of $X_i$ is then the difference $R^2(\{1, \dots, p\}) - R^2(\{1, \dots, p\} \setminus i)$.
+To show how this fails the conditions of relative importance measures, an example from \citet{matre} is discussed. The example considers the simple case 
+\begin{equation}
+    Y=X_1+X_2 \ , \text{Var}(X_1) = \text{Var}(X_2)=1 \ , \text{Cov}(X_1, X_2)=0.9 \ .
+\end{equation}
+The $R^2$ of the model with both covariates is $R^2(\{1, 2\})=1$, since the covariates $X_1, X_2$ explain fully the response $Y$. Then one would expect that the importance of $X_1$ and $X_2$ is $0.5$ each, since they both explain half of the response variance.
+Using the proposed decomposition, one would calculate
+\begin{equation}
+    \text{Ri}(\{2\}) = R^2(\{1, 2\}) - R^2(\{1\}) = 1 - \frac{\text{Cov}(Y, X_1)^2}{\text{Var}(Y)\text{Var}(X_1)} = 1- \frac{1.9^2}{3.8} \approx 0.05 \ ,
+\end{equation}
+where it is used that for the simple linear regression, the $R^2$ is given by the squared correlation coefficient between the response and the regressor.
+By symmetry $\text{Ri}(\{1\})=\text{Ri}(\{2\})$, so the sum of the relative importances is $0.1$. However, the total explained variance of the model is $1$, so this decomposition violates the proper decomposition condition.
+This decomposition only assign importances to the regressor based on the information that the regressor does not share with any other regressors. Therefore, it does not take into account the shared information and the importance estimated is too low.
+\newline
+\newline
+Another naive decomposition would be to compare the relative importance of a model with one regressor $i$ to the empty model, \textit{i.e.} the model with no covariates. 
+The empty model has an $R^2=0$ and therefore for $X_1$ in the above example we would have
+\begin{equation}
+    \text{Ri}(\{1\}) = R^2(\{1\}) - R^2(\{\emptyset\}) = \frac{\text{Cov}(Y, X_1)^2}{\text{Var}(Y)\text{Var}(X_1)} = \frac{1.9^2}{3.8} \approx 0.95 \ .
+\end{equation}
+Once more by symmetry we have $\text{Ri}(\{2\})=\text{Ri}(1)$, so the sum of the relative importances is $1.9$, violating the proper decomposition condition.
+Conversely to the first naive approach, this decomposition assigns importances based on the full information contained in the regressor. Therefore it overestimates the importance of each variable, since the shared information is accounted for twice.
+\newline
+\newline
+As we have seen from these naive approaches, the task of decomposing the $R^2$ value is far from trivial, and calls for more sophisticated methods.
+
+\subsection{LMG - A proper decomposition}
+\label{sec:lmg}
+A method that handles correlation among covariates, and is frequently reinvented\citep{gromping_relaimpo} from different approaches, is the LMG method.
+Therefore we shall discuss it, as it serves an important role as a leading method for assigning relative variable importance.  
+The LMG method takes use of averaging over orders, meaning that it permutes the index set $\{1, ..., p\}$  of the regressors $(p-1)!$ times, excluding the intercept, and sequentially adds the regressors to the model for each permuted index set.
+By adding regressors sequentially for each permutation, one can investigate how the importance of the regressors vary depending on what other regressors are included, which is useful when they are correlated.
+This is justified by the assumption that there is no relevant ordering of the regressors in the index set \citep{kruskal_lmg_1987}.
+For each regressor added, starting with none, it allocates a share of explained variance, or importance, and then adds a new regressor.
+The final allocated share to the regressor is the average of the allocated shares to that regressor for all permutations of the set of regressors indices. 
+This would mean that for two correlated regressors whose importance share varies depending on which is added first, would receive an averaged importance.
+Averaging over orders is a statistical tradition \citep{kruskal_lmg_1987} and gives a robust assessment of each regressor's importance by considering different orderings of how they are added to the model. 
+The iterative process for the regressors $\{X_0, X_1, X_2, X_3\}$, where $X_0$ is the intercept, would be
+\begin{enumerate}
+    \item Considering $\{X_1, X_2, X_3\}$,  $X_1$ is added to the model, and the share of explained variance allocated to $X_1$ is $\text{svar}(\{1\} \lvert \emptyset)$. $X_2$ is added and allocated a share of $\text{svar}(\{2\} \lvert \{1\})$, and lastly $X_3$ is added and allocated a share of $\text{svar}(\{3\} \lvert \{1, 2\})$.
+    \item Considering $\{X_1, X_3, X_2\}$,  $X_1$ is added to the model, and the share of explained variance allocated to $X_1$ is $\text{svar}(\{1\} \lvert \emptyset)$. $X_3$ is added and allocated a share of $\text{svar}(\{3\} \lvert \{1\})$, and lastly $X_2$ is added and allocated a share of $\text{svar}(\{2\} \lvert \{1, 3\})$.
+\end{enumerate}
+The above iteration is repeated for all 6 possible permutations of orderings among regressors to obtain the final result.
+This iterative process gives rise to the general formula for share of explained variance allocated to $X_1$ by the LMG method with $p$ regressors \citep{gromping_relaimpo},
+\begin{equation}
+    \label{eq:LMG}
+    \text{LMG}(1) = \frac{1}{p!} \sum_{S \subseteq \{2, ..., p\}} n(S)! (p - n(S)-1)! \text{svar}(\{1\} \lvert S) \ ,
+\end{equation} 
+where $n(S)$ is the number of regressors in $S$.
+Equation \eqref{eq:LMG} averages the increase in $R^2$, $\text{svar}(\{X_i\})$, when adding the covariate of interest, $X_i$, over all possible orderings of covariates. 
+This mean increase over orderings is assigned as the proportion of $R^2$ explained by $X_i$.
+The LMG method fulfills all but the exclusion criteria described previously \citep{gromping_relaimpo}, but \citet{gromping_relaimpo} argues that this "must be seen as a natural result of model uncertainty" and therefore that this criterion is not indispensable.
+Therefore, we find it also suitable for our purposes to focus on the three other criteria.
+The setback of the LMG method is naturally the great computational expense that the permutations require, namely $2^{p-1}$ summations \citep{gromping_relaimpo}. 
+
+\subsection{Relative weights for linear regression}
+\label{sec:relativeweights}
+A method that takes advantage of the straightforward decomposition of the variance when the covariates are uncorrelated is the relative weights method \citep{johnson_relative_weights}, which will now be discussed.
+\newline
+\newline
+The relative weights method proposes an alternative to the LMG, which is significantly less computationally expensive. 
+Intuitively, the relative weights method projects the matrix $\mathbf{X}$ into an orthogonal column space, resulting in a matrix $\mathbf{Z}$ with orthogonal columns.
+The matrix $\mathbf{Z}$ is then an approximation of $\mathbf{X}$ and will be used as the design matrix in the regression. Since the columns of the design matrix $\mathbf{Z}$ are orthogonal, each covariate is uncorrelated. 
+This allows us to decompose the variance in the straightforward manner as mentioned earlier.
+% As is mentioned above, decomposing the variance with uncorrelated predictors is straightforward. To see this, one can with out loss of generalization, standardize the repsonse to have the zero-vector as mean and the identity matrix as variance. Then it is clear that the marginal variance can be found as
+% \begin{equation}
+%     \text{Var}(\mathbf{y}) = \text{Var}(\mathbf{X}^T\boldsymbol{\beta} + \boldsymbol{\varepsilon}) = \boldsymbol{\beta}^T\text{Var}(X)\boldsymbol{\beta} + \sigma^2 = \boldsymbol{\beta}^T\boldsymbol{\beta} + \sigma^2 \ ,
+% \end{equation}
+% so for each predictor the contribution to the full explained variance is the corresponding regression coefficient squared. This property lies the foundation for the relative weights method, which will now be considered.
+\newline
+\newline
+In relative weights one uses the singular value decomposition \citep{relative_weights_nimon_oswald}, to project the real-valued design matrix $\mathbf{X}$ into an orthonormal matrix $\mathbf{U} \in \mathbb{R}^{n \times n}$ containing the eigenvectors of $\mathbf{X}\mathbf{X}^T$, an $n\times p$ diagonal matrix $\mathbf{D}$ containing the singular values of $\mathbf{X}$ and another orthonormal matrix $\mathbf{V} \in \mathbb{R}^{p \times p}$ containing the eigenvectors of $\mathbf{X}^T\mathbf{X}$ such that
+%The above matrix relations differ from Matre, double check them!
+\begin{equation}
+    \mathbf{X} = \mathbf{UDV^T} \ .
+\end{equation}
+From the Eckhart-Young-Mirsky theorem \citep{mirsky-theorem} and following the derivations of \citet{johnson_minimization_trace}, one can state that the matrix $\mathbf{X}$, of rank $r$, can be approximated by a matrix $\mathbf{Z} = \mathbf{U}\mathbf{V}^T$ of rank $k\leq r$ such that the difference under the squared Frobenius norm
+\begin{equation}
+    \lVert \mathbf{X} - \mathbf{Z} \rVert_F^2 = tr \left( (\mathbf{X} - \mathbf{Z})^T(\mathbf{X} - \mathbf{Z}) \right) \ ,
+\end{equation}
+is minimized. The relative weights approximation now utilizes the matrix \citep{johnson_relative_weights} $\frac{1}{\sqrt{n-1}}\mathbf{{Z}}$, where the factor $\frac{1}{\sqrt{n-1}}$ is the standardization factor for $\mathbf{Z}$ \citep{matre}, and regresses on $\mathbf{Z}$ to find the MLE $\boldsymbol{\beta_Z}$ as
+\begin{equation}
+    \begin{aligned}
+        \boldsymbol{\beta_Z} & = (\mathbf{Z}^T\mathbf{Z})^{-1}\mathbf{Z}\mathbf{y} \\
+        & = \left((n-1) \mathbf{VU}^T\mathbf{UV}^T \right)^{-1} \sqrt{n-1}\mathbf{VU}^T\mathbf{y} \\
+        & = \frac{1}{\sqrt{n-1}}\mathbf{V}\mathbf{U}^T\mathbf{y} \ .
+    \end{aligned}
+\end{equation} 
+As $\mathbf{Z}$ is orthogonal, the relative importance for each column $\mathbf{z_i}$ with respect to the response $\mathbf{y}$ can be found as the square of $\beta_{Z, i}^2$, denoted as $\boldsymbol{\beta_Z}^{[2]}$. 
+The notation $\boldsymbol{\xi}^{[2]}$ for some $\boldsymbol{\xi}$ represents the Schur product of $\boldsymbol{\xi}$ with itself, \textit{i.e.} element wise squaring of each element in $\boldsymbol{\xi}$.
+Once these importances are obtained, \citet{johnson_relative_weights} argues that we should regress $\mathbf{X}$ on $\mathbf{Z}$ to obtain the weights that relate the importance of each column of $\mathbf{Z}$ to each column of $\mathbf{X}$. These weights can be calculated as the matrix
+\begin{equation}
+    \boldsymbol{\Lambda} = (\mathbf{Z}^T\mathbf{Z})^{-1}\mathbf{Z}^T\mathbf{X} = (\mathbf{V}\mathbf{U}^T\mathbf{U}\mathbf{V}^T)^{-1}\mathbf{V}\mathbf{U}^T\mathbf{U}\mathbf{D}\mathbf{V}^T = \mathbf{V}\mathbf{D}\mathbf{V}^T \ ,
+\end{equation}
+and since $\mathbf{Z}$ is orthogonal, the contribution from a column of $\mathbf{z_i}$ with respect to a column $\mathbf{x}_j$ is the squared entry $\boldsymbol{\Lambda}_{ij}^2$.
+The contribution from a column $\mathbf{x}_j$ with respect to the response $\mathbf{y}$, \textit{i.e.} the relative importance, is then estimated as the matrix product \citep{johnson_relative_weights}
+\begin{equation}
+    \label{eq:RI_lambda}
+    \text{RI}(\mathbf{X}) = \boldsymbol{\Lambda}^{[2]} \boldsymbol{\beta_Z}^{[2]} \ , 
+\end{equation}
+with $\text{RI}$ as a column vector where each entry $j$ contains the estimate of the relative importance corresponding to column $j$ of $\mathbf{X}$.
+In \citet[section 2.5.3]{matre} it is shown that the relative weights method fulfills the criteria same three criteria as the LMG method, because $\mathbf{Z}$ and $\mathbf{X}$ are linear combinations of each other and due to the properties of $\boldsymbol{\Lambda}$.
+The relative weights method will be considered later on, when we use the transformation of $\mathbf{X}$ to $\mathbf{Z}$ in a Bayesian setting.
+
+
+\subsection{$R^2$ for LMM's}
+\label{sec:R2_LMM}
+The $R^2$ value introduced earlier refer to a linear regression setting, and so it is desirable to obtain an analogous value for random effect models.
+When extending a model to include random effects, one must decide whether one also wants to account for the variance explained by these random effects in the calculations of the $R^2$ value.
+A simple and intuitive way is presented in \citet{nakagawa2013general}. To ease notation we write, $\sigma^2_f = \boldsymbol{\beta}^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}$ for the variance captured by the fixed effects. Similarly we write $\sigma_{\alpha}^2$ for the total variance of random effects and $\sigma^2_{\varepsilon}$ for the variance of the random error. 
+The proposed definition of the marginal $R^2$ for LMM's is then
+\begin{equation}
+    R^2_{\text{marg}} = \frac{\sigma^2_f}{\sigma^2_f + \sigma^2_{\alpha} + \sigma^2_{\varepsilon}} \ .
+    \label{eq:R2_LMM_marginal}
+\end{equation}
+and similarly for the conditional $R^2$ we have
+\begin{equation}
+    R^2_{\text{cond}} = \frac{\sigma^2_f + \sigma^2_{\alpha}}{\sigma^2_f + \sigma^2_{\alpha} + \sigma^2_{\varepsilon}} \ ,
+    \label{eq:R2_LMM_conditional}
+\end{equation}
+
+\subsection{Extensions of the LMG and relative weights method}
+Extensions for both the LMG and the relative weights method have been proposed so that they can decompose the $R^2$ also for random intercept models \citep{matre}. 
+The extended LMG, denoted as the ELMG, method uses the same permutations as described for the regular LMG, and now decomposes the $R^2$ value for the random intercept model instead.
+This $R^2$ is described in \Cref{sec:R2_LMM} and effectively divides the variance of the response into the variance of the fixed effects, the random effects and the random error.
+From this decomposition, the only extension needed for the LMG formula is to include also the random intercepts as model components, which gives \citep{matre}
+\begin{equation}
+    \text{LMG}(1) = \frac{1}{(p+q)!} \sum_{S \subseteq \{2, ..., p\}} n(S)! ((p+q) - n(S)-1)! \text{svar}(\{1\} \lvert S) \ ,
+\end{equation}
+where $p$ denote fixed effects and $q$ denotes random effects. It is equivalent to the original LMG method \eqref{eq:LMG} except that here the random intercepts are treated as categorical fixed effects, where we do not consider the columns but rather the whole predictor, either completely in the model or not.
+\newline
+\newline
+To create the extended relative weights (ERW) method, \citet{matre} uses the same transformation of data as for the relative weights method to project the covariates into an orthogonal space. 
+Then the fixed effects are treated as one separate block, either in the model or not, and then uses the LMG approach to distribute a share of $R^2$ to each random intercept.
+The fixed effects will receive a joint share, which is distributed by using the relative weights method.
+Since the LMG approach is used for the $q$ random effects and the block of fixed effects, the complexity of the ERW will follow that of the LMG method for $q+1$ covariates.
+\newline 
+\newline
+Both extensions described comes with new considerations \citep[for full details]{matre}, for example that the inclusion criteria now should read "If a regressor $\beta_j \neq 0$, or a random intercept $\alpha$ with $\sigma^2(\alpha) > 0$, is included in the model then its share of the variance should be positive".
+\section{The Bayesian framework}
+% Add citations here, think the Fahrmeir book covers it
+The above discussion is rooted in the so called frequentist framework, implying that the parameters are treated as fixed and the uncertainty is quantified by the sampling distribution of the data. The Bayesian framework, on the other hand, treats the parameters as random variables and the uncertainty is quantified by the posterior distribution of the parameters.
+\subsection{General idea}
+The Bayesian framework is based on a generalization of Bayes theorem \citep[see Proposition 3]{bayes_1763} to functions, which states that 
+\begin{equation}
+    \pi(\boldsymbol{\theta} \lvert \mathbf{y}) = \frac{\pi(\mathbf{y} \lvert \boldsymbol{\theta})\pi(\boldsymbol{\theta})}{\pi(\mathbf{y})} \ ,
+\end{equation}
+where $\pi(\boldsymbol{\theta} \lvert \mathbf{y})$ is the posterior distribution of the parameters $\boldsymbol{\theta}$ given the data $\mathbf{y}$, $\pi(\mathbf{y} \lvert \boldsymbol{\theta})$ is the likelihood function, $\pi(\boldsymbol{\theta})$ is the prior distribution of the parameters and $\pi(\mathbf{y})$ is the marginal distribution of the data. 
+These distributions give rise to many new perspectives and interpretations. Often one only considers the posterior in terms of being proportional to the product of the likelihood and prior, namely
+\begin{equation}
+    \pi(\boldsymbol{\theta} \lvert \mathbf{y}) \propto \pi(\mathbf{y} \lvert \boldsymbol{\theta})\pi(\boldsymbol{\theta}) \ .
+\end{equation}
+The proportionality is useful because the marginal distribution of the data is often intractable, and thus the posterior is only known up to a constant.
+From well established sampling methods, such as Markov Chain Monte Carlo, this is enough to eventually be able to sample effectively from the posterior distribution. If a prior is proposed, and one can express the likelihood, the posterior can be computed and also updated as more data becomes available. 
+\newline
+\newline
+The fundamental perspective of distributions instead of point estimates are what that separates the Bayesian framework from a frequentist setting, and allows for different interpretations.
+In natural sciences, measurements are often performed by professionals over a time period, and it is therefore useful to have a model that can adjust as more data becomes available. This is what the likelihood function allows for as it models the parameters as a function of the current data.
+Further, the prior allows for inclusion of some prior information about the parameters, which is often the case in natural sciences. These can be specified by experts in the field or by previous studies. Lastly, the fundamental uncertainty of the Bayesian framework is very useful.
+Since everything is modelled as a distribution, a corresponding variance is calculated. This variance can be a useful quantity for making statistical inference about the parameters one wishes to estimate. It also allows for capturing the fundamental uncertainty of measuring physical quantities. 
+
+\subsection{Bayesian LMMs}
+When one wants to apply the idea of linear mixed models in the Bayesian framework some key aspects change, and we will follow the logic of \citet{gelman2015Bayesian} to explain this theory in our setting. Considering a model as in (\ref{eq:LMM}) we have four parameters, namely $\boldsymbol{\beta}$, $\boldsymbol{\alpha}$, $\sigma^2_{\alpha}$ and $\sigma^2_{\varepsilon}$, where $\boldsymbol{\beta}$ and $\boldsymbol{\alpha}$ are model parameters dependent on $\sigma^2_{\alpha}$ and $\sigma^2_{\varepsilon}$ which are called hyperparameters.
+In a Bayesian framework these parameters are treated as random variables instead of values with a true, but unknown value, meaning that we must specify a distribution for the parameters. The posterior distribution of the model parameters will depend on the hyperparameters and the latent structure we assume the model to have. To define the prior distributions $\pi(\sigma^2_{\alpha})$ and $\pi(\sigma^2_{\varepsilon})$ of the hyperparameters, one assumes they are independent and chooses a distribution based on the prior information available. In this thesis we will use the Penalised Complexity priors, or PC priors \citep{simpson2017penalising}.
+If one assumes independence of the random effects and the fixed effects these priors will allow us, through methods discussed later in section \ref{sec:INLA_framework}, to derive marginal posterior distributions for the model parameters and sample from these. From these distributions we can obtain statistics such as posterior means and modes, posterior variances and credible intervals.
+ 
+
+% When one wants to apply the idea of linear mixed models in the Bayesian framwork, some key aspects change. Considering a model as in \ref{eq:LMM} we have three model parameters, namely $\boldsymbol{\beta}$, $\sigma^2_{\alpha}$ and $\sigma^2_{\varepsilon}$, where the distribution of $\boldsymbol{\beta}$ depends on the model hyperparameters $\sigma^2_{\alpha}$ and $\sigma^2_{\varepsilon}$. In a Bayesian framework these model parameters will be treated as random variables instead of fixed. This means that we must specify a dsitribution for the model parameters, which is called the prior distribution.
+% A prior distribution on $\pi(\boldsymbol{\beta}, \sigma^2_{\alpha}, \sigma^2_{\varepsilon})$ can be chosen in many ways based on the prior information one has about the parameters, but in this thesis we will use the Penalised Complexity priors, or PC priors \citep{simpson2017penalising}.
+% Usually one assumes the priors on the hyperparameters to be independent and from these priors, one can find the posterior of the model parameters that depend on the hyperparameters from Bayes theorem.
+% This now allows us to include prior information and supplement this prior with the information contained in the data expressed in the likelihood function and the posterior of the model parameters that depend on the hyperparameters.
+% One 
+
+% When one wants to apply linear regression in a Bayesian framework, some key aspects change. Instead of viewing the model parameters as fixed, they will be treated as random variables. This means that we must specify a distribution for the model parameters, which under classic assumptions, are $\boldsymbol{\beta}$ and $\sigma^2$.
+
+
+
+% To arrive at a analytic solution for the posterior, conjugate priors on these parameters will be introduced. A prior on $\pi(\boldsymbol{\beta}, \sigma^2)$ is conjugate to the likelihood function if it has the same functional form with respect to $\boldsymbol{\beta}$ and $\sigma^2$ as the likelihood function. This means that the posterior distribution will have the same functional form as the prior, which makes it easier to compute. 
+% Following Bayes theorem one may write the joint distribution as $\pi(\boldsymbol{\beta}, \sigma^2) = \pi(\boldsymbol{\beta} \lvert \sigma^2)\pi(\sigma^2)$, where this will now depend on the data. 
+
+
+% It can be shown that by choosing $\pi(\sigma^2)$ as the inverse-gamma distribution, \textit{i.e.} $\sigma^2 \sim \mathcal{IG}(\alpha_0, \beta_0)$, where $\alpha_0$ and $\beta_0$ are the shape and scale parameters, respectively, one can find the conditional distribution of $\boldsymbol{\beta}$ on $\sigma^2$ to be
+% the multivariate normal distribution $\boldsymbol{\beta} \sim \mathcal{N}(\boldsymbol{\mu}_0, \sigma^2\mathbf{\Lambda}^{-1}_0)$, where $\boldsymbol{\mu}$ is the mean vector and $\mathbf{\Lambda}$ is the precision matrix. 
+% Utilizing these priors, the posterior can be expressed from Bayes theorem, up to a normalizing constant, as
+% \begin{equation}
+%     \begin{aligned}
+%             \pi(\boldsymbol{\beta}, \sigma^2 \lvert \mathbf{y}, \mathbf{X}) & \propto  \pi(\mathbf{y} \lvert \mathbf{X}, \boldsymbol{\beta}, \sigma^2)\pi(\boldsymbol{\beta} \lvert \sigma^2)\pi(\sigma^2) \\
+%             & \propto \sigma^{-n/2}\exp\left(-\frac{1}{2\sigma^2}(\mathbf{y}-\mathbf{X}\boldsymbol{\beta})^T(\mathbf{y}-\mathbf{X}\boldsymbol{\beta})\right) \sigma^{-p/2}\exp\left(-\frac{1}{2\sigma^2}(\boldsymbol{\beta}-\boldsymbol{\mu}_0)^T\mathbf{\Lambda}_0(\boldsymbol{\beta}-\boldsymbol{\mu}_0)\right) \sigma^{-\alpha_0-1}\exp\left(-\frac{\beta_0}{\sigma^2}\right) \\
+%             & \propto \sigma^{-(n+p+2\alpha_0)/2}\exp\left(-\frac{1}{2\sigma^2}\left(\mathbf{y}^T\mathbf{y} - 2\mathbf{y}^T\mathbf{X}\boldsymbol{\beta} + \boldsymbol{\beta}^T\mathbf{X}^T\mathbf{X}\boldsymbol{\beta} + \boldsymbol{\beta}^T\mathbf{\Lambda}_0\boldsymbol{\beta} - 2\boldsymbol{\beta}^T\mathbf{\Lambda}_0\boldsymbol{\mu}_0 + \boldsymbol{\mu}_0^T\mathbf{\Lambda}_0\boldsymbol{\mu}_0 + \beta_0\right)\right) \\
+%             & \propto \pi(\boldsymbol{\beta}, \lvert \sigma^2, \mathbf{y}, \mathbf{X})\pi(\sigma^2 \lvert \mathbf{y}, \mathbf{X}) \\
+%             & = \mathcal{N}(\boldsymbol{\mu}_n, \sigma^2\mathbf{\Lambda}^{-1}_n)\mathcal{IG}(\alpha_n, \beta_n)
+%     \end{aligned}
+% \end{equation}
+% where 
+% \begin{equation}
+%     \begin{aligned}
+%         \boldsymbol{\mu}_n &= (\mathbf{X}^T\mathbf{X} + \mathbf{\Lambda}_0)^{-1}(\mathbf{X}^T\mathbf{y} + \mathbf{\Lambda}_0\boldsymbol{\mu}_0) \\
+%         \mathbf{\Lambda}_n &= \mathbf{X}^T\mathbf{X} + \mathbf{\Lambda}_0 \\
+%         \alpha_n &= \alpha_0 + \frac{n}{2} \\
+%         \beta_n &= \beta_0 + \frac{1}{2}\left(\mathbf{y}^T\mathbf{y} + \boldsymbol{\mu}_0^T\mathbf{\Lambda}_0\boldsymbol{\mu}_0 - \boldsymbol{\mu}_n^T\mathbf{\Lambda}_n\boldsymbol{\mu}_n\right) \ .
+%     \end{aligned}
+% \end{equation}
+% Depending on the dataset one is thus able to obtain the statistics of interest, e.g. the variance and mode of the distributions. 
+
+\subsection{Appropriate definition of $R^2$ for the Bayesian framework}
+We wish to estimate relative importance in a Bayesian framework and report the distribution of $R^2$. To do this we must first consider how $R^2$ can be correctly defined and generalized in the Bayesian framework. 
+\subsection{$R^2$ for Bayesian linear regression}
+\label{sec:bayes_R2}
+When working in the Bayesian framework, the definition of $R^2$ is not as straightforward as in the classical framework. The classical definition of $R^2$ for linear regression is written as
+\begin{equation}
+    R^2 = 1 - \frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2} \ ,
+\end{equation}
+where $\hat{y}_i$ is the predicted value of $y_i$ and $\bar{y}$ is the mean of the observed values of $y$. However, if one was to compare models based on this metric in the Bayesian framework, the denominator would not be fixed. With a variable denominator one cannot accurately interpret a change in $R^2$ value when comparing models. 
+\citet{gelman2017rsquared} proposed a definition of the $R^2$ for the Bayesian linear regression that will be considered in the following. Consider a draw $s$ of the parameters $\boldsymbol{\beta}$ from the posterior distribution. Then, the proposed definition is
+\begin{equation}
+    \label{eq:bayes_r2}
+    R_s^2 = \frac{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s}{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s + \sigma^2_s} \ ,
+\end{equation}
+where $\boldsymbol{\Sigma_{\mathbf{X^TX}}}$ is the covariance matrix of the design matrix $\mathbf{X}$ and $\sigma^2_s$ is the variance of the error term which can be sampled from the posterior distribution.
+Contrary to the classical definition this definition of $R^2$ contains only the estimated values from our model and not the observed values. The reasoning behind this is to carry this inherent uncertainty in the Bayesian framework by not using point estimates from the posterior mean, but rather averaging over a posterior distribution. %Should I cite Gelman here?
+Drawing enough samples from \eqref{eq:bayes_r2} one would eventually obtain also a distribution for the $R^2$ value.
+
+\subsection{$R^2$ for Bayesian LMM's}
+\label{sec:bayes_R2_LMM}
+Since the Bayesian framework allows us to sample from the posterior distributions of both random and fixed effects, one can extend the conditional and marginal $R^2$ proposed by \citet{gelman2017rsquared} to the LMM case. 
+The respective generalization can be found directly as
+\begin{equation}
+    \label{eq:R2_bayes_LMM_cond}
+    R_{s, \text{marg}}^2 = \frac{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s}{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s + \sigma_{\alpha, s}^2 + \sigma_{\varepsilon, s}^2} \ ,
+\end{equation} 
+and
+\begin{equation}
+    \label{eq:R2_bayes_LMM_marg}
+    R_{s, \text{cond}}^2 = \frac{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s + \sigma_{\alpha, s}^2}{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s + \sigma_{\alpha, s}^2 + \sigma_{\varepsilon, s}^2} \ ,
+\end{equation}
+where the subscript $s$ denotes samples from the marginal posteriors of the parameters in question, \textit{i.e.} $\boldsymbol{\beta}, \sigma_{\alpha}^2$ and $\sigma_{\varepsilon}^2$.
+These definitions of the $R^2$ highlight exactly the fundamental advantage of the Bayesian framework. Since the $R^2$ is also treated as a random variable, it has a distribution which can be used for statistical inference. 
+Moreover, one can relate the $R^2$ more directly to the frequentist framework by using the posterior means or modes from the distributions of $\boldsymbol{\beta}, \sigma_{\alpha}^2$ and $\sigma_{\varepsilon}^2$ in \eqref{eq:R2_LMM_conditional} and \eqref{eq:R2_LMM_marginal}. This approach can be favorable for comparing methods.
+
+\section{The INLA framework}
+\label{sec:INLA_framework}
+As we have seen, the analytical posterior is possible to obtain for the Bayesian linear regression model. However, in the case of GLMMs, the posterior distribution is not in general analytically tractable \citep{fong2010Bayesian}. This calls for the use of numerical methods, such as Markov Chain Monte Carlo (MCMC) methods, to be able to sample from the posterior distribution. 
+Such methods are computationally expensive, and require careful analysis to justify convergence and mixing of the Markov chains to the posterior distribution. Therefore it is desirable, under certain conditions, to look at other methods that are more computationally efficient.
+In this thesis we will consider the alternative, namely the Integrated Nested Laplace Approximation (INLA) method \citep{gomezrubio2020inla}.
+\newline
+\newline
+The INLA method is an alternative to the classical Marko Chain Monte Carlo methods, that has significant advantages at the cost of assuming a certain structure.
+In order to apply INLA, consider the vector of observations $\mathbf{y} = (y_1, ..., y_n)$, which may also contain missing values. 
+Given an appropriate link function $g(\mu_i)=\eta_i$, we can model the observations as independent given the linear predictor
+\begin{equation}
+    \eta_i = \alpha + \sum_{j=1}^{n_{\beta}} \beta_j z_{ji} + \sum_{k=1}^{n_{f}} f^{(k)}(u_{ki}) + \varepsilon_i \ , \hspace{10mm} i=1, ..., n \ ,
+\end{equation}
+where $\alpha$ is the intercept, $\beta_j$ are the regression coefficients for the covariates $z_{ji}$, $f^{(k)}$ are random effects for the vector of covariates $\mathbf{\{u_{k}\}}_{k=1}^{n_f}$ and $\varepsilon_i$ is the error term.
+This gives rise to the key assumption that the INLA method needs in order to be applicable, namely that the latent field $\mathbf{x}$, denoted as
+\begin{equation}
+    \mathbf{x} = (\eta_1, ..., \eta_n, \alpha, \beta_1, ..., \beta_{n}) \ ,
+\end{equation}
+is a Gaussian Markov Random Field (GMRF). Further, it is assumed that observations are independent given this latent field and the latent field is distributed according to some hyperparameters $\boldsymbol{\theta}$.
+The structure of the GMRF is given by a precision matrix $\mathbf{Q(\theta)}$, which is sparse and can be represented by a graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$. 
+This along with the assumed conditional independence makes computations very fast and is why INLA is effective.
+Now, the posterior distribution of the latent field $\boldsymbol{x}$ is given by
+\begin{equation}
+    \pi(\boldsymbol{x}, \boldsymbol{\theta} \lvert \mathbf{y}) = \frac{\pi(\mathbf{y} \lvert \boldsymbol{x}, \boldsymbol{\theta}) \pi(\boldsymbol{x} \lvert \boldsymbol{\theta}) \pi(\boldsymbol{\theta})}{\pi(\boldsymbol{y})} \propto \pi(\mathbf{y} \lvert \boldsymbol{x}, \boldsymbol{\theta}) \pi(\boldsymbol{x} \lvert \boldsymbol{\theta}) \pi(\boldsymbol{\theta}) \ ,
+\end{equation}
+where $\pi(\mathbf{y} \lvert \boldsymbol{x}, \boldsymbol{\theta})$ is the likelihood, $\pi(\boldsymbol{x} \lvert \boldsymbol{\theta})$ is the posterior of the latent field and $\pi(\boldsymbol{\theta})$ is the prior.
+Since it is assumed that observations are independent given the latent field, we can further express
+\begin{equation}
+    \pi(\mathbf{y} \lvert \boldsymbol{x}, \boldsymbol{\theta}) = \prod_{i\in \mathcal{I}} \pi(y_i \lvert x_i, \boldsymbol{\theta}) \ ,
+\end{equation}
+where the index set $\mathcal{I} \subset \{1, 2, 3, \ldots, n\}$ only includes actual observed data. %SHOULD I INCLUDE MORE HERE? 
+The INLA method now attempts to estimate the marginals of the latent effects and the hyperparameters. These marginals are given by
+\begin{equation}
+    \label{eq:INLA_marginals}
+    \pi(x_l \lvert \mathbf{y}) = \int \pi(x_l \lvert \boldsymbol{\theta}, \mathbf{y}) \pi(\boldsymbol{\theta} \lvert \mathbf{y}) d\boldsymbol{\theta} \ ,
+\end{equation}
+and 
+\begin{equation}
+    \label{eq:INLA_marginals_hyperparameters}
+    \pi(\theta_k \lvert \mathbf{y}) = \int \pi(\boldsymbol{\theta} \lvert \mathbf{y}) d\boldsymbol{\theta}_{-k} \ ,
+\end{equation}
+\citep{gomezrubio2020inla} respectively, $\boldsymbol{\theta}_{-k}$ is the vector of hyperparameters excluding element $\theta_k$ and the latter integral is possible to integrate numerically due to the low dimension of $\boldsymbol{\theta}$ \citep{rue2009inla}. The approximations of these integrals are omitted, see \citet{rue2009inla} for the full details. 
+Lastly, the joint posterior distribution can be approximated from the so-called Skew Gaussian Copula class, as specified in \citet{rue2021joint}, and allows for sampling from the joint distribution. 
+The INLA method is implemented in the R-package \texttt{R-INLA} \citep{gomezrubio2020inla} and is used in this thesis to fit the models and draw from the obtained posteriors. We note that for the random effects INLA outputs the precision for the parameters involved, which is defined as the inverse covariance matrix. For the posterior marginal distribution of variance for the random effects the package has a function for transforming the precision marginal to the variance marginal. The priors used for the models in this thesis follow the recommendations of penalizing priors by \citet{simpson2017penalising}.
+
+
+\section{The Animal Model as a GMRF}
+INLA is a powerful tool for fitting latent gaussian models (LGMs) as it provides a computationally efficient alternative to the traditional MCMC methods \citep{rue2009inla}.
+To be applicable it relies heavily on the latent field, which is Gaussian, to possess the Markov property. 
+If a Gaussian random variable $\mathbf{X}=(X_1, ..., X_n)$ possesses the Markov property it means that for some $i\neq j$, $X_i$ is independent of $X_j$ conditioned $X_{-i, j}$, where $X_{-i, j}$ denotes all other elements of $\mathbf{X}$ except $X_i$ and $X_j$ \citep{rue2009inla}.
+This property readily visualized in a conditional independence graph, and for the animal model the pedigree structure derived from the family relation can be used as the conditional independence graph \citep[as cited in \citet{Stensland_GMRF_bayes_animal_model}]{Wermuth1983Graphical}.
+The pedigree of a population is a directed acyclic graph (DAG) where each node represents an individual and the directed edges represent the parent-offspring relationship. 
+This gives rise to the conditional independence graph, which can be found by inserting edges between parents that share offspring and removing the directions in the pedigree \citep{Wermuth1983Graphical}.
+An individual(node) in this graph will therefore only have edges, meaning it is conditionally dependent on, its parents, the parent(s) of its offspring, and its offspring.
+FIGUR AV DETTE?
+The pedigree can also be used to construct the relatedness matrix $\mathbf{A}$, previously defined as the expected covariance between relatives, and the gives rise to the sparse precision matrix $\mathbf{Q}:=\mathbf{A}^{-1}$ which is needed for calculations.
+As we consider each node as an individual, the corresponding variable of that node is its breeding value $\boldsymbol{\alpha}$ \citep{Stensland_GMRF_bayes_animal_model}. 
+
+\subsection{Single and Multitrait Animal Model}
+When modelling the observed phenotypic trait values of individuals in a population, caution must be made when modelling the genetic component of the trait using INLA.
+If only one trait is considered, 
+The breeding values $\boldsymbol{\alpha}$ of an individual represents the genetic component of an observed phenotypic trait. 
+
+
+
+
+
+
+% \subsection{Random intercept models}
+% An alternate approach to introduce a group, or cluster, specific effect is to utilize what is called random effects. 
+% The cluster specific offset from the population intercept $\beta_0$ will then be modelled as coming from a distribution, where the variance of the distribution is the parameter of interest.
+% Assume 
+
+
+
+% Given $n$ observations we define a response $\mathbf{y} = (y_1, y_2, ..., y_n)$ and a set of $p$ covariates for each response $\mathbf{X} = (\mathbf{x}_1, \mathbf{x}_2, ..., \mathbf{x}_n)$ where $\mathbf{x}_i = (x_{i1}, x_{i2}, ..., x_{ip})$. 
+% If one assumes a linear relationship between the response and the covariates, we can be model $\mathbf{y}$ by the linear regression
+% \begin{equation}
+%     \mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{\varepsilon} \ ,
+% \end{equation}
+% where $\boldsymbol{\beta} = (\beta_1, \beta_2, ..., \beta_p)$ is the vector of coefficients and $\mathbf{\varepsilon} = (\varepsilon_1, \varepsilon_2, ..., \varepsilon_n)$ the error term.
+% A critical assumption is that the error terms $\varepsilon_i$ are independent and identically distributed (i.i.d.) with $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$.
+% This assumption gives the model many desirable properties, and one can now see that
+% \begin{equation}
+%     \mathbf{y} \sim \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \sigma^2\mathbf{I}) \ ,
+% \end{equation}
+% where $\mathbf{I}$ is the identity matrix of size $n \times n$. 
+% To minimize the error when modelling, we estimate the coefficients $\boldsymbol{\beta}$ from the maximum likelihood estimation (MLE) method, given by 
+% \begin{equation}
+%     \hat{\boldsymbol{\beta}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y} \ .
+% \end{equation}
+
+
+% \section{Qualitative data}
+% Data may often naturally be grouped in various ways, for example data from longitudinal studies or qualitative data. 
+% Qualitative data is data that can be categorized, but not measured numerically, as opposed to quantitative data which take on continuous values.
+% \subsection{Dummy variables}
+% A common approach to model qualitative data is to include dummy variables for each group, which are either $0$ or $1$, depending on if the observation is excluded or included in the respective group.
+% Given $N$ groups it is standard to include $N-1$ dummy variables, as one group can be captured by the intercept and interpreted as a baseline.
+% The model for the response $y_i$, assuming no quantitative covariates, from group $j$ with dummy encoding is then given by
+% \begin{equation}
+%     y_i =  \beta_0 + \sum_{j=1}^{N-1} \beta_j x_{ij} + \varepsilon_i \ ,
+% \end{equation}
+% where 
+% \begin{equation}
+%     x_{ij} = \begin{cases}
+%         1 & \text{if observation $i$ is in group $j$} \\
+%         0 & \text{otherwise}
+%     \end{cases} \ .
+% \end{equation}
+% This way of modelling is intuitive and easy to interpret, but it also assumes the groups to be unique and independent and quickly becomes cumbersome when the number of groups is large.
+% \subsection{Random intercept models}
+% An alternative approach to model qualitative data is to use random intercept model, in which the cluster specific offset from the population intercept $\beta_0$ for different groups are modelled as random effects rather than fixed quantities to be estimated.
+% This makes a clear 
+
+% I will just write some sections below, and then I will see if I can make them fit together.
+
+
+
+
+
+
+
+
+

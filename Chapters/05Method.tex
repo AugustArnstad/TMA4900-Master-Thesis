@@ -1,0 +1,61 @@
+
+Plan for oppsett:
+
+\begin{itemize}
+    \item Forklare fixed effects
+    \item Forklare random effects
+    \item Forklare 
+\end{itemize}
+
+\section{Variance decompositions in the Bayesian framework}
+In the following chapter we will develop the methodology behind our proposed method for variance decomposition of the GLMMs in a Bayesian frameworks.
+The proposed method can be seen as an extension of the authors previous work in \citet{Arnstad}, in which a similar method was developed for the random intercept model.
+There are numerous possible extensions, and so we focus on extending the method to handle LMMs with complex covariate structures and the Poisson and binomial GLMMs.
+This extension does not include categorical variables with more than two categories or random slopes. 
+The exclusion of categorical variables are seen as outside the scope of this thesis, whereas the random slopes are omitted due to the added computational complexity and the debatable improvement of GLMMs and $R^2$ values with random slopes as mentioned in \citet{Johnson2014}.
+Broadly speaking, the method performs the relative weights method from \citet{johnson_relative_weights} on the fixed effects, before fitting a Bayesian GLMM.
+From the Bayesian GLMM, samples are drawn from the joint posterior distribution while taking the covariance structure and distributional assumptions into account.
+The calculated importance will be represented on the latent scale, i.e. on the scale of the linear predictor, as allows for an intuitive definition of the residual variance in \citet{nakagawa2013general} and is analogous to the LMMs.
+%Further, we only consider additive overdispersion. although the method could easily be implemented to handle multiplicative overdispersion as well.
+
+
+\subsection{Fixed effects}
+The handling of the fixed effects is quite similar to \citet{Arnstad}, as the fixed effects are handled by the relative weights method before the model is fit.
+Considering the linear predictor
+\begin{equation}
+    g(\boldsymbol{\mu}) = \boldsymbol{\eta} = \mathbf{X}\boldsymbol{\beta} + \mathbf{U}\boldsymbol{\alpha} \ ,
+\end{equation}
+and assuming the fixed and random effects to be independent, we first consider the variance of the fixed effects.
+We create the orthogonal matrix $\mathbf{Z}$ based on equation \eqref{eq:SVD} and the singular value decomposition described in section \Cref{sec:relativeweights}.
+Then, we approxmiate $\mathbf{X}$ in the linear predictor using $\mathbf{Z}$ and place a prior on $\boldsymbol{\beta}$. 
+Following the recommendations of \citet{simpson2017penalising} and \citet{gomezrubio2020inla} when placing priors in additive models, we use the penalising complexity priors.
+After a model is fit, samples of $\boldsymbol{\beta}$ from the joint posterior distribution of the GLMM are drawn so that possible correlations are accounted for.
+Finally, we transform the samples back following equation \eqref{eq:RI_lambda} using the matrix $\boldsymbol{\Lambda}$ from \eqref{eq:lambda} to obtain the relative importance of the columns in $\mathbf{X}$.
+
+\subsection{Random effects}
+For the random effects a similar approach is taken.
+In many applications, a correlation structure is present in the random effects, such as pedigree, spatial or genetic structures. 
+This structure can be specified based on the assumptions made on the random effects and are therefore case specific.
+These structures need to be specified in the formulation of the model, and therefore do not affect the general handling of random effects.
+%As the structure is specified before fitting the GLMM, they do not affect the general handling of random effects.
+After the model is fit, samples of the random effects are drawn from the joint posterior distribution of the GLMM. 
+These samples represent the distribution of the random effects, and can be transformed to obtain the relative importance of the random effects.
+
+
+
+Remember to mention that we use the bias correction method on Jensens inequality from \citep{nakagawa2017} for Poisson and binomial.
+
+\section{Simulation study (?)}
+
+\section{Case study - Gaussian}
+I was thinking here to try and replicate the results from \citet{Stensland_GMRF_bayes_animal_model}.
+\subsection{Data}
+To apply the methods described in this thesis, we will perform analysis on an empirical dataset from a study on house sparrows (\textit{Passer domesticus}). 
+The study, which has been running since 1993, has monitored the entire population of the house sparrows across multiple islands on the coast of Helgeland, Norway \citep{Muff2019Genetic}.
+
+
+\section{Case study - Binomial and Poisson}
+I need to define/obtain a binomial or Poisson response variable, preferably with the house sparrow data and something to compare with.
+The partR2 package uses categorical variables with more than two categories, which gives more than one estimate per covariate and I have not figured out how to handle this properly yet.
+
+

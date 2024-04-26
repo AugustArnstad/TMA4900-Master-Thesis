@@ -1,0 +1,49 @@
+We present a joint proof of the expectation and variance of a random variable belonging to the univariate exponential family.
+For a random variable $Y$ with a normalized probability density function $f(y \lvert \theta, \phi)$ on the form
+\begin{equation}
+    f(y \lvert \theta, \phi) = \exp\left( \frac{y\theta - b(\theta)}{a(\phi)} + c(y, \phi) \right) \ ,
+\end{equation}
+where $\theta$ is the natural parameter and $\phi$ is the dispersion parameter, the expectation and variance of $Y$ can be expressed as
+\begin{equation}
+    \begin{aligned}
+        \mathbb{E}(Y \lvert \theta) &= b'(\theta) \\
+        \text{Var}(Y \lvert \theta) &= b''(\theta)
+    \end{aligned}
+\end{equation}
+This can be shown by considering the following:
+\begin{equation}
+    \frac{d f(y)}{d\theta} = \frac{1}{a(\phi)} f(y \lvert \theta \phi) (y-b'(\theta))  \ ,
+\end{equation}
+and 
+\begin{equation}
+    \frac{d^2 f(y)}{d\theta^2} = \frac{1}{a(\phi)}f(y \lvert \theta, \phi) \left( \frac{1}{a(\phi)}(y-b'(\theta))^2 - b''(\theta) \right) \ .
+\end{equation}
+Now, as $\int_{\mathbb{R}} f(y \lvert \theta) dy = 1$, we have 
+\begin{equation}
+    \label{eq:expfam_expectation}
+    \frac{d}{d \theta} \int_{\mathbb{R}} f(y) dy  = \int_{\mathbb{R}} \frac{d f}{d\theta} dy = 0 \ ,
+\end{equation}
+and 
+\begin{equation}
+    \label{eq:expfam_variance}
+    \frac{d^2}{d \theta^2} \int_{\mathbb{R}} f(y) dy = \int_{\mathbb{R}} \frac{d^2 f}{d\theta^2} dy = 0 \ .
+\end{equation}
+Equations \eqref{eq:expfam_expectation} and \eqref{eq:expfam_variance} can be used to derive the relation 
+\begin{equation}
+    \begin{aligned}
+    0 = \int_{\mathbb{R}} \frac{d f(y)}{d\theta} dy &= \frac{1}{a(\phi)}\int_{\mathbb{R}} f(y) (y-b'(\theta)) dy \\
+    & = \frac{1}{a(\phi)} \left(\mathbb{E}(Y \lvert \theta) - b'(\theta)\int_{\mathbb{R}}f(y)dy \right) \\
+    & = \frac{1}{a(\phi)} \left( \mathbb{E}(Y \lvert \theta) - b'(\theta) \right) \\
+    & \implies \mathbb{E}(Y \lvert \theta) = b'(\theta) \ ,
+    \end{aligned}
+\end{equation}
+and 
+\begin{equation}
+    \begin{aligned}
+    0 = \int_{\mathbb{R}} \frac{d^2 f(y)}{d\theta^2} dy &= \frac{1}{a(\phi)} \int_{\mathbb{R}} f(y) \left( \frac{1}{a(\phi)}(y-b'(\theta))^2 - b''(\theta) \right) dy \\
+    &= \frac{1}{a(\phi)} \int_{\mathbb{R}} f(y) \left( \frac{1}{a(\phi)} (y-\mathbb{E}(Y))^2 - b''(\theta) \right) dy \\
+    &= \frac{1}{ a(\phi)} \left( \mathbb{E}[(y-\mathbb{E}(Y))^2]- b''(\theta) \int_{\mathbb{R}} f(y)dy \right) \\
+    & = \frac{1}{a(\phi)}\text{Var}(Y) - b''(\theta) \\
+    & \implies \text{Var}(Y \lvert \theta) = a(\phi) b''(\theta) \ \qedsymbol
+    \end{aligned}
+\end{equation}

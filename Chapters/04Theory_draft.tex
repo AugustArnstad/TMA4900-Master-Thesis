@@ -328,8 +328,8 @@ Now that we have expanded the linear regression in two different ways, the final
 \begin{equation}
     \theta_{i, j} = \eta_{i, j} = \mathbf{x}_{i, j}^T\boldsymbol{\beta} + \mathbf{u}_{i, j}^T \boldsymbol{\alpha}_j \ , %= g(\mathbb{E}(y_{i, j} \lvert \theta_{i, j})) \ ,
 \end{equation}
-where $j =1, ..., m$ denotes the cluster and $i=1, ..., n_j$ denotes the observations in cluster $j$.
-As the random effects account for clustered variance, the assumption of conditionally independent observations is now loosened to the assumption of conditionally independent clusters \cite{GLMM_book}.
+where $j =1, ..., m$ denotes the cluster and $i=1, ..., n_j$ denotes the observations in cluster $j$, $\mathbf{x}_{i, j}$ and $\mathbf{u}_{i, j}$ are the $i$-th columns of the submatrices $\mathbf{X}_{j}$ and $\mathbf{U}_{j}$ of the larger design matrices $\mathbf{X}$ and $\mathbf{U}$ respectively, for cluster $j$.
+The assumption of conditional independent observations $y_{i, j}$ is now conditional on the random effect as well as the covariates, and the conditional distribution of $y_{i, j}$ is still assumed to belong to the exponential family. When estimating parameters in a GLMM, the joint distribution of the observations is not generally tractable. Therefore, parameter estimation requires more sophisticated methods in both the likelihood and Bayesian framework.
 
 % The linear mixed model can be generalized to include more complex relationships between the response and the covariates. 
 % As seen, both for the linear regression and linear mixed model, the response is assumed to have a linear relationship with covariates, leading to a conditional normal distribution of the response.

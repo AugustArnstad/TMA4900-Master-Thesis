@@ -60,6 +60,8 @@ The heritability samples of tarsus length (\Cref{fig:heritability_tarsus}) has a
 %       \label{fig:heritability_egg_poisson}
 %   \end{figure}
 
+To further assess our method, a comparison to the vignette for the \texttt{rptR} was made. No expected results were available, and so we can only compare our method to the results made by the authors of the vignette. It should however be noted, that the \texttt{rptR} package only returns the marginal $R^2$, whereas our method automatically decomposes this value and assigns a share to each fixed effect. 
+
 
 \begin{figure}[!ht]
   \centering
@@ -71,6 +73,8 @@ The heritability samples of tarsus length (\Cref{fig:heritability_tarsus}) has a
   \caption{Heritability of color of male beetles from BVI method (top) and Stoffel (bottom)}
 \end{figure}
 
+The heritability of the color of male beetles is modelled by a binomial GLMM with binary outcome. We see that the approximated distribution from the BVI method is centered a bit to the right of the point estimate from \texttt{rptR}. The stochasticity of the BVI method makes it so that the distributions return will vary based on what seed was made to generate the results. Therefore, we expect to see a difference between the centering of the distribution and point estimates. 
+
 \begin{figure}[!ht]
   \centering
   % First row
@@ -80,6 +84,8 @@ The heritability samples of tarsus length (\Cref{fig:heritability_tarsus}) has a
   }
   \caption{Heritability of eggs laid by female beetles from BVI method (top) and Stoffel (bottom)}
 \end{figure}
+
+The case for number of eggs laid by female larvae is centered a bit more to the left than the Stoffel estimate. We notice that the heritability of eggs laid from the BVI method seems to be roughly twice that of the color of male beetles, whereas the \texttt{rptR} package estimates the heritability of eggs laid to be more than twice that of color.
 
 
 % \begin{figure}[H]

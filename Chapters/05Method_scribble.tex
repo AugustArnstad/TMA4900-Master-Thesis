@@ -1,12 +1,12 @@
-Based on the presented background theory, we now present our novel method for combining this into a relative variable importance tool for Bayesian GLMMs called PLACE NAME HERE. The method applies to GLMMs modelled with Binomial, Poisson and Gaussian responses, and assumes the distinct random effects to be independent. Random slopes are not included in the method. 
+Based on the presented background theory, we now present our novel method for combining this into a relative variable importance tool for Bayesian GLMMs called Bayesian Variable importance (BVI). The proposed method is an extension of the method presented in \citet{Arnstad} so that it now applies to GLMMs modelled with Binomial, Poisson in addition to Gaussian responses. The BVI method assumes the distinct random effects to be independent and does not include variable importance for random slopes.
 % \subsection{Generalizing the relative weights method to GLMMs} 
 % The presented theory on relative variable importance has mostly been developed for linear regression models. However, given the assumption of independence between fixed effects and random effects, we see no reason why the theory cannot be extended further. In \citet{matre}, the relative weights method was extended for the single random intercept model and showed promising results. Further, as long as the different random effects are independent, we argue that the variance estimates, when scaled by the response variance, directly correspond to their variance contribution. Utilizing the relative weights method for the fixed effects in a random intercept model using INLA was done in \citet{Arnstad} and a simulation study indicated that this method provides a proper decomposition of the $R^2$.
 % DO I NEED TO BACK THIS LAST STATEMENT UP? IT IS BASICALLY "MY OPINION".
 \\
 \\
-If categorical covariates with more than two levels are contained in the fixed effects, they should be encoded using distinct names in order to make sure the code runs. Place this in the documentation of the code!!!
+If categorical covariates with more than two levels are contained in the fixed effects, they should be encoded using distinct names in order to make sure the method can handle them correctly. Place this in the documentation of the code!!!
 \section{Variable importance in the Bayesian framework}
-There are a few considerations necessary in order to calculate variable importance on GLMMs in a Bayesian framework. First of all, the characteristics of the Bayesian framework must be considered. When fitting a GLMM in the frequentist framework, point estimates of the coefficients of the fixed effects as well as point estimates of the variance from the random effects are obtained. These estimates are then used to calculate relative variable importance measures. In contrast, a Bayesian GLMM tries to estimate the joint posterior distribution of parameters. From the posterior distribution, one can obtain samples of all parameters, that can be used to approximate a posterior distribution for each parameter. It is these samples that will be used for further calculations.
+There are a few considerations necessary in order to calculate variable importance on GLMMs in a Bayesian framework. First of all, the characteristics of the Bayesian framework must be considered. When fitting a GLMM in the frequentist framework, point estimates of the coefficients of the fixed effects as well as point estimates of the variance from the random effects are obtained. These estimates are then used to calculate relative variable importance measures. In contrast, a Bayesian GLMM tries to estimate the joint posterior distribution of parameters. From the posterior distribution, one can obtain samples of all parameters, that can be used to approximate a posterior distribution for each parameter. It is these samples that we will use for further calculations.
 % \\
 % \\
 % Further, the presented theory on relative variable importance has been developed for linear regression models. 
@@ -14,10 +14,10 @@ There are a few considerations necessary in order to calculate variable importan
 % Moreover, as long as the distinct random effects are independent, we argue that the variance estimates, when scaled by the response variance, directly correspond to their proportion of explained variance. From this, we believe that the relative weights method can be applied to the fixed effects also in a GLMM.
 \\
 \\
-Secondly, we argue that the most intuitive way to calculate variable importance is on the link (or latent) scale. The reasoning behind this is the definition of residual variance with additive overdispersion in \citet{nakagawa2013general}. This definition makes GLMMs analogous to LMMs, thus supporting a unified approach to both types of models. Therefore, we consider only GLMMs modeled with additive overdispersion, although we believe the method could be extended to handle multiplicative overdispersion as well.
-These considerations are the basis for our proposed model for calculating relative variable importance in Bayesian GLMMs.
-The presented method does not include categorical variables with more than two categories or random slopes. The exclusion of categorical variables are seen as outside the scope of this thesis, whereas the random slopes are omitted due to the added computational complexity and the debatable improvement of GLMMs and $R^2$ values with random slopes as mentioned in \citet{Johnson2014}.
-We now go in to detail on how the different components of the model are handled in our method.
+Secondly, we argue that the most intuitive way to calculate variable importance is on the link (or latent) scale. The reasoning behind this is the definition of residual variance for models with additive overdispersion in \citet{nakagawa2013general}. This definition makes variable importance calculations on GLMMs analogous to that of LMMs, thus supporting a unified approach to both types of models. Therefore, we consider only GLMMs modeled with additive overdispersion, although we believe the method could be extended to handle multiplicative overdispersion as well.
+These considerations are the basis of our proposed method for calculating relative variable importance in Bayesian GLMMs.
+The presented method can handle categorical variables with more than two categories as long as they are dummy encoded. Random slopes are excluded from our method due to the added computational complexity and the debatable improvement of GLMMs and $R^2$ values with random slopes as mentioned in \citet{Johnson2014}.
+We now go in to detail on how the different components of the GLMM model are handled in our method, to finally develop a relative importance measure for GLMMs.
 
 % \subsection{Generalizing the relative weights method to } 
 % Utilizing the relative weights method for the fixed effects in a random intercept model using INLA was done in \citet{Arnstad} and a simulation study indicated that this method provides a proper decomposition of the $R^2$.
@@ -26,7 +26,7 @@ We now go in to detail on how the different components of the model are handled 
 
 \section{Extending the $R^2$ to Bayesian GLMMs\protect\footnote{A method for calculating the $R^2$ for Bayesian LMMs was proposed in \citet[Chapter 2]{Arnstad}, however we see it fitting to include this extension in the methods chapter as it has been developed by the author for this thesis.}}
 \label{sec:R2_Bayes_GLMM}
-The basis of our variable importance measures is a decomposition of the $R^2$ value so that each covariate is assigned a share of relative variable importance. We now combine the definition of the $R^2$ for GLMMs presented \Cref{sec:R2_GLMM} and the $R^2$ for the Bayesian linear regression from \Cref{sec:bayes_R2} to yield our proposed distribution of the $R^2$ for Bayesian GLMMs. Consider the linear predictor 
+The core of our Bayesian variable importance measures is a decomposition of the $R^2$ value so that each covariate is assigned a share of relative variable importance. We now combine the definition of the $R^2$ for GLMMs presented \Cref{sec:R2_GLMM} and the $R^2$ for the Bayesian linear regression from \Cref{sec:bayes_R2} to yield our proposed distribution of the $R^2$ for Bayesian GLMMs. Consider the linear predictor 
 \begin{equation}
     g(\boldsymbol{\mu}) = \boldsymbol{\eta} = \mathbf{X}\boldsymbol{\beta} + \mathbf{U}\boldsymbol{\alpha} \ ,
 \end{equation} 
@@ -54,14 +54,14 @@ respectively, where $\sigma_{\varepsilon, s}^2 = \sigma^2_{e, s} + \sigma^2_d$ i
     \hline
     Binomial & Logit & \(\pi^2/3\) \\
     \hline
-    Binomial & Probit &  1 \\
+    %Binomial & Probit &  1 \\
     \hline
     Poisson & Log &  \(\ln\left(1 + 1/\exp\left(\beta_0 + 0.5 (\sum_{k=1}^q \sigma_{\alpha_k}^2 + \sigma^2_e)\right) \right) \) \\
     \hline
     Poisson & Square Root &  0.25 \\
     \hline
     \end{tabular}
-    \caption{Distribution-specific variance \(\sigma^2_d\) for the Binomial and Poisson distributions for the link functions implemented in this thesis. The variances correspond to the values in \citet{nakagawa2013general} and the calculation for the log-link Poisson follow the recommendations of \citet{nakagawa2017}.}
+    \caption{Distribution-specific variance \(\sigma^2_d\) for the Binomial and Poisson distributions for some common link functions. The variances correspond to the variances in \citet{nakagawa2013general} and the calculation for the log-link Poisson follow the recommendations of \citet{nakagawa2017}.}
     \label{table:1}
 \end{table}
 
@@ -70,7 +70,7 @@ respectively, where $\sigma_{\varepsilon, s}^2 = \sigma^2_{e, s} + \sigma^2_d$ i
 
 
 \section{Decomposing the $R^2$ value}
-We now seek to decomposed the proposed $R^2$ value and assign each covariate with a proportion of the variance explained, i.e. assign each covariate with a \textit{relative variable importance}. Recall that the fixed and random effects are assumed to be independent, so that one can consider the variances of the fixed and random effects separately. Further, the residual variance is also considered as independent of both fixed and random effects. 
+We now seek to decompose the proposed $R^2$ value and assign each covariate with a proportion of the variance explained, i.e. assign each covariate with a \textit{relative variable importance}. Recall that the fixed and random effects are assumed to be independent, so that one can consider the variances of the fixed and random effects separately. Further, the residual variance is also considered as independent of both fixed and random effects. 
 \subsection{Applying the relative weights method in the Bayesian framework}
 To remedy the problems of calculating importance of correlated covariates, we will apply the relative weights method to the fixed effects before fitting the model. Following \Cref{sec:relativeweights}, we project the design matrix $\mathbf{X}$ of the fixed effects to obtain the matrix $\mathbf{Z}$. The model is fit using $\mathbf{Z}$ as an approximated design matrix of fixed effects, and from the joint posterior distribution samples of the coefficients $\boldsymbol{\beta}_{\mathbf{Z}}$ can be drawn. Each sample $\boldsymbol{\beta}_{\mathbf{Z}, s}, s=1, ..., S$ can be used to approximate a sample of the importance of the columns $\mathbf{X}$. Using equations \eqref{eq:lambda} and \eqref{eq:RI_lambda}, we calculate this sample as
 \begin{equation}
@@ -78,19 +78,19 @@ To remedy the problems of calculating importance of correlated covariates, we wi
 \end{equation}
 where $\text{IMP}(\mathbf{X})_s$ is a column vector containing the approximated importance of column $k$ of $\mathbf{X}$ on the $k$-th entry for $k=1, ..., p$. To calculate the relative variable importance, note that we estimate $\sigma^2_{f, s}$ in \eqref{eq:R2_Bayes_GLMM} by
 \begin{equation}
-    \sigma^2_{f, s} = \sum_{k=1}^{p}\text{IMP}(\mathbf{X})_{s, k}  \ . 
+    \sigma^2_{f, s} \simeq \sum_{k=1}^{p}\text{IMP}(\mathbf{X})_{s, k}  \ . 
 \end{equation}
-Therefore, we define the relative importance of column $k$ of $\mathbf{X}$ as
+Therefore, we define the relative importance of column $k$ of $\mathbf{X}$ in our method as
 \begin{equation}
-    \text{RI}(\mathbf{X})_{s, k} = \frac{\text{IMP}(\mathbf{X})_{s, k}}{\sigma_{f, s}^2 + \sum_{i=1}^q \sigma_{\alpha_i, s}^2 + \sigma_{\varepsilon, s}^2} \ ,
+    \text{RI}(\mathbf{X})_{s, k} = \frac{\text{IMP}(\mathbf{X})_{s, k}}{\sum_{k=1}^{p}\text{IMP}(\mathbf{X})_{s, k} + \sum_{i=1}^q \sigma_{\alpha_i, s}^2 + \sigma_{\varepsilon, s}^2} \ ,
 \end{equation}
 where $\sigma_{\alpha_i, s}^2$ and  $\sigma_{\varepsilon, s}^2$ are defined as in \Cref{sec:R2_Bayes_GLMM}.
-For sufficiently large $S$, these samples can be used to construct an approxmation of the posterior distribution of the relative importance for each fixed effect. 
+For sufficiently large $S$, we believe these samples can be used to construct an approxmation of the posterior distribution of the relative importance for each fixed effect. 
 
 \subsection{Random effects}
-The presented theory on relative variable importance has mostly been developed for linear regression models. As long as the random effects are assumed not to be correlated, introducing random effects does not change the general idea. For each random effect, an approximation of the posterior distribution is constructed from the samples of the joint posterior distribution. Then, the proportion of variance explained by random effect $i$ is calculated as 
+The presented background theory on relative variable importance has mostly been developed for linear regression models. As long as the random effects are assumed not to be correlated, introducing random effects does not change the general idea. For each random effect, an approximation of the posterior distribution is constructed from the samples of the joint posterior distribution. Then, the proportion of variance explained by random effect $i$ is calculated as 
 \begin{equation}
-    \text{RI}(\alpha_i)_{s} = \frac{\sigma_{\alpha_i, s}^2}{\sigma_{f, s}^2 + \sum_{k=1}^q \sigma_{\alpha_k, s}^2 + \sigma_{\varepsilon, s}^2} \ .
+    \text{RI}(\alpha_i)_{s} = \frac{\sigma_{\alpha_i, s}^2}{\sum_{k=1}^{p}\text{IMP}(\mathbf{X})_{s, k} + \sum_{k=1}^q \sigma_{\alpha_k, s}^2 + \sigma_{\varepsilon, s}^2} \ .
 \end{equation}
 In addition to the relative importance of the random effects, a quantity of interest is the intraclass correlation, often also called the within cluster correlation or repeatability \citep{GLMM_book}. The ICC represents the correlation between observations within the same cluster, and is defined for a random effect $\boldsymbol{\alpha}_i$ in \citep{nakagawa2017} as
 \begin{equation}
@@ -101,10 +101,17 @@ Thus, following the same logic as before we can sample the ICC as
     \text{ICC}_s = \frac{\sigma_{\alpha_i, s}^2}{\sum_{k=1}^{q}\sigma_{\alpha_k, s}^2 + \sigma_{\varepsilon, s}^2} \ ,
 \end{equation}
 and obtain an approximate posterior distribution of the ICC.
+\\
+\\
+As previously mentioned, it is common to report the precision of random effects rather than the variance. Since the random effects are assumed to be independent, one can invert the precision estimate to obtain the variance. Another way of estimating the variance is to take the variance of the sampled values for the random vector $\boldsymbol{\alpha}$. Both methods seem to give very similar results as long as the sample size is large enough, and we therefore see both methods as fit for estimating the variance of random effects.
 %In quantitative genetics, the ICC is of particular interest as it corresponds to the heritability of a trait.
 
+\subsection{Drawing samples}
+A critical part of performing the calculations the BVI method requires, is to obtain samples from the joint posterior distribution. To do this, we utilize the built-in function from the INLA framework called \texttt{inla.posterior.sample()}. This function uses the approximation of the posterior distribution fitted with INLA by numerical integration, and therefore the accuracy of the samples is dependent on how well the numerical integration is carried out \citep{gomezrubio2020inla}. INLA provides several integration options, so one can choose the resolution one desires, but this comes at the cost of computational complexity. In this thesis, we use the default integration strategy in INLA, which is either the grid strategy for a hyperparameter vector of dimension less than or equal to two or the central composite design (CCD) for a larger dimension hyperparameter vector \citep{martino2019inla}. Further, if the model fit is poor or if the model is misspecified, the samples will suffer from this as well. Recall that INLA assumes a Gaussian latent layer, so this condition is crucial to obtain a representative set of samples. Lastly, INLA is a tool that is continuously in development, and the authors state that a skewness correction is in the works \citep{gomezrubio2020inla}.  
+
+
 \section{Heritability of phenotypic traits}
-A particularly interesting application of variable importance, and an area of much active research, is estimating the heritability of phenotypic traits. As mentioned in \Cref{sec:animalmodel}, heritability is defined as the ratio of additive genetic variance to total phenotypic variance \citep{Wilson_heritability}. When modeling a phenotypic trait as the response, the variable importance of the random effect accounting for additive genetic variance can be interpreted as the heritability of the phenotypic trait. Therefore, this is a useful application of our variable importance method, and has been the motivation for the development of the method.
+A particularly interesting application of variable importance, and an area of much active research, is estimating the heritability of phenotypic traits. As mentioned in \Cref{sec:animalmodel}, heritability is defined as the ratio of additive genetic variance to total phenotypic variance \citep{Wilson_heritability}. When modeling a phenotypic trait as the response, the variable importance of the random effect accounting for additive genetic variance can be interpreted as the heritability of the phenotypic trait. Therefore, this is a useful application of our variable importance method, and has been a key motivation for the development of the BVI method.
 % The parameters of interest are now the additive genetic variance $\sigma^2_A$ and the \textbf{heritability}, defined as the proportion of the total phenotypic variance that is present due to the additive genetic variance, $\sigma^2_A/\sigma^2_P$ \citep{Wilson2008}.
 
 % \section{Case studies}
@@ -123,31 +130,104 @@ A particularly interesting application of variable importance, and an area of mu
 % For calculations of the importance on other covariates, we refer to the simulation study in \citet{Arnstad}. This study covers the method for the LMMs and has shown promising results of a proper decomposition of the $R^2$ value.
 
 \subsection{House sparrow study}
-We now apply our method to a dataset gathered on house sparrows (\textit{Passer domesticus}) from a study on the coast of Helgeland, Norway \citep{Stensland_GMRF_bayes_animal_model}. The entire bird population on five islands have been surveyed since 1993 and several morphological traits have been measured. Blood samples were drawn to determine the relatedness between birds and we therefore have a pedigree structure for the birds \citep[citing Jensen et al., 2003, 2004, 2008]{Stensland_GMRF_bayes_animal_model}. In the dataset we use we have $N=3116$ birds with one or more observations on the traits and covariates. For a more thorough description of the house sparrow study, see \citet[and references therein]{Stensland_GMRF_bayes_animal_model}. We model three traits using a Gaussian LMM, namely the body mass, wing length and tarsus length. The fixed effects in the model consist of observations of \textit{sex}, a standardized inbreeding coefficient denoted \textit{FGRM}, the standardized \textit{month} of the year (measurements were made during May-August), the \textit{age} of each bird, and dummy variables encoding the location of the \textit{native island} group of the bird (three levels, outer islands, inner islands or other islands). In addition, we model the \textit{hatchyear}  as an independent and identically distributed (i.i.d.) random intercept. To account for the correlation between relatives, we include a random effect for the pedigree structure, specifying the relatedness matrix as the correlation structure. Lastly, to account for individual differences we add an i.i.d. random intercept for the individual bird. We prefer to use the INLA framework, described in \Cref{sec:INLA_framework}, to fit our LMM as it is computationally efficient and easy to use.
+We now apply the BVI method to a dataset gathered on house sparrows (\textit{Passer domesticus}) from a study on the coast of Helgeland, Norway \citep{Stensland_GMRF_bayes_animal_model}. The entire bird population on five islands have been surveyed since 1993 and several morphological traits have been measured. Blood samples were drawn to determine the relatedness between birds and we therefore have a pedigree structure for the birds \citep[citing Jensen et al., 2003, 2004, 2008]{Stensland_GMRF_bayes_animal_model}. In the dataset we use we have $N=3116$ birds with one or more observations on the traits and covariates. For a more thorough description of the house sparrow study, see \citet[and references therein]{Stensland_GMRF_bayes_animal_model}. We model three phenotypic traits using a Gaussian LMM, namely the body mass, wing length and tarsus length. The fixed effects in the model consist of observations of \textit{sex}, a standardized inbreeding coefficient denoted \textit{FGRM}, the standardized \textit{month} of the year (measurements were made during May-August), the \textit{age} of each bird, and dummy variables encoding the location of the \textit{native island} group of the bird (three levels, outer islands, inner islands or other islands). In addition, we model the \textit{hatchyear}  as an independent and identically distributed (i.i.d.) random intercept. To account for the correlation between relatives, we include a random effect for the additive genetic variance. It is the sampled variances of the additive genetic random effect that will determine the heritability of each trait. We derive the relatedness matrix of the birds from our pedigree, and specify this as the covariance matrix for the additive genetic variance term. Lastly, to account for individual differences we add an i.i.d. random intercept for the individual bird. We prefer to use the INLA framework, described in \Cref{sec:INLA_framework}, to fit our LMM as it is computationally efficient and easy to use. Each prior is internally parametrized in INLA by $\theta=\ln(\tau)$ with $\tau$ being the precision of the prior. This means when placing priors, they are always placed on the scale of the internal parameter $\theta$, and if we want to place a prior on the external scale we must take this into account. For the fixed effects, we place penalizing complexity (PC) priors with the initial value being $\ln(0.5)$ and parameters $U=\sqrt{2}$ and $a=0.05$ as the input parameters discussed in section \Cref{seq:PC_prior}. Similarly, we place PC priors on each random effect, with the effects \textit{hatchyear} and \textit{individual differences} having $U=1$ and $a=0.05$. The initial value of the priors for \textit{hatchyear} and \textit{individual differences} is set to be $\tau_0=\ln(1)$ to correspond to $1$ on the external scale. The additive genetic effect is assigned $U=\sqrt{2}$ and $a=0.05$, with $\tau_0=\ln(0.5)$. These priors have been chosen through discussion with the supervisor of the thesis and researchers with domain knowledge in biology. The approximation of the posterior marginals $\tilde{\pi}(x_l \lvert \mathbf{y} \boldsymbol{\theta})$ will be made using the simplified Laplace approximation for all components, as described in \Cref{sec:INLA_marginals_approx}.
 
 \section{Non-Gaussian case studies}
+For the complete model formulation of all methods used in the case studies, all files will be uploaded to the Github, with a link in \Cref{ap:github-repository}. A simulation study on Gaussian responses (LMMs) can be found in \citet{Arnstad}, where the same methodology is used and results are reported and discussed. 
 \subsection{Binomial and Poisson case studies}
-To investigate how well our method generalizes to non-Gaussian responses, we perform a case study using the setup described in the vignette of the R-package \texttt{rptR} \citep{Stoffel2017rptR}. The dataset, introduced for a different purpose, is simulated to replicate a study on twelve different beetle larvae populations \citep{Stoffel2017rptR}. It contains the covariates \textit{population}, the discrete \textit{habitat} of the larvae, the dietary \textit{treatment} of the larvae, the \textit{sex} and \textit{container} of which the larvae was contained in. The phenotypes to be modeled by the Binomial and Poisson distributions are the two distinct male colour morph and the number of eggs laid by female larvae respectively. Both models use treatment as the only fixed effect and place i.i.d. random intercepts on the population and container covariates. As before, our modelling is carried out using INLA, whereas the models in the vignette are calculated from functions in the \texttt{rptR} package. For more details on the model formulation used by our method, see \Cref{ap:github-repository} and \Cref{ap:bayesian-importance}. 
+To investigate how well the BVI method generalizes to non-Gaussian responses, we perform a case study using the setup described in the vignette of the R-package \texttt{rptR}, found at \url{https://cran.r-project.org/web/packages/rptR/vignettes/rptR.html} \citep{Stoffel2017rptR}. An important clarification for this case study, is that there are multiple formulations of repeatability. Two most common ways of looking at repeatability are
+\begin{equation}
+    \begin{aligned}
+        \text{R}_1 &= \frac{\text{Additive genetic variance}}{\text{Total variance of covariates}} \\
+        \text{R}_2 &= \frac{\text{Additive genetic variance}}{\text{Total variance of random covariates}} \ ,
+    \end{aligned}
+\end{equation}
+where the former corresponds to our notion of heritability \citep{Stoffel2017rptR}. We choose to look at the notion corresponding to heritability, and to obtain the result from \texttt{rptR} so that they match this, each model must be fit with the argument \texttt{adjusted=FALSE}. The dataset, introduced for a different purpose, is simulated to replicate a study on twelve different beetle larvae populations \citep{Stoffel2017rptR}. It contains the covariates \textit{population}, the discrete \textit{habitat} of the larvae, the dietary \textit{treatment} of the larvae, the \textit{sex} and \textit{container} of which the larvae was contained in. The phenotypes to be modeled by the Binomial and Poisson distributions are the two distinct male colour morph and the number of eggs laid by female larvae respectively. Both models use \textit{treatment} as the only fixed effect and place i.i.d. random intercepts on the \textit{population} and \textit{container} covariates. Note that a more complex covariance structure could be modelled by the BVI method, but the \texttt{rptR} package does not allow for this, so for comparing the methods we see it as suitable with i.i.d. random intercepts. As before, our modelling is carried out using INLA, whereas the models in the vignette are calculated from functions in the \texttt{rptR} package. The priors placed on the fixed effect \textit{treatment} and random effects \textit{population} and \textit{container} are PC priors with initial values $\tau_0=\ln(1)$ and parameters $U=1$ and $a=0.01$ for all effects. As before, our preferred approximation of the posterior marginals of the latent field conditioned on the observations and set of hyperparameters is the simplified Laplace approximation.
 
 
 \subsection{Binomial and Poisson simulation studies}
-As the case studies previously described all consider the heritability or repeatability as the quantity of interest, we simulate data to be able to evaluate the performance of our method when calculating relative variable importance for all parameters. We simulate $N=10000$ responses from a Poisson distribution with log-link, a Binomial distribution with a logit link and a Binomial distribution with a probit link. The linear predictor contains three fixed effects and one random intercept. The fixed effects $\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \Sigma)$ with $\boldsymbol{\mu} = (0, 0, 0)^T$, $\Sigma_{i, i} = 1$ and $\Sigma_{i, k} = \rho, k \neq i$. The true regression coefficient are set to be $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$. The random effect comes from $m=100$ clusters, each with $n_j=100$ observations for $j=1, ..., m$. Further, we draw the random effect from a normal distribution with mean zero and variance $\sigma^2_{\alpha_1} = 1$. All data is standardized before fitting the models and we fit four different models letting $\rho$ vary for each model by taking on the values $0, 0.1, 0.5$ and $0.9$. The INLA framework is used to fit the GLMMs and the methodology described used to calculate the relative importance.
+\label{sec:simulation_study}
+There are two primary reasons why we wish to conduct a simulation study with our method. The first being the ability to evaluate how well our method assigns relative variable importance to all covariates in the model. The real life case studies available mostly have the heritability, or some other function of the additive genetic variance, as the objective of analysis \citep{Stensland_GMRF_bayes_animal_model}. We aim to provide the heritability, but at the same time provide information on the relative variable importance of all covariates present in the model. The latter motivation is that the Bayesian framework is stochastic, and so is our method. We wish to assess the variability of this stochasticity by simulating different datasets with the same underlying structure, and see the spread of the estimates. We hope that this can provide signs that any fitted model can be seen as a random sample of a distribution centered around the true value.
 \\
 \\
-For the binomial simulation with distributional variance $\sigma^2_d$ independent of the fitted model, we can empirically calculate the relative importance of the parameters when they are not correlated. When uncorrelated, the proportion of variance explained by each covariate in the linear predictor is equal to the square of the true coefficient. By defining $\sigma_{x_k}^2$ as the variance contribution to the linear predictor for covariate $k$, we then have 
+%and a Binomial distribution with a probit link.
+We simulate $N=10000$ responses from a Poisson distribution with log-link and from a Binomial distribution with a logit link The linear predictor contains three fixed effects and one random intercept. The fixed effects $\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \Sigma)$ with $\boldsymbol{\mu} = (0, 0, 0)^T$, $\Sigma_{i, i} = 1$ and $\Sigma_{i, k} = \rho, k \neq i$. The true regression coefficient are set to be $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$. The random effect comes from $m=100$ clusters, each with $n_j=100$ observations for $j=1, ..., m$. Further, we draw the random effect from a normal distribution with mean zero and variance $\sigma^2_{\alpha} = 1$. To investigate the impact of correlated fixed effects, we fit four different models letting $\rho$ vary for each model by taking on the values $-0.4, -0.1, 0, 0.1$ and $0.4$. The INLA framework is used to fit the GLMMs and the methodology described used to calculate the relative importance. All fixed and random effects receive the same PC prior as used in the comparison with the \texttt{rptR} package, that is with initial values of $\tau_0=\ln(1)$ and parameters $U=1$ and $a=0.01$. As has been done throughout the thesis, the simplified Laplace approximation is used to approximate the posterior marginals of the latent field conditioned on the observations and hyperparameters. We fit $N_{\text{sim}}=500$ Binomial and Poisson models with different datasets for each correlation level.
+\\
+\\
+%For the binomial simulation with distributional variance $\sigma^2_d$ independent of the fitted model
+In the simulation study, when parameters are simulated so that we know their true value, we can empirically calculate the relative importance of the parameters when they are not correlated. When uncorrelated, the proportion of variance explained by each covariate in the linear predictor is equal to the square of the true coefficient. By defining $\sigma_{x_k}^2$ as the variance contribution to the linear predictor for covariate $k$, we then have 
 \begin{equation}
-    \sigma_{x_1}^2 = \sigma_{\alpha_1}^2  = 1 \quad \text{and} \quad \sigma_{x_2}^2 = 2 \quad \text{and} \quad \sigma_{x_3}^2 = 3 \ .
+    \sigma_{x_1}^2 = \sigma_{\alpha}^2  = 1 \quad \text{and} \quad \sigma_{x_2}^2 = 2 \quad \text{and} \quad \sigma_{x_3}^2 = 3 \ .
 \end{equation}
 Then, the relative importance of the covariates can be calculated as
 \begin{equation}
     \begin{aligned}
-        \text{RI}(\mathbf{X})_{1}  = \text{RI}(\alpha_1)  &= \frac{\sigma_{x_1}^2}{\sum_{i=1}^{3}\sigma_{x_i}^2 +\sigma_{\alpha_1}^2  + \sigma_d^2}, \\
+        \text{RI}(\mathbf{X}_{1})  = \text{RI}(\alpha_1)  &= \frac{\sigma_{x_1}^2}{\sum_{i=1}^{3}\sigma_{x_i}^2 +\sigma_{\alpha_1}^2  + \sigma_d^2}, \\
         \text{RI}(\mathbf{X}_2) &= \frac{\sigma_{x_3}^2}{\sum_{i=1}^{3}\sigma_{x_i}^2 +\sigma_{\alpha_1}^2 +  \sigma_d^2}, \\
         \text{RI}(\mathbf{X}_3) &= \frac{\sigma_{x_3}^2}{\sum_{i=1}^{3}\sigma_{x_i}^2 +\sigma_{\alpha_1}^2 +  \sigma_d^2} \ .
     \end{aligned}
 \end{equation}
-This means that the expected relative importance in the binomial model with probit link of $X_1$ and $\alpha_1$ is $1/8$ and the expected relative importance of $X_2$ and $X_3$ is $2/8$ and $3/8$ respectively. For the logit link we have an expected relative importance of $0.0972$ for $X_1$ and $\alpha_1$, $0.194$ for $X_2$ and $0.292$ for $X_3$.
-For the Poisson simulation however, the distributional variance is approximated by $\sigma_d^2 = \ln (1 + 1/\mathbb{E}[\lambda])$ with $\mathbb{E}[\lambda]=\exp\left(\beta_0 + 0.5 (\sum_{k=1}^q \sigma_{\alpha_k}^2 + \sigma^2_e)\right)$, and is therefore dependent on the fitted model \citep{nakagawa2017}. 
+In our simulation study, the binomial model with logit link is assigned $\sigma^2_d=\pi^2/3$. The distributional variance of the Poisson model with log link is given by 
+\begin{equation}
+    \sigma_d^2 = \ln (1 + 1/\mathbb{E}[\lambda]) \ ,
+\end{equation}
+where 
+\begin{equation}
+    \mathbb{E}[\lambda]=\exp\left(\beta_0 + 0.5 (\sum_{k=1}^q \sigma_{\alpha_k}^2 + \sigma^2_e)\right) \ .
+\end{equation}
+so we obtain, using a single random intercept, $\sigma_{d}^2=0.4741$ with $\beta_0=0$, $\sigma^2_{\alpha}=1$ and $\sigma^2_e=0$. Therefore, we can summarize the expected relative importance of our three models as in \Cref{table:2}.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lrrrr}
+    \hline
+    \textbf{Model} & $\mathbb{E}[\text{RI}(\boldsymbol{\alpha})]$ & $\mathbb{E}[\text{RI}(\mathbf{X}_{1})]$ & $\mathbb{E}[\text{RI}(\mathbf{X}_{2})]$ & $\mathbb{E}[\text{RI}(\mathbf{X}_{3})]$\\ 
+    \hline
+    Binomial, logit & 0.0972 & 0.0972 & 0.1944 & 0.2915 \\ 
+    %Binomial, probit & 0.1250 & 0.1250 & 0.2500 & 0.3750 \\ 
+    Poisson, log & 0.1338 & 0.1338 & 0.2676 & 0.4014 \\ 
+    \hline
+    \end{tabular}
+    \caption{The expected relative importance of the covariates in the different models when uncorrelated.}
+    \label{table:2}
+\end{table}
+\noindent In practice, the distributional variance of the Poisson model should be calculated using the estimated values, and the distributional variance will therefore be dependent on the fitted model \citep{nakagawa2017}.
+\\
+\\
+In addition to the expected importance of covariates in the uncorrelated case, we can calculate the expected marginal and conditional $R^2$ values for all correlation levels on the latent scale. Noting that each of the $p=3$ columns of $\mathbf{X}$ is initialized to have variance equal to $1$, the expected marginal $R^2$ can be calculated as
+\begin{equation}
+    \mathbb{E}[R^2_{\text{marg}}] = \frac{\sum_{i=1}^{3} \beta_i^2 + 2 \sum_{i=1}^{2}\sum_{k=i+1}^{3}\beta_i\beta_k \rho}{\sum_{i=1}^{3} \beta_i^2 + 2 \sum_{i=1}^{2}\sum_{k=i+1}^{3}\beta_i\beta_k \rho + \sigma^2_{\alpha} + \sigma_d^2} \ ,
+\end{equation}
+and similarly for the expected conditional $R^2$ as
+\begin{equation}
+    \mathbb{E}[R^2_{\text{cond}}] = \frac{\sum_{i=1}^{3} \beta_i^2 + 2 \sum_{i=1}^{2}\sum_{k=i+1}^{3}\beta_i\beta_k \rho + \sigma^2_{\alpha}}{\sum_{i=1}^{3} \beta_i^2 + 2 \sum_{i=1}^{2}\sum_{k=i+1}^{3}\beta_i\beta_k \rho + \sigma^2_{\alpha} + \sigma_d^2} \ .
+\end{equation}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcccccc}
+    \toprule
+    \textbf{Model Type} & \textbf{Correlation (\(\rho\))} & $\mathbb{E}[R^2_{\text{marg}}]$ &  $\mathbb{E}[R^2_{\text{cond}}]$ \\
+    \midrule
+    Binomial Logit & -0.4 & 0.262 & 0.434 \\
+    Binomial Logit & -0.1 & 0.532 & 0.641 \\
+    Binomial Logit & 0    & 0.583 & 0.680 \\
+    Binomial Logit & 0.1  & 0.624 & 0.712 \\
+    Binomial Logit & 0.4  & 0.709 & 0.777 \\
+    \midrule
+    Poisson Log  & -0.4 & 0.508 & 0.842 \\
+    Poisson Log  & -0.1 & 0.768 & 0.925 \\
+    Poisson Log  & 0    & 0.803 & 0.937 \\
+    Poisson Log  & 0.1  & 0.828 & 0.945 \\
+    Poisson Log  & 0.4  & 0.877 & 0.960 \\
+    \bottomrule
+    \end{tabular}
+    \caption{Expected marginal and conditional $R^2$ values for the binomial regression with logit link (top) and Poisson regression with log link (bottom) for different correlation levels $\rho$.}
+    \label{table:r2values}
+\end{table}
+
+
+
+% This means that the expected relative importance in the binomial model with probit link of $X_1$ and $\alpha_1$ is $1/8$ and the expected relative importance of $X_2$ and $X_3$ is $2/8$ and $3/8$ respectively. For the logit link we have an expected relative importance of $0.0972$ for $X_1$ and $\alpha_1$, $0.194$ for $X_2$ and $0.292$ for $X_3$.
+% For the Poisson simulation however, the distributional variance is approximated by $\sigma_d^2 = \ln (1 + 1/\mathbb{E}[\lambda])$ with $\mathbb{E}[\lambda]=\exp\left(\beta_0 + 0.5 (\sum_{k=1}^q \sigma_{\alpha_k}^2 + \sigma^2_e)\right)$, and is therefore dependent on the fitted model \citep{nakagawa2017}. 
 
 % All data is standardized before fitting the models, so that 
 % \begin{equation}

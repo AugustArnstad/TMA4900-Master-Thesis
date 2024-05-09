@@ -70,8 +70,8 @@ The middle term in \ref{eq:var_y} consist of the covariance between the covariat
 
 %\subsection{Relative variable importance \protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad}.}} 
 \section{Variable importance in linear regression models}
-In a regression setting with multiple regression coefficients, it is often desirable to be able to assign each covariate with a measure of its relative importance to the model.
-The relative importance of covariate $X_i$ is defined as the contribution to explained variance in the response $\mathbf{y}$ from $X_i$.
+In a regression setting with multiple regression coefficients, it is often desirable to be able to assign each covariate with a measure of its relative importance with respect to the model.
+The relative importance of covariate $\mathbf{x}_i$ is defined as the standardized contribution to explained variance in the response $\mathbf{y}$ from $\mathbf{x}_i$ \citep{gromping_relaimpo}.
 Assigning relative importance is no trivial task, as correlation among covariates poses a challenge in assessing the relative importance of each covariate.
 \newline
 \newline
@@ -102,8 +102,7 @@ The special case of uncorrelated covariates in $\mathbf{X}$ gives
 % This consistency 
 and provides a natural decomposition of the $R^2$ in terms of contribution from each covariate, as each predictor $\mathbf{x}_i$ contributes $\beta_i^2v_i$ to the total response variance \citep{gromping_relaimpo}.
 In (\ref{eq:var_y}) however, the response variance is split into three parts, the first two sums which comes from the regressors and the latter term which is the variance of the error. 
-As mentioned, it is the middle term that poses the problem of assigning importance to each covariate, since it is not immediately clear how to distribute the contribution to variance from the covariance terms to each covariate.
-The literature has established some conditions that relative importance measures should fulfill, so that they can be interpreted and compared in a sensible manner \citep{gromping_relaimpo}. As listed in \citet{gromping_relaimpo}, the methods should have
+As mentioned, it is the middle term that poses the problem of assigning importance to each covariate, since it is not immediately clear how to distribute the total response variance to each covariate, as some variance contributions in the response variance are shared among covariates. The literature has established some conditions that relative importance measures should fulfill, so that they can be interpreted and compared in a sensible manner \citep{gromping_relaimpo}. As listed in \citet{gromping_relaimpo}, the methods should have
 \begin{enumerate}
     \label{list:criteria}
     \item \textbf{Proper decomposition}: The model variance should be decomposed into shares for each regressor that sum up to the total variance, and the method shall allocate the shares to each regressor.
@@ -116,7 +115,7 @@ The literature has established some conditions that relative importance measures
 %     \text{Var}(\mathbf{y}) = \sum_{j=1}^p\beta_j^2v_j + \sum_{j=1}^{p-1}\sum_{k=j+1}^{p} \beta_j\beta_k\sqrt{v_jv_k}\rho_{jk} + \sigma_{\varepsilon}^2 \ ,
 % \end{equation}
 % where $\beta_j$ is the $j$-th regression coefficient, $v_j$ is the variance of the $j$-th covariate, $\rho_{jk}$ is the correlation between the $j$-th and $k$-th covariate and $\sigma_{\varepsilon}^2$ is the variance of the error term.
-\subsection{Naive decompositions}
+\subsection{Naive decompositions of $R^2$}
 \label{sec:naive_decomp}
 To make it clear that some simple decompositions fail the conditions of relative importance measures, we will consider two naive approaches for decomposing the $R^2$. 
 We denote the $R^2$ of a linear regression with regressors $X_1, \dots, X_p$ as $R^2(\{1, \dots, p\})$ and the relative importance of regressor $X_i$ as $\text{RI}(\{i\})$
@@ -148,9 +147,9 @@ Conversely to the first naive approach, this decomposition assigns importances b
 \newline
 As we have seen from these naive approaches, the task of decomposing the $R^2$ value is far from trivial, and calls for more sophisticated methods.
 
-\subsection{The LMG method}
+\subsection{The Lindemann, Merenda and Gold(LMG) method}
 \label{sec:lmg}
-A method that handles correlation among covariates, and is frequently reinvented\citep{gromping_relaimpo} from different approaches, is the LMG method.
+A method that handles correlation among covariates, and is frequently reinvented \citep{gromping_relaimpo} from different approaches, is the Linemann, Merenda and Gold (LMG) method.
 Therefore we shall discuss it, as it serves an important role as a leading method for assigning relative variable importance.  
 The LMG method takes use of averaging over orders, meaning that it permutes the index set $\{1, ..., p\}$  of the regressors $(p-1)!$ times, excluding the intercept, and sequentially adds the regressors to the model for each permuted index set.
 By adding regressors sequentially for each permutation, one can investigate how the importance of the regressors vary depending on what other regressors are included, which is useful when they are correlated.
@@ -256,8 +255,8 @@ In \citet[section 2.5.3]{matre} it is shown that the relative weights method ful
 % \end{equation} 
 % where $S$ is a subset of regressors, $\text{Var}(Y \lvert X_j, j\in S)$ denotes the variance of $Y$ conditioned on $X_j, j\in S$ being fixed, $\text{evar}(S)$ is the explained variance of the regressors in $S$ and $\text{svar}(M \lvert S)$ is the gain in variance explained by adding regressors from the subset $M$ to the model that already contains the regressors $S$. 
 
-\section{Regression models}
-The linear regression model is a popular tool in many sciences, but it has limitations when one wants to model more complex structures between the response and covariates. We now generalize the concept of linear regression to include more complex data structures.
+\section{Extenstions of the linear regression model}
+The linear regression model is a popular tool in many sciences, but it has limitations when one wants to model more complex structures between the response and covariates. We now generalize the concept of linear regression to be able to model more complex data structures.
 \subsection{Generalized linear models (GLMs)}
 \label{sec:GLM}
 The first step in expanding the linear regression model, is to allow the responses to be non-Gaussian. 
@@ -287,7 +286,33 @@ To connect the linear predictor $\eta_{i}$ to the response, we define a monotoni
 \begin{equation}
     \eta_{i} = g(\mu_{i}) = g(\mathbb{E}(Y_{i}))\ .
 \end{equation} 
-Some examples of link functions are the identity function for the linear regression, the logit and probit functions for the Bernoulli distribution and the log function for the Poisson distribution.
+For normally distributed responses, one typically uses the identity function as the link function, which yields the linear regression model. If one considers a binary response, the perspective changes. In a binary regression, one wishes to analyze how the covariates influence the probability 
+\begin{equation}
+    \pi_i = \mathbb{P}(y_i = 1 \lvert \mathbf{x}_i) = \mathbb{E}[y_i] \ .
+\end{equation}
+This requires that $\mathbb{E}[y_i]$ lies in the interval $[0, 1]$ as it represents a probability measure. Therefore, the inverse of the link function must transform the linear predictor in such a way that the expectation fulfills this criteria \citep{GLMM_book}. A popular choice of inverse link function is the logistic response function 
+\begin{equation}
+    \pi_i = h(\eta_i) = \frac{\exp(\eta_i)}{1 + \exp(\eta_i)} \ , 
+\end{equation} 
+yielding the logit link function
+\begin{equation}
+    g(\pi_i) = \log\left(\frac{\pi_i}{1-\pi_i}\right) = \eta_i \ ,
+\end{equation}
+which will be further investigated later on. An intuitive interpretation of the coefficients can be made by noticing that odds
+\begin{equation}
+    \frac{\pi_i}{1-\pi_i} = \exp(\eta_i) = \exp(\beta_0)\exp(\beta_1x_{1, i})...\exp(\beta_px_{1, p}) \ ,
+\end{equation}
+is affected by the covariates in an exponential-multiplicative form \citep{GLMM_book}. Another common regression type is regressing on count data. The most common way of modelling count data is by using the Poisson distribution, which assumes that the events occuring in a time interval or spatial region follow a Poisson process \citep{GLMM_book_old}. The count of how many events $y_i$ that happen in this time interval or region is said to follow a Poisson distribution with some rate $\lambda_i = \mathbb{E}[y_i]$. As the number of events occuring cannot be negative, the rate is also restricted to positive values. The common choice of inverse link function is therefore 
+\begin{equation}
+    \lambda_i = \exp(\eta_i) = \exp(\beta_0)\exp(\beta_1x_{1, i})...\exp(\beta_px_{1, p}) \ ,
+\end{equation} 
+which means that the link function is then the logarithm of the rate \citep{GLMM_book}, i.e.
+\begin{equation}
+    \ln (\lambda_i) = \eta_i \ .
+\end{equation}
+
+
+% Some examples of link functions are the identity function for the linear regression, the logit and probit functions for the Bernoulli distribution and the log function for the Poisson distribution.
 
 % Instead of modelling the response as having a linear relationsship with the covariates, one links the expected value of the response, $\mathbb{E}[Y]$ to the linear predictor $\mathbf{X}\boldsymbol{\beta}$ through a link function $g(\cdot)$. 
 
@@ -329,7 +354,17 @@ Now that we have expanded the linear regression in two different ways, the final
     \theta_{i, j} = \eta_{i, j} = \mathbf{x}_{i, j}^T\boldsymbol{\beta} + \mathbf{u}_{i, j}^T \boldsymbol{\alpha}_j \ , %= g(\mathbb{E}(y_{i, j} \lvert \theta_{i, j})) \ ,
 \end{equation}
 where $j =1, ..., m$ denotes the cluster and $i=1, ..., n_j$ denotes the observations in cluster $j$, $\mathbf{x}_{i, j}$ and $\mathbf{u}_{i, j}$ are the $i$-th columns of the submatrices $\mathbf{X}_{j}$ and $\mathbf{U}_{j}$ of the larger design matrices $\mathbf{X}$ and $\mathbf{U}$ respectively, for cluster $j$.
-The assumption of conditional independent observations $y_{i, j}$ is now conditional on the random effect as well as the covariates, and the conditional distribution of $y_{i, j}$ is still assumed to belong to the exponential family. When estimating parameters in a GLMM, the joint distribution of the observations is not generally tractable. Therefore, parameter estimation requires more sophisticated methods in both the likelihood and Bayesian framework.
+The assumption of conditional independent observations $y_{i, j}$ is now conditional on the random effect as well as the covariates, and the conditional distribution of $y_{i, j}$ is still assumed to belong to the exponential family. The conditioning on the random effects is also present when choosing the appropriate link function, since one must now, in general, relate $\mathbb{E}[y_{i, j} \lvert \mathbf{x}_{i, j}, \mathbf{u}_{i, j}, \boldsymbol{\alpha}_{j}]$ to the linear predictor $\eta_{i, j}$ \citep{GLMM_book}. For the binary regression, this now means that the link function takes the form 
+\begin{equation}
+    \ln \left(\frac{\pi_{i, j}}{1- \pi_{i, j}}\right) = \ln \left(\frac{\mathbb{P}(y_{i, j} = 1 \lvert \mathbf{x}_{i, j}, \mathbf{u}_{i, j}, \boldsymbol{\alpha}_{j})}{\mathbb{P}(y_{i, j} = 0 \lvert \mathbf{x}_{i, j}, \mathbf{u}_{i, j}, \boldsymbol{\alpha}_{j})}\right) = \eta_{i, j}  \ .
+\end{equation}
+For the Poisson random intercept model with log link however, it is possible to define the model without conditioning on the random effects \citep{GLMM_book}. This is done by noting that
+\begin{equation}
+    \lambda_j = \exp(\mathbf{x}_j\boldsymbol{\beta} + \alpha_{0, j}) \ ,
+\end{equation}
+where $\alpha_j \sim \mathcal{N}(0, \tau_0^2)$, has a log-normal distribution. This is a special case, in which the marginal model can be determined analytically. In general however, the marginal model is not analytically tractable and so obtaining statistical inference on the GLMMs become increasingly complex when compared to the LMM. Parameter estimation therefore calls for numerical methods such as iterated reweighted least squares in the likelihood framework, or MCMC methods in the Bayesian framework, to obtain inference.
+
+% When estimating parameters in a GLMM, the joint distribution of the observations is not generally tractable. Therefore, parameter estimation requires more sophisticated methods in both the likelihood and Bayesian framework.
 
 % The linear mixed model can be generalized to include more complex relationships between the response and the covariates. 
 % As seen, both for the linear regression and linear mixed model, the response is assumed to have a linear relationship with covariates, leading to a conditional normal distribution of the response.
@@ -372,13 +407,13 @@ The assumption of conditional independent observations $y_{i, j}$ is now conditi
 
 \section{Extending $R^2$ to GLMMs}
 \label{sec:R2_GLMM}
-As we generalized the linear regression to LMMs, GLMs and GLMMs, it is desirable to also generalize the concept of the $R^2$ to be applicable to these models. This is fundamental to be able to propose a method for decomposing the $R^2$ and thereby assigning relative importance to covariates.
+As we generalized the linear regression to LMMs, GLMs and GLMMs, we have to find a generalization of the concept of $R^2$ in order to generalize the concept of variable importance. This is fundamental to be able to propose a method for decomposing the $R^2$ and thereby assigning relative importance to covariates.
 However, the task of determining the $R^2$, and decomposing it, is not a trivial task in the linear regression case and becomes even more complex in the case of GLMMs.
 Many extensions have been proposed, but due to a variety of theoretical problems and/or computational difficulties, no consensus has been reached on a framework for calculating the $R^2$ for GLMMs \citep{nakagawa2013general}.
 To get an overview of the status quo for $R^2$, we will follow the paper by \citet{nakagawa2013general} and go through the different components added to the linear regression to compose the GLMMs.
 \subsection{$R^2$ for GLMs}
-Recalling the definition of the $R^2$ from \Cref{eq:R2}, we now generalize this to the GLMs. 
-To illustrate the generalization, consider the deviance $\mathcal{D}(\mathbf{y}\lvert \theta)$ function which is defined as twice the difference between the log likelihood of the \textbf{saturated model} and the log-likelihood of the model of interest \citep{GLMM_book_old}.
+Recalling the definition of the $R^2$ from \Cref{eq:R2}, we now generalize this to the GLMs. This topic has been subject to significant research, (see for example \citet{maddala1983limited, cameron1997r, menard2000coefficients,  nakagawa2013general}). The methods first suggested was based on the likelihood function of the model to be analyzed. We will not implement such methods, as they are not suitable for the full generalization to be made later on, however they are important in building a framework for the $R^2$ value and are therefore included.
+To illustrate the likelihood based generalization of the $R^2$ value to GLMs, consider the deviance $\mathcal{D}(\mathbf{y}\lvert \theta)$ function which is defined as twice the difference between the log likelihood of the \textbf{saturated model} and the log-likelihood of the model of interest \citep{GLMM_book_old}.
 The saturated model denotes the model of the maximum achievable log likelihood, and therefore fits the data perfectly. 
 For a linear regression, with $\theta=(\boldsymbol{\beta}, \sigma^2)$, we would therefore obtain
 \begin{equation}
@@ -403,8 +438,8 @@ By comparing the model of interest to the \textbf{null model}, the simplest fit 
     &= R^2 \ .
     \end{aligned}
 \end{equation}
-This is the basis for the definitions of the generalization of $R^2$ to GLMs \citep{nakagawa2013general}, which primarily rely on a ratio of the maximum likelihood of the model of interest and null model.
-In \citet{nakagawa2013general}, two different $R^2$ measures are proposed as
+This is the foundation for the definitions of the generalization of $R^2$ to GLMs \citep{nakagawa2013general}, which primarily rely on a ratio of the maximum likelihood of the model of interest and null model.
+However, in \citet{nakagawa2013general}, two different $R^2$ measures are proposed as
 \begin{equation}
     R^2_G = \left[1- \left(\frac{\mathcal{L}_0}{\mathcal{L}_M}\right) ^{2/n} \right] \frac{1}{1-(\mathcal{L}_0)^{2/n}}
 \end{equation}
@@ -413,9 +448,9 @@ and
     R^2_D = 1 - \frac{-2\ln(\mathcal{L}_M)}{-2 \ln(\mathcal{L}_0)}
 \end{equation}
 where $n$ denotes the total sample size, $\mathcal{L}_0$ is the likelihood of the null model and $\mathcal{L}_M$ is the likelihood of the model of interest.
-A problem with likelihood based $R^2$ measures is that when generalizing to the larger class of GLMMs, it is often desirable to do parameter estimation using the restricted maximum likelihood (REML) instead of the maximum likelihood (ML) \citep{GLMM_book}.
+The reason why we will not apply likelihood based $R^2$ measures is that when generalizing to the larger class of GLMMs, it is often desirable to do parameter estimation using the restricted maximum likelihood (REML) instead of the maximum likelihood (ML) \citep{GLMM_book}.
 The REML estimator transforms the data, meaning that models cannot be compared when fitted, and therefore the proposed measure of $R^2$ is not applicable to the REML framework \citep{nakagawa2013general}.
-However, the extension of the $R^2$ measure to the larger class GLMMs will also cover an extension to the GLMs, and is discussed further below in \Cref{sec:R2GLMM}.
+However, the extension of the $R^2$ measure to the larger class GLMMs will also cover the special case of GLMs, and is discussed further below in \Cref{sec:R2GLMM}.
 
 \subsection{$R^2$ for LMMs and random slope models}
 In the LMMs, as opposed to the linear regression, one wishes to estimate two or more variance components instead of only the residual error variance.
@@ -552,19 +587,23 @@ or
 for multiplicative and additive dispersion respectively.
 With the residual variance defined, the generalization to of the $R^2$ to GLMMs (thereby also the GLMs) follows the same logic as the LMMs, and $R^2_{\text{GLMM (m)}}$ is defined as
 \begin{equation}
+    \label{eq:R2_GLMM_m_m}
     R^2_{\text{GLMM(m, m)}} = \frac{\sigma^2_f}{\sigma^2_f + \sum_{r=1}^{q}\overline{\sigma^2_{r}} + \sigma^2_{\varepsilon}} = \frac{\sigma^2_f}{\sigma^2_f + \sum_{r=1}^{q}\overline{\sigma^2_{r}} + \omega \sigma^2_{d}}\ ,
 \end{equation}
 and
 \begin{equation}
+    \label{eq:R2_GLMM_m_a}
     R^2_{\text{GLMM(m, a)}} = \frac{\sigma^2_f}{\sigma^2_f + \sum_{r=1}^{q}\overline{\sigma^2_{r}} + \sigma^2_{\varepsilon}} = \frac{\sigma^2_f}{\sigma^2_f + \sum_{r=1}^{q}\overline{\sigma^2_{r}} + \sigma^2_{d} + \sigma^2_{e}}\ ,
 \end{equation}
 where the same notation as before is used and the subscripts $(m, m)$ and $(m, a)$ denote the multiplicative and additive dispersion respectively.
 The conditional $R^2_{\text{GLMM}}$ can be defined in a similar manner,
 \begin{equation}
+    \label{eq:R2_GLMM_c_m}
     R^2_{\text{GLMM(c, m)}} = \frac{\sigma^2_f + \sum_{r=1}^{q}\overline{\sigma^2_{r}}}{\sigma^2_f + \sum_{r=1}^{q}\overline{\sigma^2_{r}} + \omega \sigma^2_{d}}\ ,
 \end{equation}
 and
 \begin{equation}
+    \label{eq:R2_GLMM_c_a}
     R^2_{\text{GLMM(c, a)}} = \frac{\sigma^2_f + \sum_{r=1}^{q}\overline{\sigma^2_{r}}}{\sigma^2_f + \sum_{r=1}^{q}\overline{\sigma^2_{r}} + \sigma^2_{d} + \sigma^2_{e}}\ ,
 \end{equation}
 completing the generalization. 
@@ -618,7 +657,7 @@ This can be generalized to also apply to distributions of continuous random vari
     \label{eq:bayes_theorem_func}
     \pi(\boldsymbol{\theta} \lvert \mathbf{y}) = \frac{\pi(\mathbf{y} \lvert \boldsymbol{\theta})\pi(\boldsymbol{\theta})}{\pi(\mathbf{y})} \ ,
 \end{equation}
-where $\pi(\boldsymbol{\theta} \lvert \mathbf{y})$ is called the posterior distribution of $\boldsymbol{\theta}$, $\pi(\mathbf{y} \lvert \boldsymbol{\theta})$ is the likelihood, or sampling, distribution of $\mathbf{y}$, $\pi(\boldsymbol{\theta})$ is the prior distribution of the parameters and $\pi(\mathbf{y}) = \int \pi(\mathbf{y} \lvert \boldsymbol{\theta}) \pi(\boldsymbol{\theta})$ is the marginal distribution of the data \citep{gelman2015Bayesian}.
+where $\pi(\boldsymbol{\theta} \lvert \mathbf{y})$ is called the posterior distribution of $\boldsymbol{\theta}$, $\pi(\mathbf{y} \lvert \boldsymbol{\theta})$ is the likelihood, or sampling, distribution of $\mathbf{y}$, $\pi(\boldsymbol{\theta})$ is the prior distribution of the parameters and $\pi(\mathbf{y}) = \int \pi(\mathbf{y} \lvert \boldsymbol{\theta}) \pi(\boldsymbol{\theta}) < \infty$ is the marginal distribution of the data, which is required to be finite in order to have a proper posterior distribution \citep{gelman2015Bayesian}.
 In practice, the marginal distribution is often omitted and one only consider the proportionality of \eqref{eq:bayes_theorem_func}, i.e.
 \begin{equation}
     \label{eq:bayes_theorem_func_prop}
@@ -637,16 +676,17 @@ This further means that if one wishes to reduce the variability in the posterior
 The posterior distribution will therefore, in general, be a compromise between the prior and the likelihood, which with increasing sampling size will be increasingly influenced by the likelihood \citep{gelman2015Bayesian}.
 
 \subsection{Penalising complexity (PC) priors}
+\label{seq:PC_prior}
 Prior distributions pose a great feature by allowing for inclusion of prior information, but also a great challenge in that they must be chosen with care.
 As the theory of this is wast and out of the scope for this thesis, we will be mostly concerned with the penalising complexity priors proposed in \citet{simpson2017penalising}.
 In this paper, four main principles are desirable to follow when choosing a prior distribution, namely 
 \begin{enumerate}
     \item \textbf{Occams razor} - If there is no evidence for a complex mode, a base model should be preferred. 
-    \item \textbf{Measure of complexity} - The measure of model complexity is deifned as $d(f \lvert \lvert g) = \sqrt{2 \text{KLD}(f \lvert \lvert g)}$ where $\text{KLD}(f \lvert \lvert g)$ denotes the Kullback-Leibler divergence \citep[for more information]{simpson2017penalising}.
+    \item \textbf{Measure of complexity} - The measure of model complexity is defined as $d(f \lvert \lvert g) = \sqrt{2 \text{KLD}(f \lvert \lvert g)}$ where $\text{KLD}(f \lvert \lvert g)$ denotes the Kullback-Leibler divergence \citep[for more information]{simpson2017penalising}.
     \item \textbf{Constant rate penalisation} - The penalisation, i.e. the decay of prior mass, grows as the complexity grows, but it is desirable that this growth is constant.
     \item \textbf{User defined scaling} - Assuming that the user has an idea of the magnitude of the parameter of interest, the user should be able to scale the prior accordingly.
 \end{enumerate}
-The PC priors therefore pose interpretable, applicable priors which are consistent with the above principles, and are therefore a practical choice for the Bayesian framework.
+The PC priors therefore pose interpretable, applicable priors which are consistent with the above principles, and are therefore a practical choice for the Bayesian framework \citep{simpson2017penalising}. 
 Particularly, for the case of a linear mixed model with a Gaussian random effect $\alpha \sim \mathcal{N}(0, \sigma^2 \mathbf{R}) = \mathcal{N}(0, \tau^{-1} \mathbf{Q}^{-1})$, the base model of the PC priors corresponds to the case where the precision $\tau=0$ and the prior for $\tau$ takes the form
 \begin{equation}
     \label{eq:PC_prior}
@@ -658,9 +698,9 @@ When fitting additive models, thereby modelling additive overdispersion, using P
 
 \subsection{Hierarchical Bayesian modelling}
 When modelling in the Bayesian framework, the posterior distribution of the parameter $\boldsymbol{\theta}$ given the data is what one wants to infer.
-For many applications, $\boldsymbol{\theta}$ is a high dimensional vector, with naturally connected entries \cite{gelman2015Bayesian}.
+For many applications, $\boldsymbol{\theta}$ is a high dimensional vector, with naturally connected entries \citep{gelman2015Bayesian}.
 It may therefore be reasonable to assume that the parameters themselves are drawn from a population distribution, which can further be modelled by what is called hyperparameters.
-The main idea is that the prior $\pi(\boldsymbol{\theta})$ itself contains a hierarchical structure and can be split into levels of conditional prior distributions, i.e. $\pi(\boldsymbol{\theta}) =  \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi})$ \citep{robert2007bayesian}.
+The main idea is that the prior $\pi(\boldsymbol{\theta})$ itself contains a hierarchical structure and can be split into levels of conditional prior distributions, i.e. $\pi(\boldsymbol{\theta}) =  \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi})$ for some hyperparameter $\boldsymbol{\phi}$ \citep{robert2007bayesian}.
 Assuming that the data $\mathbf{y}$ depends only on the parameter $\boldsymbol{\theta}$, and that $\boldsymbol{\theta}$ depends on the hyperparameters $\boldsymbol{\phi}$, we can write the joint posterior distribution of $(\boldsymbol{\theta}, \boldsymbol{\phi})$ as
 \begin{equation}
     \pi(\boldsymbol{\theta}, \boldsymbol{\phi} \lvert \mathbf{y}) \propto \pi(\mathbf{y} \lvert \boldsymbol{\theta}, \phi) \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi}) = \pi(\mathbf{y} \lvert \boldsymbol{\theta}) \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi}) \ ,
@@ -684,11 +724,12 @@ Lastly, consider the hyperpriors $\pi(\boldsymbol{\phi})$ as
 \end{equation}
 The full posterior density now reads 
 \begin{equation}
+    \label{eq:hierarchical_posterior_analytical}
     \pi(\boldsymbol{\theta}, \alpha, \beta \lvert \mathbf{y}) \propto \underbrace{\prod^{n}_{i=1} \theta_i^{y_i}e^{-\theta_i}}_{\text{Po}(\theta_i)} \underbrace{\prod^{n}_{i=1}\frac{\beta^{\alpha}}{\Gamma(\beta)}\theta_i^{\alpha-1}e^{-\beta \theta_i}}_{\text{Gamma}(\alpha, \beta)} \underbrace{\alpha^{a-1}e^{-\alpha}}_{\text{Exp}(a)} \underbrace{\beta^{b-1}e^{-c\beta}}_{\beta \sim \text{Gamma}(b, c)} \ ,
 \end{equation}
 which can be used to make inference about the parameters of interest.
 This hierarchical structure is similar to that of the GLMM and is therefore a natural way of modelling a Bayesian GLMM.
-To set up a Bayesian GLMM, consider again the model in \eqref{eq:exp_family} with dispersion parameter $\phi$ and linear predictor
+To set up a Bayesian GLMM, consider again observations $\mathbf{y}$ having the density function in \eqref{eq:exp_family} with dispersion parameter $\phi$ and associated linear predictor
 \begin{equation}
     \boldsymbol{\eta} = \mathbf{X}\boldsymbol{\beta} + \mathbf{U}\boldsymbol{\alpha} \ ,
 \end{equation}
@@ -706,14 +747,14 @@ where the vector $\mathbf{y}_j$ denotes the $j$th cluster of observations \citep
 \subsection{$R^2$ in the Bayesian framework\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad}.}}
 \label{sec:bayes_R2}
 When working in the Bayesian framework, the definition of $R^2$ for the linear regression is not as straightforward as in the classical framework. As parameters are not treated as fixed, but as random variables, the $R^2$ value will also be a random variable. A possible remedy to this could be to use the posterior mode of the parameters $\boldsymbol{\beta}$ in \eqref{eq:R2}, however \citet{gelman2017rsquared} states two conflicts that this poses. Firstly, the use of point estimates to calculate statistics in the Bayesian framework rejects the fundamental uncertainty of the Bayesian framework. Secondly, when the parameters are estimated in a Bayesian framework, there is no guarantee that the $R^2 \in [0, 1]$, reducing its intuitive interpretability. 
-In \citet{gelman2017rsquared} a definition of the $R^2$ for the Bayesian linear regression is poposed. Consider a draw $s$ of the parameters $\boldsymbol{\beta}$ from the posterior distribution. Then, the proposed definition is
+In \citet{gelman2017rsquared} a definition of the $R^2$ for the Bayesian linear regression is proposed. Consider a draw $s$ of the parameters $\boldsymbol{\beta}$ from the posterior distribution. Then, the proposed definition is
 \begin{equation}
     \label{eq:bayes_r2}
     R_s^2 = \frac{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s}{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s + \sigma^2_s} \ ,
 \end{equation}
 where $\boldsymbol{\Sigma_{\mathbf{X^TX}}}$ is the covariance matrix of the design matrix $\mathbf{X}$ and $\sigma^2_s$ is the variance of the error term which can be sampled from the posterior distribution.
 Contrary to the classical definition this definition of $R^2$ contains only the estimated values from our model and not the observed values. The reasoning behind this is to carry this inherent uncertainty in the Bayesian framework by not using point estimates from the posterior mean, but rather averaging over a posterior distribution. %Should I cite Gelman here?
-Drawing enough samples from \eqref{eq:bayes_r2} one would eventually obtain also a distribution for the $R^2$ value.
+Drawing enough samples from \eqref{eq:bayes_r2} one would eventually obtain also an approximation of the distribution for the $R^2$ value \citep{gelman2017rsquared}.
 
 
 
@@ -802,13 +843,12 @@ Drawing enough samples from \eqref{eq:bayes_r2} one would eventually obtain also
 
 \section{The INLA framework\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad}.}}
 \label{sec:INLA_framework}
-As we have seen, the analytical posterior is possible to obtain for some hierarchical structures. 
+As we have seen, the analytical posterior is possible to obtain for some hierarchical structures (e.g. \eqref{eq:hierarchical_posterior_analytical}). 
 However, in the case of GLMMs, the posterior distribution is not in general analytically tractable \citep{fong2010bayesian}. This calls for the use of numerical methods, such as Markov Chain Monte Carlo (MCMC) methods, to be able to sample from the posterior distribution. 
-Such methods are computationally expensive, and require careful analysis to justify convergence and mixing of the Markov chains to the posterior distribution. Therefore it is desirable, under certain conditions, to look at other methods that are more computationally efficient.
+Such methods are computationally expensive, and require careful analysis to justify convergence and proper mixing of the Markov chains to make sure we sample from the steady state the posterior distribution. Therefore it is desirable, under certain conditions, to look at other methods that are more computationally efficient.
 In this thesis we will consider the Integrated Nested Laplace Approximation (INLA) method \citep{gomezrubio2020inla}.
-\newline
-\newline
-The INLA method is an alternative to the classical Marko Chain Monte Carlo methods, that has significant advantages at the cost of assuming a certain structure.
+\subsection{Introduction to INLA}
+The INLA method is an alternative to the classical Marko Chain Monte Carlo methods, that has significant advantages at the cost of some structural assumptions. 
 In order to apply INLA, consider the vector of observations $\mathbf{y} = (y_1, ..., y_n)$, which may also contain missing values. 
 Given an appropriate link function $g(\mu_i)=\eta_i$, we can model the observations as independent given the linear predictor
 \begin{equation}
@@ -842,10 +882,60 @@ and
     \label{eq:INLA_marginals_hyperparameters}
     \pi(\theta_k \lvert \mathbf{y}) = \int \pi(\boldsymbol{\theta} \lvert \mathbf{y}) d\boldsymbol{\theta}_{-k} \ ,
 \end{equation}
-\citep{gomezrubio2020inla} respectively, $\boldsymbol{\theta}_{-k}$ is the vector of hyperparameters excluding element $\theta_k$ and the latter integral is possible to integrate numerically due to the low dimension of $\boldsymbol{\theta}$ \citep{rue2009inla}. The approximations of these integrals are omitted, see \citet{rue2009inla} for the full details. 
-Lastly, the joint posterior distribution can be approximated from the so-called Skew Gaussian Copula class, as specified in \citet{rue2021joint}, and allows for sampling from the joint distribution. 
-The INLA method is implemented in the R-package \texttt{R-INLA} \citep{gomezrubio2020inla} and is used in this thesis to fit the models and draw from the obtained posteriors. We note that for the random effects INLA outputs the precision for the parameters involved, which is defined as the inverse covariance matrix. For the posterior marginal distribution of variance for the random effects the package has a function for transforming the precision marginal to the variance marginal. The priors used for the models in this thesis follow the recommendations of penalizing priors by \citet{simpson2017penalising}.
-EXPAND ON INLA? SINCE SOME OF THE FEEDBACK STATED THAT IT WAS A BIT UNCLEAR.
+respectively, where $\boldsymbol{\theta}_{-k}$ is the vector of hyperparameters excluding element $\theta_k$ \citep{gomezrubio2020inla}. 
+\subsection{Approximating the marginals}
+\label{sec:INLA_marginals_approx}
+As previously mentioned the marginals in \Cref{eq:INLA_marginals} and \Cref{eq:INLA_marginals_hyperparameters} are generally not tractable, but INLA uses this form of the marginals, to construct nested approximations \citep{rue2009inla}. Consider, as in \citep{rue2009inla}, the approximation of the marginals in \Cref{eq:INLA_marginals} and \Cref{eq:INLA_marginals_hyperparameters} as 
+\begin{equation}
+    \label{eq:INLA_marginals_nested}
+    \tilde{\pi}(x_l \lvert \mathbf{y}) = \int \tilde{\pi}(x_l \lvert \boldsymbol{\theta}, \mathbf{y}) \tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y}) d\boldsymbol{\theta} \ ,
+\end{equation}
+and 
+\begin{equation}
+    \label{eq:INLA_marginals_hyperparameters_nested}
+    \tilde{\pi}(\theta_k \lvert \mathbf{y}) = \int \tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y}) d\boldsymbol{\theta}_{-k} \ ,
+\end{equation}
+where $\tilde{\pi}(\cdot, \cdot)$ is an approximation of the density $\pi(\cdot, \cdot)$. To be able to compute the above approximations, we need to first specify the approximations under the integral sign. The first one to consider is $\tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y})$, which \citet{rue2009inla} approximates  by 
+\begin{equation}
+    \label{eq:full_hyper}
+    \tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y}) \propto \frac{\tilde{\pi}(\mathbf{x}, \boldsymbol{\theta}, \mathbf{y})}{\tilde{\pi}_G(\mathbf{x}\lvert\boldsymbol{\theta}, \mathbf{y})} \bigg\lvert_{\mathbf{x}=\mathbf{x}^*(\boldsymbol{\theta})} \ ,
+\end{equation}
+where $\tilde{\pi}_G(\mathbf{x}\lvert\boldsymbol{\theta}, \mathbf{y})$ is the Gaussian approximation of the full conditional of $\mathbf{x}$ evaluated at the mode $\mathbf{x}^*(\boldsymbol{\theta})$ of the full conditional for given $\boldsymbol{\theta}$ \citep{rue2009inla}. From \Cref{eq:full_hyper} the posterior marginals of hyperparameter $k$, $\tilde{\pi}(\theta_k \lvert \mathbf{y})$, can be approximated by integrating out $\boldsymbol{\theta}_{-k}$ using numerical integration. However, an approximation for $\tilde{\pi}(x_l \lvert \boldsymbol{\theta}, \mathbf{y})$ must be chosen to obtain the posterior marginals of the latent effects. To approximate $\tilde{\pi}(x_l \lvert \boldsymbol{\theta}, \mathbf{y})$, \citep{rue2009inla} describe three strategies of varying computational complexity. The cheapest approximation \citep{gomezrubio2020inla} is to derive the Gaussian marginals of $\tilde{\pi}_G(\mathbf{x}\lvert\boldsymbol{\theta}, \mathbf{y})$ as 
+\begin{equation}
+    \tilde{\pi}_G(x_l\lvert\boldsymbol{\theta}, \mathbf{y}) = \mathcal{N}(\mu_l(\boldsymbol{\theta}), \sigma_l^2(\boldsymbol{\theta})) \ ,
+\end{equation} 
+where $\mu_l(\boldsymbol{\theta})$ is the mean vector and $\sigma_l^2(\boldsymbol{\theta})$ the corresponding vector with marginal variances of the Gaussian approximation \citep{rue2009inla}. The second, and a more costly, approach is to use a Laplace approximation so that 
+\begin{equation}
+    \tilde{\pi}_{LA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y}) \propto \frac{\tilde{\pi}(\mathbf{x}, \boldsymbol{\theta}, \mathbf{y})}{\tilde{\pi}_{GG}(\mathbf{x}_{-l}\lvert x_l, \boldsymbol{\theta}, \mathbf{y})} \bigg\lvert_{\mathbf{x}_{-l}=\mathbf{x}_{-l}^*(x_l, \boldsymbol{\theta})}
+\end{equation} 
+where $\tilde{\pi}_{GG}(\mathbf{x}_{-l}\lvert x_l, \boldsymbol{\theta}, \mathbf{y})$ is the Gaussian approximation to the density of $\mathbf{x}_{-l}\lvert x_l, \boldsymbol{\theta}, \mathbf{y}$ evaluated at the mode $\mathbf{x}_{-l}^*(x_l, \boldsymbol{\theta})$ \citep{gomezrubio2020inla}. This approximation requires computations for each value $x_l$, and so a simplified modification 
+\begin{equation}
+    \tilde{\pi}_{LA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y}) \propto \mathcal{N}(\mu_l(\boldsymbol{\theta}), \sigma_l^2(\boldsymbol{\theta}))\exp(\text{cubic sline}(x_l)) \, 
+\end{equation}
+with a cubic spline fitted to the difference of $\tilde{\pi}_{LA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ and $\tilde{\pi}_G(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ can be used \citep{rue2009inla}. The third method, which is implemented as the default strategy in the INLA framework, is named the \textit{simplified} Laplace approximation \citep{rue2009inla}. This method uses a series expansion of $\tilde{\pi}_{LA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ about the mean $x_l = \mu_l(\boldsymbol{\theta})$ to obtain the approximated density $\tilde{\pi}_{SLA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ \citep{gomezrubio2020inla}. With this expansion, one can correct for skewness and location in the Gaussian approximation, while at the same time maintaining the computational advantages \citep{gomezrubio2020inla}. For the full derivations of the series expansion and the simplified Laplace approximation, see \citet[chapter 3.2.3]{rue2009inla}.
+\subsection{Parameter estimation and sampling procedure}
+The parameter estimation procedure in INLA is composed of a number of steps. The mode of the log-likelihood $\ln(\tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y}))$ of the hyperparameters are obtained by maximizing with a quasi-Newton method. Then, to obtain the negative Hessian, $\mathbf{H}$, at the modal configuration $\boldsymbol{\theta}^*$, finite differences are applied \citep{gomezrubio2020inla}. The negative Hessian is then decomposed by its eigenvalues by $\mathbf{H}^{-1} = \mathbf{V}\boldsymbol{\Lambda}\mathbf{V}^T$ and the hyperparameters are rescaled using $\mathbf{z}$ such that 
+\begin{equation}
+    \boldsymbol{\theta}(\mathbf{z}) = \boldsymbol{\theta}^* + \mathbf{V}\boldsymbol{\Lambda}^{1/2}\mathbf{z} \ ,
+\end{equation}
+to more effectively explore the hyperparameter space \citep{gomezrubio2020inla}. Then, the hyperparameter space is explored using either a regular grid with some stepsize $h$ or a central composite design (CCD) \citep[and references therein]{gomezrubio2020inla}. The exploration is done to obtain a set $\{\boldsymbol{\theta}^1, ..., \boldsymbol{\theta}^K\}$ that captures principal portion of the mass in the probability distribution \citep{martino2019inla}. Once a set of hyperparameters is obtained, $\tilde{\pi}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ is approximated by $\tilde{\pi}_G(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$,  $\tilde{\pi}_{LA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ or $\tilde{\pi}_{SLA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ and finally one can compute the desired marginal $\pi(x_l \lvert \mathbf{y})$ using a numerical integration scheme on the form
+\begin{equation}
+    \label{eq:INLA_marginals_approc}
+    \pi(x_l \lvert \mathbf{y}) \simeq \sum_{k=1}^K \tilde{\pi}(x_l \lvert \boldsymbol{\theta^{(k)}}, \mathbf{y}) \tilde{\pi}(\boldsymbol{\theta^{(k)}} \lvert \mathbf{y}) \Delta_k \ .
+\end{equation}
+A similar scheme for numerical integration can be used to obtain the marginals $\pi(\theta_k \lvert \mathbf{y})$.
+% \\
+% \\
+% and the latter integral is possible to integrate numerically due to the low dimension of $\boldsymbol{\theta}$ \citep{rue2009inla}. The approximations of these integrals are omitted, see \citet{rue2009inla} for the full details. 
+% \\
+% \\
+Lastly, the joint posterior distribution can be approximated from the so-called Skew Gaussian Copula class, as specified in \citet{rue2021joint}, and allows for sampling from the joint distribution.
+\\
+\\
+The INLA method is implemented in the R-package \texttt{R-INLA} \citep{gomezrubio2020inla} and is used in this thesis to fit the models and draw from the obtained posteriors. We note that for the random effects it is common to work with the precision matrix, which is defined as the inverse covariance matrix, rather than the covariance matrix directly. Therefore, all estimates on random effects will be given as precision rather than variance. Throughout the thesis, the 
+% For the posterior marginal distribution of variance for the random effects the package has a function for transforming the precision marginal to the variance marginal.
+% The priors used for the models in this thesis follow the recommendations of penalizing priors by \citet{simpson2017penalising}.
+% EXPAND ON INLA? SINCE SOME OF THE FEEDBACK STATED THAT IT WAS A BIT UNCLEAR.
 \\ 
 \\ 
 %WHAT MORE CHAPTERS TO INCLUDE IN THE THEORY SECTION?
@@ -853,7 +943,10 @@ EXPAND ON INLA? SINCE SOME OF THE FEEDBACK STATED THAT IT WAS A BIT UNCLEAR.
 \section{The Animal Model and quantitative genetics}
 \label{sec:animalmodel}
 % This is mostly from Kruuk, but I notice a bit of a difference when compared to Stenslands Bayesian animal model. Should I rather base my theory on Stensland? 
-An important application of GLMMs, which we will later analyse, is in the context of evolutionary biology and quantitative genetics. 
+An important application of GLMMs, which we will later analyse, is in the context of evolutionary biology and quantitative genetics. More specifically, one wishes to estimate the variance of the random effect which contributes to direct heritage of traits between relatives. Further, with this estimate, one uses its proportion of total model variance to evaluate the interaction between inheritance and environmental factors in developing distinct traits.
+We will now describe how this can be seen as a special case of wanting to estimate relative variable importance.
+\\
+\\
 To introduce the animal model and biological terminology, the section will rely heavily on the work of \citet{Kruuk2004} and \citet{ConnerHartl2004}. 
 The animal model is a mathematical model, used as a tool for quantitative genetic analysis in evolutionary biology where the aim is to explain the phenotypic variation in a population.
 A phenotype is defined as \textit{the outward appearance of an organism for a given characteristic} \citep{ConnerHartl2004}, such as eye color, height or behavior. 
@@ -875,31 +968,42 @@ The animal model can be stated as a generalized linear mixed model, by letting
 \end{equation}
 where $\boldsymbol{\mu}$ is the mean of the observations $\mathbf{y}$ of the phenotypic trait(s), $\boldsymbol{\eta}$ is the linear predictor, $\mathbf{X}$ the design matrix of the fixed effects, $\boldsymbol{\beta}$ the population coefficients, $\mathbf{U}$ the design matrix of the random effects and $\boldsymbol{\alpha}$ the vector of random effects.
 %, and $\boldsymbol{\varepsilon}$ the vector of residuals.
-One of the random effects in the animal model, $\boldsymbol{\alpha}_A \sim \mathcal{N}(0, \mathbf{G})$,  accounts for the additive genetic effect.
+One of the random effects in the animal model, $\boldsymbol{\alpha}_A \sim \mathcal{N}(0, \mathbf{G})$,  accounts for the additive genetic effect. The values of the vector $\boldsymbol{\alpha}_A$ containes the so-called breeding values \citet{Wilson_guide_animal_model}, which are defined as the effect of an individuals genes on the value of the phenotypic trait in its offspring \citep{ConnerHartl2004} 
 As in \Cref{sec:LMM}, we let $\mathbf{G}$ denote the covariance matrix of the random effect $\boldsymbol{\alpha}_A$, which in the animal model can be derived from the expected covariance between relatives \citep{Kruuk2004}.
 This derivation can be done by considering the coefficient of coancestry, $\Theta_{i,j}$, defined as \textit{the probability that an allele drawn at random from an individual $i$ will be identical by descent to an allele drawn at random from individual $j$} \citep{Kruuk2004}. 
 We use the coefficient of coancestry to define the expected covariance between relatives, or additive relationship matrix, as $\mathbf{A}_{i, j}=2\Theta_{i, j}$ and consequently $\mathbf{G}=\sigma^2_A\mathbf{A}$ \citep{Kruuk2004}. 
-The parameters of interest are now the additive genetic variance $\sigma^2_A$ and the \textbf{heritability}, defined as the proportion of the total phenotypic variance that is present due to the additive genetic variance, $\sigma^2_A/\sigma^2_P$ \citep{Wilson2008}.
- 
-
-\section{The Animal Model as a GMRF}
+\\
+\\
+The parameters of interest in the animal model are now the additive genetic variance $\sigma^2_A$ and the \textbf{heritability}. Heritability in the narrow sense, is defined as \citep{Wilson2008} the proportion of the total phenotypic variance that is present due to the additive genetic variance, 
+\begin{equation}
+    \frac{\sigma^2_A}{\sigma^2_P} = \frac{\sigma^2_A}{\sigma^2_A + \sigma^2_D + \sigma^2_I + \sigma^2_E} \ .
+\end{equation}
+The narrow sense heritability is what one considers for outbreeding species, and therefore, when we refer to heritability, we refer to the narrow sense heritability.
+In quantitative genetics, heritability is perhaps the most frequently estimated and discussed measure \citep{ConnerHartl2004}. Heritability has this role, as it can be used to partly explain how quickly the mean phenotypic values evolve, when populations are subject to artificial or natural selection \citep{ConnerHartl2004}. This is directly linked to the aim of quantitative genetics, which is to explain diversity and the cause of diversity \citep{Kruuk2004}. As a subject to much misinterpretations, it is important to note that the definition of heritability is based purely on variance, and consequently heritability refers only to variation within a population. Further, as heritability is calculated for a specific population, environment and over time, it is not to be viewed a fixed value \citep{ConnerHartl2004}. Nonetheless, heritability is a widely used quantity to compare populations, species and traits, and is an important tool for understanding the evolutionary forces that drive genetic diversity and thereby evolution \citep{ConnerHartl2004}. The estimation process is often carried out using the animal model, and as heritability is the result of a variance decomposition of the model fit, we can connect it to variable importance.
+Recalling our preferred definition of the $R^2$ in \Cref{eq:R2_GLMM_m_m}, \eqref{eq:R2_GLMM_m_a}, \eqref{eq:R2_GLMM_c_m} and \eqref{eq:R2_GLMM_c_a}, one can quickly notice that the definition of heritability is very similar. In fact, generalizing the definition of variable importance from\citet{gromping_relaimpo} to also yield for random intercepts, one can define the heritability as the relative variable importance of the additive genetic effect. Therefore, estimating heritability can be seen as a special case of estimating relative variable importance, and serves as a suitable application for variable importance measures.
+\section{The Animal Model as a Gaussian Markov Random Field}
 \label{sec:animalmodelGMRF}
 INLA is a powerful tool for fitting latent gaussian models (LGMs) as it provides a computationally efficient alternative to the traditional MCMC methods \citep{rue2009inla}.
-To be applicable it relies heavily on the latent field, which is Gaussian, to possess the Markov property. 
+To be applicable it relies heavily on the latent field, which is Gaussian, to possess the Markov property and thereby have the structure of a Gaussian Markov Random Field (GMRF). 
 If a Gaussian random variable $\mathbf{X}=(X_1, ..., X_n)$ possesses the Markov property it means that for some $i\neq j$, $X_i$ is independent of $X_j$ conditioned $X_{-i, j}$, where $X_{-i, j}$ denotes all other elements of $\mathbf{X}$ except $X_i$ and $X_j$ \citep{rue2009inla}.
-This property readily visualized in a conditional independence graph, and for the animal model the pedigree structure derived from the family relation can be used as the conditional independence graph \citep[as cited in \citet{Stensland_GMRF_bayes_animal_model}]{Wermuth1983Graphical}.
+This property is readily visualized in a conditional independence graph (\Cref{fig:GMRF_animal_model}, right), and in the animal model the pedigree structure (\Cref{fig:GMRF_animal_model}, left) derived from the family relation can be used as the conditional independence graph \citep[as cited in \citet{Stensland_GMRF_bayes_animal_model}]{Wermuth1983Graphical}.
 The pedigree of a population is a directed acyclic graph (DAG) where each node represents an individual and the directed edges represent the parent-offspring relationship. 
 This gives rise to the conditional independence graph, which can be found by inserting edges between parents that share offspring and removing the directions in the pedigree \citep{Wermuth1983Graphical}.
-An individual(node) in this graph will therefore only have edges, meaning it is conditionally dependent on, its parents, the parent(s) of its offspring, and its offspring.
-FIGUR AV DETTE?
+An individual(node) in this graph will therefore only have edges, meaning it is conditionally dependent on, its parents, the parent(s) of its offspring, and its offspring. For example, in \Cref{fig:GMRF_animal_model} bird $U_4$ is conditionally dependent on birds $U_1$ and $U_2$ as they are its parents, bird $U_6$ as it is the offspring of $U_4$ and on bird $U_5$ as it is the other parent of the offspring of $U_4$. $U_3$ and $U_7$ therefore does not provide additional information on $U_4$ \citep{Stensland_GMRF_bayes_animal_model}. Therefore, this GMRF structure from the pedigree can be used to effectively sample and obtain parameter estimates from the animal model \citep{Stensland_GMRF_bayes_animal_model}, and allows us to use the INLA framework for model fitting.
 The pedigree can also be used to construct the relatedness matrix $\mathbf{A}$, previously defined as the expected covariance between relatives, and the gives rise to the sparse precision matrix $\mathbf{Q}:=\mathbf{A}^{-1}$ which is needed for calculations.
-As we consider each node as an individual, the corresponding variable of that node is its breeding value $\boldsymbol{\alpha}$ \citep{Stensland_GMRF_bayes_animal_model}. 
+As we consider each node an individual, the corresponding value of that node is its breeding value $\boldsymbol{\alpha_A}$ \citep{Stensland_GMRF_bayes_animal_model}. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Figures/GMRF Sparrows.png}
+    \caption{Illustration of a pedigree as a GMRF, figure and figure text inspired by Figure 1 in \citet{Stensland_GMRF_bayes_animal_model}. On the left, a pedigree structure is depicted as a directed acyclic graph (DAG), where birds $U_1$ and $U_2$ are the parents of bird $U_4$, birds $U_2$ and $U_3$ the parents of bird $U_5$, and birds $U_4$ and $U_5$ the parents of bird $U_6$. Bird $U_7$ has one known parent in $U_5$, and one unknown. On the right, the conditional independence graph of the pedigree structure is given, where the parents sharing offspring is assigned an edge and the direction is removed.}
+    \label{fig:GMRF_animal_model}
+\end{figure}
 
-\subsection{Single and Multitrait Animal Model}
-When modelling the observed phenotypic trait values of individuals in a population, caution must be made when modelling the genetic component of the trait using INLA.
-If only one trait is considered, 
-The breeding values $\boldsymbol{\alpha}$ of an individual represents the genetic component of an observed phenotypic trait. 
-FINSIH THIS PART
+% \subsection{Single and Multitrait Animal Model}
+% When modelling the observed phenotypic trait values of individuals in a population, caution must be made when modelling the genetic component of the trait using INLA.
+% If only one trait is considered, 
+% The breeding values $\boldsymbol{\alpha}$ of an individual represents the genetic component of an observed phenotypic trait. 
+% FINSIH THIS PART
 
 
 

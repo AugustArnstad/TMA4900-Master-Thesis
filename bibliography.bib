@@ -67,6 +67,16 @@ url = "https://www.sciencedirect.com/science/article/pii/S0376635717302449",
   url = "https://doi.org/10.1093/biostatistics/kxp053"
 }
 
+@article{martino2019inla,
+  title={Integrated Nested Laplace Approximations (INLA)},
+  author={Martino, Sara and Riebler, Andrea},
+  journal={Department of Mathematical Sciences, Norwegian University of Science and Technology},
+  year={2019},
+  month={August 9},
+  abstract={The integrated nested Laplace approximations (INLA) approach provides approximate Bayesian inference in latent Gaussian models (LGMs) and was introduced in Rue et al. INLA relies on a combination of analytical approximations and efficient numerical integration schemes to achieve highly accurate deterministic approximations to posterior quantities of interest. The main benefit of using INLA instead of Markov chain Monte Carlo (MCMC) techniques for LGMs is computational; INLA is fast even for large, complex models. Moreover, being a deterministic algorithm, INLA does not suffer from slow convergence and poor mixing. INLA is implemented in the R package R-INLA, which represents a user-friendly and versatile tool for doing Bayesian inference. R-INLA returns posterior marginals for all model parameters and the corresponding posterior summary information. Model choice criteria as well as predictive diagnostics are directly available. Here, we outline the theory behind INLA, present the R-INLA package and describe new developments of combining INLA with MCMC for models that are not possible to fit with R-INLA.}
+}
+
+
 @book{gomezrubio2020inla,
   author = "Gómez-Rubio, Virgilio",
   title = "\textit{Bayesian Inference with INLA}",
@@ -214,7 +224,7 @@ eprint = "https://doi.org/10.1207/S15327906MBR3501_1"
   supervisor = {Stefanie Muff}
 }
 
-@projectthesis{Arnstad,
+@mastersthesis{Arnstad,
   author  = {August Arnstad},
   school  = {NTNU},
   title   = {Relative variable importance in Bayesian linear mixed models},
@@ -623,6 +633,52 @@ URL = {https://doi.org/10.1214/aos/1176344136}
  volume = {66},
  year = {2010}
 }
+
+@article{aguilar2024generalized,
+  title = {Generalized Decomposition Priors on $R^2$},
+  author = {Javier Enrique Aguilar and Paul-Christian Bürkner},
+  year = {2024},
+  note = {Available at: \url{https://jear2412.github.io}},
+  abstract = {
+    The adoption of continuous shrinkage priors in high-dimensional linear models has gained momentum, driven by their theoretical and practical advantages. One of these shrinkage priors is the R2D2 prior, which comes with intuitive hyperparameters and well-understood theoretical properties. The core idea is to specify a prior on the percentage of explained variance $R^2$ and to conduct a Dirichlet decomposition to distribute the explained variance among all the regression terms of the model. Due to the properties of the Dirichlet distribution, the competition among variance components tends to gravitate towards negative dependence structures, fully determined by the individual components’ means. Yet, in reality, specific coefficients or groups may compete differently for the total variability than the Dirichlet would allow for. In this work, we address this limitation by proposing a generalization of the R2D2 prior, which we term the Generalized Decomposition $R^2$ (GDR2) prior.
+  }
+}
+
+@book{maddala1983limited,
+  title = {Limited-Dependent and Qualitative Variables in Econometrics},
+  author = {Maddala, G.S.},
+  year = {1983},
+  publisher = {Cambridge University Press},
+  address = {Cambridge}
+}
+
+@article{menard2000coefficients,
+  title = {Coefficients of determination for multiple logistic regression analysis},
+  author = {Menard, Scott},
+  journal = {American Statistician},
+  volume = {54},
+  number = {1},
+  pages = {17--24},
+  year = {2000}
+}
+
+@article{cameron1997r,
+  title = {An R-squared measure of goodness of fit for some common nonlinear regression models},
+  author = {Cameron, A. Colin and Windmeijer, Frank A.G.},
+  journal = {Journal of Econometrics},
+  volume = {77},
+  number = {2},
+  pages = {329--342},
+  year = {1997},
+  issn = {0304-4076},
+  doi = {10.1016/S0304-4076(96)01818-0},
+  url = {https://www.sciencedirect.com/science/article/pii/S0304407696018180},
+  abstract = {
+    For regression models other than the linear model, R-squared type goodness-of-fit summary statistics have been constructed for particular models using a variety of methods. We propose an R-squared measure of goodness of fit for the class of exponential family regression models, which includes logit, probit, Poisson, geometric, gamma, and exponential. This R-squared is defined as the proportionate reduction in uncertainty, measured by Kullback-Leibler divergence, due to the inclusion of regressors. Under further conditions concerning the conditional mean function it can also be interpreted as the fraction of uncertainty explained by the fitted model.
+  },
+  keywords = {R-squared; Exponential family regression; Kullback-Leibler divergence; Entropy; Information theory; Deviance; Maximum likelihood}
+}
+
 
 @article{Wermuth1983Graphical,
   title={Graphical and recursive models for contingency tables},

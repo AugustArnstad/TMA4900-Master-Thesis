@@ -116,7 +116,7 @@ Generally, it seems that the method is able to capture the expected effects of v
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/Fixed_combined_logit_test.png}
+  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/Fixed_combined_logit.png}
   \caption{Histogram with relative importance of the fixed effects present in the binomial regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The true regression coefficients are $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$ and the vertical green line for $\rho=0$ displays the expected relative importance in the case of uncorrelated data. The mean of the relative importance for all simulations is denoted at the bottom of each histogram as a circle.}
   \label{fig:fixed_combined_logit}
 \end{figure}
@@ -167,10 +167,12 @@ An important measure in this simulation study is the models sampled posterior di
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/R2_combined_logit_test.png}
+  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/R2_combined_logit.png}
   \caption{Histograms with the estimated marginal $R^2$ (left) and conditional $R^2$ (right) from the BVI method for the binomial regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}, while the orange dot denotes the estimate from the \texttt{rptR} package. The mean value of the $R^2$ values for all simulations is marked with a circle at the bottom of each histogram.}
   \label{fig:r2_combined_logit}
 \end{figure}
+
+
 
 
 
@@ -299,7 +301,7 @@ Further, we see the same pattern as for the binomial model when correlation incr
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/Fixed_combined_poisson_test.png}
+  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/Fixed_combined_poisson.png}
   \caption{Histogram with relative importance of the fixed effects present in the poisson regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The true regression coefficients are $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$ and the vertical green line for $\rho=0$ displays the expected relative importance in the case of uncorrelated data. The mean of the relative importance for all simulations is denoted at the bottom of each histogram as a circle.}
   \label{fig:fixed_combined_poisson}
 \end{figure}
@@ -349,10 +351,11 @@ Moving on to the estimated posterior $R^2$ distributions for the Poisson model, 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/R2_combined_poisson_test.png}
+  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/R2_combined_poisson.png}
   \caption{Histograms with the estimated marginal $R^2$ (left) and conditional $R^2$ (right) from the BVI method for the binomial regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}, while the orange dot denotes the estimate from the \texttt{rptR} package. The mean value of the $R^2$ values for all simulations is marked with a circle at the bottom of each histogram.}
   \label{fig:r2_combined_poisson}
 \end{figure}
+
 
 % \begin{figure}[H]
 %   \centering

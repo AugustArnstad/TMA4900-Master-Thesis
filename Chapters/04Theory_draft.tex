@@ -453,6 +453,7 @@ The REML estimator transforms the data, meaning that models cannot be compared w
 However, the extension of the $R^2$ measure to the larger class GLMMs will also cover the special case of GLMs, and is discussed further below in \Cref{sec:R2GLMM}.
 
 \subsection{$R^2$ for LMMs and random slope models}
+\label{sec:R2_LMM}
 In the LMMs, as opposed to the linear regression, one wishes to estimate two or more variance components instead of only the residual error variance.
 This increases complexity and makes the task of assigning relative importance to the covariates even more challenging.
 Initially, a definition was proposed for the $R^2$ in the LMMs that included fixed effects separately and then estimated the reduction in each variance component \citep[refering to Raudenbush \& Bryk 1986, 1992]{nakagawa2013general}. 
@@ -940,19 +941,18 @@ The INLA method is implemented in the R-package \texttt{R-INLA} \citep{gomezrubi
 \\ 
 %WHAT MORE CHAPTERS TO INCLUDE IN THE THEORY SECTION?
 
-\section{The Animal Model and quantitative genetics}
+\section{Quantitative genetics and relative variable importance}
 \label{sec:animalmodel}
 % This is mostly from Kruuk, but I notice a bit of a difference when compared to Stenslands Bayesian animal model. Should I rather base my theory on Stensland? 
 An important application of GLMMs, which we will later analyse, is in the context of evolutionary biology and quantitative genetics. More specifically, one wishes to estimate the variance of the random effect which contributes to direct heritage of traits between relatives. Further, with this estimate, one uses its proportion of total model variance to evaluate the interaction between inheritance and environmental factors in developing distinct traits.
-We will now describe how this can be seen as a special case of wanting to estimate relative variable importance.
-\\
-\\
+We will now describe how this can be seen as a special case of wanting to estimate relative variable importance of random effects.
+\subsection*{The Animal Model}
 To introduce the animal model and biological terminology, the section will rely heavily on the work of \citet{Kruuk2004} and \citet{ConnerHartl2004}. 
 The animal model is a mathematical model, used as a tool for quantitative genetic analysis in evolutionary biology where the aim is to explain the phenotypic variation in a population.
 A phenotype is defined as \textit{the outward appearance of an organism for a given characteristic} \citep{ConnerHartl2004}, such as eye color, height or behavior. 
-In an organism, the observed phenotypic trait is a result of the complex interaction between environment and genotype. 
+In an organism, the observed phenotypic trait in an individual is a result of the complex combination of environmental effects and genotype. 
 The genotype of a trait can be defined as \textit{the diploid pair of alleles present at a given locus}, and is the outcome of genetic inheritance \citep{ConnerHartl2004}. 
-As evolutionary biology seeks to explain diversity \citep{Kruuk2004}, a decomposition of the phenotypic variance is of great interest. 
+As evolutionary biology seeks to explain diversity among individuals in a population \citep{Kruuk2004}, a decomposition of the phenotypic variance is of great interest. 
 The simplest partition is to define the phenotypic variance as the sum of the genetic variance and environmental variance \citep{ConnerHartl2004}. 
 However, for species that mate with other individuals in the population rather than self-fertilize, it is common to further decompose the genetic variance into three parts. 
 The \textbf{total phenotypic variance} can therefore be partitioned as
@@ -960,7 +960,7 @@ The \textbf{total phenotypic variance} can therefore be partitioned as
     \sigma^2_P = \sigma^2_G + \sigma^2_E = \sigma^2_A + \sigma^2_D + \sigma^2_I + \sigma^2_E \ ,
 \end{equation}
 where $\sigma^2_P$ is the total phenotypic variance, $\sigma^2_G$ is the \textbf{genetic variance}, $\sigma^2_E$ is the \textbf{environmental variance}, $\sigma^2_A$ is the \textbf{additive genetic variance}, $\sigma^2_D$ is the \textbf{dominance genetic variance} and $\sigma^2_I$ is the \textbf{interaction genetic variance} \citep{ConnerHartl2004}.
-The parameter of interest in the animal model is the additive genetic variance $\sigma^2_A$ \citep{Kruuk2004}, as the additive genetic effects are the only effects directly transferred to the offspring from its parents \citep{ConnerHartl2004}.
+The parameter $\sigma^2_A$, the variance of the additive genetic effect, is of particular interest, as the additive genetic effects are the only effects directly transferred to the offspring from its parents \citep{ConnerHartl2004}.
 Thus, the animal model aims to estimate $\sigma^2_A$ to gain inference on how changes in phenotypic values across generations occur, which is defined as phenotypic evolution \citep{ConnerHartl2004}.
 The animal model can be stated as a generalized linear mixed model, by letting 
 \begin{equation}
@@ -972,10 +972,11 @@ One of the random effects in the animal model, $\boldsymbol{\alpha}_A \sim \math
 As in \Cref{sec:LMM}, we let $\mathbf{G}$ denote the covariance matrix of the random effect $\boldsymbol{\alpha}_A$, which in the animal model can be derived from the expected covariance between relatives \citep{Kruuk2004}.
 This derivation can be done by considering the coefficient of coancestry, $\Theta_{i,j}$, defined as \textit{the probability that an allele drawn at random from an individual $i$ will be identical by descent to an allele drawn at random from individual $j$} \citep{Kruuk2004}. 
 We use the coefficient of coancestry to define the expected covariance between relatives, or additive relationship matrix, as $\mathbf{A}_{i, j}=2\Theta_{i, j}$ and consequently $\mathbf{G}=\sigma^2_A\mathbf{A}$ \citep{Kruuk2004}. 
-\\
-\\
-The parameters of interest in the animal model are now the additive genetic variance $\sigma^2_A$ and the \textbf{heritability}. Heritability in the narrow sense, is defined as \citep{Wilson2008} the proportion of the total phenotypic variance that is present due to the additive genetic variance, 
+\subsection*{Heritability}
+As mentioned, we are particularly conserned in the additive genetic variance $\sigma^2_A$ and functions of it, such as the \textbf{heritability}.
+Heritability in the narrow sense, is defined as \citep{Wilson2008} the proportion of the total phenotypic variance that is present due to the additive genetic variance, 
 \begin{equation}
+    \label{eq:h2}
     \frac{\sigma^2_A}{\sigma^2_P} = \frac{\sigma^2_A}{\sigma^2_A + \sigma^2_D + \sigma^2_I + \sigma^2_E} \ .
 \end{equation}
 The narrow sense heritability is what one considers for outbreeding species, and therefore, when we refer to heritability, we refer to the narrow sense heritability.
@@ -992,7 +993,7 @@ This gives rise to the conditional independence graph, which can be found by ins
 An individual(node) in this graph will therefore only have edges, meaning it is conditionally dependent on, its parents, the parent(s) of its offspring, and its offspring. For example, in \Cref{fig:GMRF_animal_model} bird $U_4$ is conditionally dependent on birds $U_1$ and $U_2$ as they are its parents, bird $U_6$ as it is the offspring of $U_4$ and on bird $U_5$ as it is the other parent of the offspring of $U_4$. $U_3$ and $U_7$ therefore does not provide additional information on $U_4$ \citep{Stensland_GMRF_bayes_animal_model}. Therefore, this GMRF structure from the pedigree can be used to effectively sample and obtain parameter estimates from the animal model \citep{Stensland_GMRF_bayes_animal_model}, and allows us to use the INLA framework for model fitting.
 The pedigree can also be used to construct the relatedness matrix $\mathbf{A}$, previously defined as the expected covariance between relatives, and the gives rise to the sparse precision matrix $\mathbf{Q}:=\mathbf{A}^{-1}$ which is needed for calculations.
 As we consider each node an individual, the corresponding value of that node is its breeding value $\boldsymbol{\alpha_A}$ \citep{Stensland_GMRF_bayes_animal_model}. 
-\begin{figure}[H]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{Figures/GMRF Sparrows.png}
     \caption{Illustration of a pedigree as a GMRF, figure and figure text inspired by Figure 1 in \citet{Stensland_GMRF_bayes_animal_model}. On the left, a pedigree structure is depicted as a directed acyclic graph (DAG), where birds $U_1$ and $U_2$ are the parents of bird $U_4$, birds $U_2$ and $U_3$ the parents of bird $U_5$, and birds $U_4$ and $U_5$ the parents of bird $U_6$. Bird $U_7$ has one known parent in $U_5$, and one unknown. On the right, the conditional independence graph of the pedigree structure is given, where the parents sharing offspring is assigned an edge and the direction is removed.}

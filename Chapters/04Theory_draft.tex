@@ -694,7 +694,7 @@ Particularly, for the case of a linear mixed model with a Gaussian random effect
     \pi(\tau) = \frac{\lambda}{2} \tau^{-3/2} \exp\left(-\lambda \tau^{-1/2}\right), \ \   \tau, \lambda>0 \ .
 \end{equation}
 To specify $\lambda$, the user is required to supply the values $(U, a)$ such that $\mathbb{P}(1/\sqrt{\tau} > U) = a$. 
-This defines the scaling parameter of principle $4$ and leads to $\lambda=-\ln{a}/U$ \citep{simpson2017penalising}.
+This defines the scaling parameter of principle $4$ and leads to $\lambda=-\ln(a)/U$ \citep{simpson2017penalising}.
 When fitting additive models, thereby modelling additive overdispersion, using PC priors is a natural choice \citep{gomezrubio2020inla}.
 
 \subsection{Hierarchical Bayesian modelling}
@@ -915,6 +915,7 @@ where $\tilde{\pi}_{GG}(\mathbf{x}_{-l}\lvert x_l, \boldsymbol{\theta}, \mathbf{
 \end{equation}
 with a cubic spline fitted to the difference of $\tilde{\pi}_{LA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ and $\tilde{\pi}_G(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ can be used \citep{rue2009inla}. The third method, which is implemented as the default strategy in the INLA framework, is named the \textit{simplified} Laplace approximation \citep{rue2009inla}. This method uses a series expansion of $\tilde{\pi}_{LA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ about the mean $x_l = \mu_l(\boldsymbol{\theta})$ to obtain the approximated density $\tilde{\pi}_{SLA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ \citep{gomezrubio2020inla}. With this expansion, one can correct for skewness and location in the Gaussian approximation, while at the same time maintaining the computational advantages \citep{gomezrubio2020inla}. For the full derivations of the series expansion and the simplified Laplace approximation, see \citet[chapter 3.2.3]{rue2009inla}.
 \subsection{Parameter estimation and sampling procedure}
+\label{sec:INLA_parameter_estimation}
 The parameter estimation procedure in INLA is composed of a number of steps. The mode of the log-likelihood $\ln(\tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y}))$ of the hyperparameters are obtained by maximizing with a quasi-Newton method. Then, to obtain the negative Hessian, $\mathbf{H}$, at the modal configuration $\boldsymbol{\theta}^*$, finite differences are applied \citep{gomezrubio2020inla}. The negative Hessian is then decomposed by its eigenvalues by $\mathbf{H}^{-1} = \mathbf{V}\boldsymbol{\Lambda}\mathbf{V}^T$ and the hyperparameters are rescaled using $\mathbf{z}$ such that 
 \begin{equation}
     \boldsymbol{\theta}(\mathbf{z}) = \boldsymbol{\theta}^* + \mathbf{V}\boldsymbol{\Lambda}^{1/2}\mathbf{z} \ ,
@@ -973,8 +974,9 @@ As in \Cref{sec:LMM}, we let $\mathbf{G}$ denote the covariance matrix of the ra
 This derivation can be done by considering the coefficient of coancestry, $\Theta_{i,j}$, defined as \textit{the probability that an allele drawn at random from an individual $i$ will be identical by descent to an allele drawn at random from individual $j$} \citep{Kruuk2004}. 
 We use the coefficient of coancestry to define the expected covariance between relatives, or additive relationship matrix, as $\mathbf{A}_{i, j}=2\Theta_{i, j}$ and consequently $\mathbf{G}=\sigma^2_A\mathbf{A}$ \citep{Kruuk2004}. 
 \subsection*{Heritability}
+\label{sec:heritability}
 As mentioned, we are particularly conserned in the additive genetic variance $\sigma^2_A$ and functions of it, such as the \textbf{heritability}.
-Heritability in the narrow sense, is defined as \citep{Wilson2008} the proportion of the total phenotypic variance that is present due to the additive genetic variance, 
+Heritability in the narrow sense, is defined as \citep{Wilson_heritability} the proportion of the total phenotypic variance that is present due to the additive genetic variance, 
 \begin{equation}
     \label{eq:h2}
     \frac{\sigma^2_A}{\sigma^2_P} = \frac{\sigma^2_A}{\sigma^2_A + \sigma^2_D + \sigma^2_I + \sigma^2_E} \ .

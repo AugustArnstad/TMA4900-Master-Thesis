@@ -1,11 +1,11 @@
-Some sections in this chapter overlap with the authors project thesis \citep{Arnstad}, which lead up to the masters thesis. Following the guidelines of the Institute of Mathematical Sciences, stating that sections need not be rewritten, some sections are the same (or slightly modified) as in the project thesis. To avoid problems relating to self plagirazation and clarify what is new in this thesis, the sections that are the same as in the project thesis have been assigned a footnote with the reference to the project thesis and a brief comment.
-% The sections on linear regression and linear mixed models are similar to those presented in the authors project thesis \citep{Arnstad}, which lead up to the masters thesis.
+Some sections in this chapter overlap with the authors project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}, which lead up to the masters thesis. Following the guidelines of the Institute of Mathematical Sciences, stating that sections need not be rewritten, some sections are the same (or slightly modified) as in the project thesis. To avoid problems relating to self plagirazation and clarify what is new in this thesis, the sections that are the same as in the project thesis have been assigned a footnote with the reference to the project thesis and a brief comment.
+% The sections on linear regression and linear mixed models are similar to those presented in the authors project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}, which lead up to the masters thesis.
 \section{Linear regression}
 \label{sec:linreg}
 All regression models are based on the assumption that the response variable is influenced by one or more covariates.
 The relationship between the response and the covariate is assumed not to be deterministic, so we expect our modelling of the response to be influenced by some random error \citep{GLMM_book}.
 This means that the response is treated as a random variable, and it is desirable to decompose the response into systematic components and random components.
-\subsection{Linear regression\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad}.}}
+\subsection{Linear regression\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}}
 Assuming that an observed response $y_i$ has a linear relationship with a covariate $x_i$ is the basis for the simple linear regression.
 This can be modeled by the equation
 \begin{equation}
@@ -68,7 +68,7 @@ The middle term in \ref{eq:var_y} consist of the covariance between the covariat
 %this term makes it hard to assess the relative importance of each covariate. 
 %To assign each covariate with an importance, we need to consider relative importance measures that can handle the correlation among covariates.
 
-%\subsection{Relative variable importance \protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad}.}} 
+%\subsection{Relative variable importance \protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}} 
 \section{Variable importance in linear regression models}
 In a regression setting with multiple regression coefficients, it is often desirable to be able to assign each covariate with a measure of its relative importance with respect to the model.
 The relative importance of covariate $\mathbf{x}_i$ is defined as the standardized contribution to explained variance in the response $\mathbf{y}$ from $\mathbf{x}_i$ \citep{gromping_relaimpo}.
@@ -319,7 +319,7 @@ which means that the link function is then the logarithm of the rate \citep{GLMM
 
 
 
-\subsection{Linear mixed models (LMMs) \protect\footnote{This subsection is the same as in the project thesis \citep{Arnstad}.}}
+\subsection{Linear mixed models (LMMs) \protect\footnote{This subsection is the same as in the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}}
 \label{sec:LMM}
 Data often comes in clustered form, for example due to repeated measurements of the covariate over time. 
 Clustered data violate with the assumption of independent responses in linear regression and must be properly accounted for. One solution to this is to introduce random effects that are cluster specific, but independent of the fixed effects and the other clusters. Let the population contain $m$ underlying clusters, with $n_j\ , j=1, ..., m$ observations in each cluster, so that $\mathbf{y} \in \mathbb{R}^{(N \times 1)}$ where $N = \sum_{j=1}^m n_j $. Assume that we investigate $q$ random effects, including a random intercept and $q-1$ random slopes, such that the random effects vector can be written as 
@@ -745,7 +745,7 @@ For a general GLMM belonging to the exponential family defined in \eqref{eq:exp_
 \end{equation}
 where the vector $\mathbf{y}_j$ denotes the $j$th cluster of observations \citep{fong2010bayesian}.
 
-\subsection{$R^2$ in the Bayesian framework\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad}.}}
+\subsection{$R^2$ in the Bayesian framework\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}}
 \label{sec:bayes_R2}
 When working in the Bayesian framework, the definition of $R^2$ for the linear regression is not as straightforward as in the classical framework. As parameters are not treated as fixed, but as random variables, the $R^2$ value will also be a random variable. A possible remedy to this could be to use the posterior mode of the parameters $\boldsymbol{\beta}$ in \eqref{eq:R2}, however \citet{gelman2017rsquared} states two conflicts that this poses. Firstly, the use of point estimates to calculate statistics in the Bayesian framework rejects the fundamental uncertainty of the Bayesian framework. Secondly, when the parameters are estimated in a Bayesian framework, there is no guarantee that the $R^2 \in [0, 1]$, reducing its intuitive interpretability. 
 In \citet{gelman2017rsquared} a definition of the $R^2$ for the Bayesian linear regression is proposed. Consider a draw $s$ of the parameters $\boldsymbol{\beta}$ from the posterior distribution. Then, the proposed definition is
@@ -842,7 +842,7 @@ Drawing enough samples from \eqref{eq:bayes_r2} one would eventually obtain also
 
 
 
-\section{The INLA framework\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad}.}}
+\section{The INLA framework\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}}
 \label{sec:INLA_framework}
 As we have seen, the analytical posterior is possible to obtain for some hierarchical structures (e.g. \eqref{eq:hierarchical_posterior_analytical}). 
 However, in the case of GLMMs, the posterior distribution is not in general analytically tractable \citep{fong2010bayesian}. This calls for the use of numerical methods, such as Markov Chain Monte Carlo (MCMC) methods, to be able to sample from the posterior distribution. 

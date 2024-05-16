@@ -460,7 +460,26 @@ We now investigate the results of applying our method to the house sparrow datas
   \label{fig:heritability_tarsus}
 \end{figure}
 \noindent We see it as natural that we see different patterns that are hard to fully interpret, as the dataset is from real life and relatively small. Further, the measurements are taken on birds that are quite small, so one should expect measurement error to some degree.
-  
+\section{Comparing the BVI method with R2D2 and GDR2 priors}
+To explore other possible relative variable importance tools in the Bayesian framework, we have discussed R2D2 and GDR2 priors in \Cref{sec:R2D2} and \Cref{sec:r2d2method}. We now present the results of applying the R2D2 and GDR2 priors to a linear regression, and see how they can be interpreted as relative importance measures. The results are compared to the BVI method and the LMG method serves as a robust benchmark for all methods. Please note once again that the R2D2 and GDR2 priors are originally developed for prediction models, and that the results presented here are based on our interpretation of how the R2D2 and GDR2 priors can be used for relative importance. The theoretical importances for uncorrelated covariates are found in \eqref{eq:RI_R2D2} and the theoretical $R^2$ for all correlation levels are found in \Cref{table:r2values_r2d2}. 
+\begin{figure}[H]%\ContinuedFloat
+  \centering
+  \includegraphics[width=1\linewidth]{Figures/R2D2_BVI_Comparison/R2D2_BVI_boxplot.png}
+  \caption{Boxplots of the relative importance distributions for $X_1$ (left), $X_2$ (middle) and $X_3$ (right) for varying correlation levels by the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the green diamond represents the relative variable importance calculated from the LMG method.}
+  \label{fig:r2d2_importance}
+\end{figure}
+\noindent The first thing one notices from the posterior relative importance distributions (\Cref{fig:r2d2_importance}), is that the spread from the R2D2 method is larger than the spread of the GDR2 method, which again is significantly larger than the spread of the BVI method. In the boxplots, the $25$th and $75$th quantiles define the interval of each box. The mean values of the relative importance distributions for the R2D2 and GDR2 methods do not seem to follow any pattern at all for varying correlation. They are more similar across correlation levels for all covariates, and do not adjust for correlation as the benchmark LMG method. Although it is hard to find patterns and the R2D2 and GDR methods give very flexible results, it becomes clear from they grasp the larger aspects, in that $X_3$ is estimated to be the covariate with the largest variance contribution, followed by $X_2$ and lastly $X_1$. The BVI method is in close agreement with the LMG method, with deviation for $X_1$ and $X_3$ when $\rho=-0.4$. Overall the BVI and LMG methods follow the same pattern for varying correlation, as we expect and have previously discussed.
+\begin{figure}[H]%\ContinuedFloat
+  \centering
+  \includegraphics[width=1\linewidth]{Figures/R2D2_BVI_Comparison/R2D2_BVI_R2_plot.png}
+  \caption{Boxplots of the estimated $R^2$ distributions for varying correlation levels $\rho$ for the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the green diamond represents the relative variable importance calculated from the LMG method.}
+  \label{fig:r2d2_r2}
+\end{figure}
+\noindent The estimated posterior $R^2$ distributions for the R2D2 and GDR2 priors (\Cref{fig:r2d2_r2}) are uniform across the correlation levels, and significantly larger than both the estimates of the BVI and LMG methods. For the $R^2$, the spread of the R2D2 and GDR2 methods are quite similar, with both being much larger than that of the BVI method. Overall, the R2D2 and GDR2 estimates a much larger $R^2$ than the BVI and LMG methods, and the means deviate quite much from the expected values. The BVI method is consistent with the LMG method, and they both follow the expected pattern of the $R^2$. For the expected $R^2$, the BVI and LMG methods seem to align closely with the expectation, with a small deviation for both methods when $\rho=0$.
+\\
+\\
+As the R2D2 and GDR2 methods are not specifically relative variable importance measures, one should also interpret the results with this in mind. The development of the R2D2 and GDR2 priors have been done to produce robust predictions for high dimensional linear regression models, and the results presented here are therefore not an evaluation of the R2D2 and GDR2 priors as relative importance measures. Moreover, the interpretation made to obtain these results was made by the author, and the results should be taken with caution. The main motivation behind this comparison was to explore other possible relative importance measures in the Bayesian framework, as this is a small field with few available methods. 
+
 
 
 

@@ -154,7 +154,7 @@ There are two primary reasons why we wish to conduct a simulation study with our
 \\
 \\
 %and a Binomial distribution with a probit link.
-We simulate $N=10^4$ responses from a Binomial distribution with a logit-link and from a Poisson distribution with log-link. The linear predictor contains three fixed effects and one random intercept. The fixed effects are, for simplicity but without loss of generalization, $\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \Sigma)$ with $\boldsymbol{\mu} = (0, 0, 0)^T$, $\Sigma_{i, i} = 1$ and $\Sigma_{i, k} = \rho, k \neq i$. The true regression coefficient are set to be $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$. The random effect comes from $m=100$ clusters, each with $n_j=100$ observations for $j=1, ..., m$. Further, we draw the random effect from a normal distribution with mean zero and variance $\sigma^2_{\alpha} = 1$. To investigate the impact of correlated fixed effects, we fit four different models letting $\rho$ vary for each model by taking on the values $\rho=(-0.4, -0.1, 0, 0.1, 0.4)$. The INLA framework is used to fit the GLMMs and the methodology described used to calculate the relative importance. All fixed and random effects receive the same PC prior as used in the comparison with the \texttt{rptR} package, that is with initial values of $\tau_0=\ln(1)$ and parameters $U=1$ and $a=0.01$. As has been done throughout the thesis, the simplified Laplace approximation is used to approximate the posterior marginals of the latent field conditioned on the observations and hyperparameters. We fit $N_{\text{sim}}=500$ Binomial and Poisson models with different datasets for each correlation level.
+We simulate $N=10^4$ responses from a Binomial distribution with a logit-link and from a Poisson distribution with log-link. The linear predictor contains three fixed effects and one random intercept. The fixed effects are, for simplicity but without loss of generalization, $\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \Sigma)$ with $\boldsymbol{\mu} = (0, 0, 0)^T$, $\Sigma_{i, i} = 1$ and $\Sigma_{i, k} = \rho, k \neq i$. The true regression coefficient are set to be $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$. The random effect comes from $m=100$ clusters, each with $n_j=100$ observations for $j=1, ..., m$. Further, we draw the random effect from a normal distribution with mean zero and variance $\sigma^2_{\alpha} = 1$. To investigate the impact of correlated fixed effects, we fit four different models letting $\rho$ vary for each model by taking on the values $\rho \in \{-0.4, -0.1, 0, 0.1, 0.4\}$. The INLA framework is used to fit the GLMMs and the methodology described used to calculate the relative importance. All fixed and random effects receive the same PC prior as used in the comparison with the \texttt{rptR} package, that is with initial values of $\tau_0=\ln(1)$ and parameters $U=1$ and $a=0.01$. As has been done throughout the thesis, the simplified Laplace approximation is used to approximate the posterior marginals of the latent field conditioned on the observations and hyperparameters. We fit $N_{\text{sim}}=500$ Binomial and Poisson models with different datasets for each correlation level.
 \\
 \\
 %For the binomial simulation with distributional variance $\sigma^2_d$ independent of the fitted model
@@ -227,6 +227,38 @@ and similarly for the expected conditional $R^2$ as
     \caption{Expected marginal and conditional $R^2$ values for the binomial regression with logit-link (top) and Poisson regression with log-link (bottom) for different correlation levels $\rho$.}
     \label{table:r2values}
 \end{table}
+
+
+\section{Simulation study with R2D2 and GDR2 priors}
+\label{sec:r2d2method}
+As mentioned, the Bayesian variable importance field is not very large. However, as discussed in \Cref{sec:R2D2}, the R2D2 priors decompose the $R^2$ value and can therefore be interpreted as a variable importance measure. We find it sensible to try and compare the resulting variable importance distributions, even though the R2D2 priors have not been developed for this goal specifically. To be able to evaluate the two measures, we simulate a linear regression model with $p=3$ covariates and $n=1000$ observations. The covariates are for simplicity simulated as $\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$ with $\boldsymbol{\mu} = (0, 0, 0)^T$, $\boldsymbol{\Sigma}_{i, i} = 1$ and $\boldsymbol{\Sigma}_{i, j} = \rho$ for $i \neq j$. As before, we vary the correlation by letting $\rho \in \{-0.4, -0.1, 0, 0.1, 0.4\}$. The true regression coefficients are initialized as $\boldsymbol{\beta} = (1, \sqrt{2}, \sqrt{3})$, and we simulate a random error by $\varepsilon \sim \mathcal{N}(0, \sigma^2 = 1)$.  By noting that $\text{Var}(\mathbf{y}) = 7$, it is clear that in the uncorrelated case, the relative importance of the covariates can be calculated as
+\begin{equation}
+    \label{eq:RI_R2D2}
+    \text{RI}(\mathbf{X})_{1} =  \frac{1}{7} \quad \text{RI}(\mathbf{X})_{2} =  \frac{2}{7} \quad  \text{RI}(\mathbf{X})_{3} =  \frac{3}{7} \ .
+\end{equation}
+Further, the $R^2$ for this model is by the definition in \eqref{eq:R2}
+\begin{equation}
+    R^2 = \frac{\text{Var}(\mathbf{y}) - \sigma^2}{\text{Var}(\mathbf{y})} \ ,
+\end{equation}
+which gives values that are summarized in \Cref{table:r2values_r2d2}.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcc}
+    \toprule
+    \textbf{\(\rho\)} & $R^2$  \\
+    \midrule
+    -0.4 & 0.604 \\
+    -0.1 & 0.830 \\
+    0    & 0.857 \\
+    0.1  & 0.877 \\
+    0.4  & 0.913 \\
+    \bottomrule
+    \end{tabular}
+    \caption{$R^2$ values for the correlation levels $\rho$ used in the linear regression for analyzing the BVI method in comparison to the R2D2 priors.}
+    \label{table:r2values_r2d2}
+\end{table}
+\noindent To fit the linear regression using R2D2 priors for the marginal $R^2$ we use functions from the Github repository \citet{zhang2024r2d2_git} by the author of \citet{zhang2020bayesian}. For the GDR2 priors, we utilize the Stan code available on \citet{aguilar2024GDR_code} by the authors of \citet{aguilar2024generalized}. The hyperparameters for the marginal $R^2 \sim \text{Beta}(a, b)$ are set so that $\mathbb{E}[R^2] \simeq 0.857$ which is approximately the theoretical $R^2$ of $6/7$. This is done for the R2D2 priors by using the default value $b=0.5$ from \citet{zhang2024r2d2_git} and noting that the expected value of the $\text{Beta}(a, b)$ distribution is $a/(a+b)$ \citep{stats_book}. We follow the Gibbs sampler for the marginal R2D2 prior as described in \citep[section 5.3]{zhang2020bayesian} and run the MCMC iteration $N=10^4$ times, with a burn in of $9000$ samples. This gives $1000$ samples from the posterior distribution of the marginal $R^2$ as well as $1000$ samples of each $\phi_j$ for $j=1, 2, 3$. 
+For the GDR2 priors, the implementation requires a prior on the expected value and the precision of the $R^2$ value directly. These are calculated by letting $a_{\pi}=0.7$, the reference unit $\alpha_K$ be zero, the expected $R^2$ equal $6/7$ and then solving for the precision $\tau$ according to the properties of the Beta distribution given in \citet{aguilar2024generalized}. The choice of $a_{\pi}$ corresponds to a scenario in which one assumes the covariates to be approximately equally important and the difference between the GDR2 prior and R2D2 prior is substantial \citep{aguilar2024generalized}. Similarly, as for the R2D2 case, we run the MCMC iteration $N=10^4$ times, with a burn in of $9000$ samples, but we also fit four Markov chains this time to ensure proper mixing. This means we obtain $4000$ samples for the GDR2 priors. The samples of $\phi_j$ from the linear regression using R2D2 and GDR2 priors are then seen as the posterior distribution of relative variable importance of $\mathbf{x}_j$, and compared to that of the BVI method. We will refer to the results by using R2D2 and GDR2 priors as the R2D2 method and the GDR2 method respectively. To evaluate all methods, we fit a frequentist linear regression model and evaluate the importance metrics according to the LMG method by using the package \citet{groemping2023relaimpo} in R as described in \citet{gromping_relaimpo}. As the LMG method is feasible in this context, it poses perhaps the most robust and reliable benchmark available. We draw $1000$ bootstrap samples of the LMG metrics and use this to create confidence intervals for the LMG method. 
 
 
 

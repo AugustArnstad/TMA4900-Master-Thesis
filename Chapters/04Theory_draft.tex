@@ -1,11 +1,11 @@
-Some sections in this chapter overlap with the authors project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}, which lead up to the masters thesis. Following the guidelines of the Institute of Mathematical Sciences, stating that sections need not be rewritten, some sections are the same (or slightly modified) as in the project thesis. To avoid problems relating to self plagirazation and clarify what is new in this thesis, the sections that are the same as in the project thesis have been assigned a footnote with the reference to the project thesis and a brief comment.
+
 % The sections on linear regression and linear mixed models are similar to those presented in the authors project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}, which lead up to the masters thesis.
 \section{Linear regression}
 \label{sec:linreg}
 All regression models are based on the assumption that the response variable is influenced by one or more covariates.
 The relationship between the response and the covariate is assumed not to be deterministic, so we expect our modelling of the response to be influenced by some random error \citep{GLMM_book}.
 This means that the response is treated as a random variable, and it is desirable to decompose the response into systematic components and random components.
-\subsection{Linear regression\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}}
+\subsection{Linear regression}
 Assuming that an observed response $y_i$ has a linear relationship with a covariate $x_i$ is the basis for the simple linear regression.
 This can be modeled by the equation
 \begin{equation}
@@ -319,7 +319,7 @@ which means that the link function is then the logarithm of the rate \citep{GLMM
 
 
 
-\subsection{Linear mixed models (LMMs) \protect\footnote{This subsection is the same as in the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}}
+\subsection{Linear mixed models (LMMs)}
 \label{sec:LMM}
 Data often comes in clustered form, for example due to repeated measurements of the covariate over time. 
 Clustered data violate with the assumption of independent responses in linear regression and must be properly accounted for. One solution to this is to introduce random effects that are cluster specific, but independent of the fixed effects and the other clusters. Let the population contain $m$ underlying clusters, with $n_j\ , j=1, ..., m$ observations in each cluster, so that $\mathbf{y} \in \mathbb{R}^{(N \times 1)}$ where $N = \sum_{j=1}^m n_j $. Assume that we investigate $q$ random effects, including a random intercept and $q-1$ random slopes, such that the random effects vector can be written as 
@@ -330,7 +330,8 @@ Clustered data violate with the assumption of independent responses in linear re
 where each $\boldsymbol{\alpha}_j \in \mathbb{R}^{q \times 1}$ is assumed independent and represents the random effects for cluster $j$ and has length $q$. For a cluster $j$ the vector $\boldsymbol{\alpha}_j \sim \mathcal{N}_q(\mathbf{0}, \mathbf{\Sigma})=\mathcal{N}_q(\mathbf{0}, \mathbf{Q}^{-1})$ where $\mathbf{\Sigma}$ is the $q \times q$ unknown covariance for the random effects assumed to be positive definite and $\mathbf{Q} = \mathbf{\Sigma}^{-1}$ the corresponding precision matrix. 
 If the random effects for each cluster are independent of each other, the covariance matrix $\mathbf{\Sigma} = \text{diag}(\sigma_0^2, ..., \sigma_q^2)$.
 The linear mixed model now takes the form
-\begin{equation} \label{eq:LMM}
+\begin{equation} 
+    \label{eq:LMM}
     \mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{U}\boldsymbol{\alpha} + \boldsymbol{\varepsilon} \ ,
 \end{equation}
 where $\mathbf{X} \in \mathbb{R}^{N \times p}$ is the design matrix for the fixed effects, $\boldsymbol{\beta} \in \mathbb{R}^{p \times 1}$ are the regression coefficients for the fixed effects, $\mathbf{U} = \text{diag}(\mathbf{U_j}) \ , \in \mathbb{R}^{N \times q}$ is the design matrix for the random effects and $\mathbf{U}_j \in \mathbb{R}^{n_j \times q}$ is the design matrix for cluster $j$. 
@@ -745,7 +746,7 @@ For a general GLMM belonging to the exponential family defined in \eqref{eq:exp_
 \end{equation}
 where the vector $\mathbf{y}_j$ denotes the $j$th cluster of observations \citep{fong2010bayesian}.
 
-\subsection{$R^2$ in the Bayesian framework\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}}
+\subsection{$R^2$ in the Bayesian framework}
 \label{sec:bayes_R2}
 When working in the Bayesian framework, the definition of $R^2$ for the linear regression is not as straightforward as in the classical framework. As parameters are not treated as fixed, but as random variables, the $R^2$ value will also be a random variable. A possible remedy to this could be to use the posterior mode of the parameters $\boldsymbol{\beta}$ in \eqref{eq:R2}, however \citet{gelman2017rsquared} states two conflicts that this poses. Firstly, the use of point estimates to calculate statistics in the Bayesian framework rejects the fundamental uncertainty of the Bayesian framework. Secondly, when the parameters are estimated in a Bayesian framework, there is no guarantee that the $R^2 \in [0, 1]$, reducing its intuitive interpretability. 
 In \citet{gelman2017rsquared} a definition of the $R^2$ for the Bayesian linear regression is proposed. Consider a draw $s$ of the parameters $\boldsymbol{\beta}$ from the posterior distribution. Then, the proposed definition is
@@ -758,7 +759,7 @@ Contrary to the classical definition this definition of $R^2$ contains only the 
 Drawing enough samples from \eqref{eq:bayes_r2} one would eventually obtain also an approximation of the distribution for the $R^2$ value \citep{gelman2017rsquared}.
 
 
-\subsection{R2D2 and GDR2 priors as variable importance measures}
+\subsection{Variable importance measures in the Bayesian framework}
 \label{sec:R2D2}
 Although the field of Bayesian variable importance is small, there are some methods that can be contextualized so that they can be used as Bayesian variable importance measures.
 More specifically, the $R^2$-induced Dirichlet decomposition (R2D2) priors are originally applied as shrinkage priors and used to obtain reliable predicitons in high dimensional linear regression models, but can be interpreted as a variable importance measure \citep{zhang2020bayesian}. Using the same definition of $R^2$ as that of \citet{gelman2017rsquared}, the R2D2 prior directly places a prior on the marginal or conditional $R^2$ value. We will consider the marginal $R^2$ prior, which assumes the marginal $R^2$ value to follow a Beta distribution \citep{zhang2020bayesian}. The scenario introduced in \citet{zhang2020bayesian} is a linear regression model where we consider a prior for $\boldsymbol{\beta}$ such that $\mathbb{E}[\boldsymbol{\beta}]=0$ and $\text{cov}(\boldsymbol{\beta})=\sigma^2\Lambda$ where $\Lambda$ is a diagonal matrix with the diagonal elements $\lambda_1, ..., \lambda_p$. From the calculations in \citet{zhang2020bayesian} and following the definition of the $R^2$ in \citet{gelman2017rsquared}, one can write
@@ -860,7 +861,7 @@ for $k=1, ..., K$ where $\alpha_K$ is a reference unit, $\delta(\alpha_k)$ denot
 
 
 
-\section{The INLA framework\protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}}
+\section{The INLA framework}
 \label{sec:INLA_framework}
 As we have seen, the analytical posterior is possible to obtain for some hierarchical structures (e.g. \eqref{eq:hierarchical_posterior_analytical}). 
 However, in the case of GLMMs, the posterior distribution is not in general analytically tractable \citep{fong2010bayesian}. This calls for the use of numerical methods, such as Markov Chain Monte Carlo (MCMC) methods, to be able to sample from the posterior distribution. 

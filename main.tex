@@ -18,7 +18,7 @@
 \usepackage{enumerate} %enumarte lists
 \usepackage{float} %to include floats
 \usepackage[export]{adjustbox} %to adjust floats
-\usepackage{subfig} %to include subfigures
+%\usepackage{subfig} %to include subfigures
 \usepackage{chngcntr} %will make it possible to change the counter for tables, figures etc. such as below
 \counterwithout{figure}{section} %change counter for figures within sections (also possible to choose for each chapter
 \counterwithout{table}{section} %change counter for tables within sections
@@ -27,6 +27,7 @@
 \usepackage{multirow}
 \usepackage{cleveref}
 \usepackage{appendix}
+\usepackage{subcaption}
 %\usepackage[backend = biber,
 %            style = numeric,
 %            date = long,     % Long: 24th Mar. 1997 | Short: 24/03/1997
@@ -236,9 +237,13 @@ Department of Mathematical Sciences \\
 \label{ap:bayesian-importance}
 \input{Chapters/08AppendixB}
 
+\chapter{Supplementary Material}
+\label{ap:tables}
+\input{Chapters/08AppendixC}
+
 \chapter{Miscellaneous proofs}
 \label{ap:proofs}
-\input{Chapters/08AppendixC}
+\input{Chapters/08AppendixD}
 
 % \chapter*{\LARGE \textbf{Appendices}}
 % \fancyhf{} %clear the header, it should be empty for the appendices

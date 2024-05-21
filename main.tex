@@ -19,9 +19,9 @@
 \usepackage{float} %to include floats
 \usepackage[export]{adjustbox} %to adjust floats
 %\usepackage{subfig} %to include subfigures
-\usepackage{chngcntr} %will make it possible to change the counter for tables, figures etc. such as below
-\counterwithout{figure}{section} %change counter for figures within sections (also possible to choose for each chapter
-\counterwithout{table}{section} %change counter for tables within sections
+%\usepackage{chngcntr} %will make it possible to change the counter for tables, figures etc. such as below
+%\counterwithout{figure}{section} %change counter for figures within sections (also possible to choose for each chapter
+%\counterwithout{table}{section} %change counter for tables within sections
 \usepackage{color, xcolor} %edit e.g. text colors
 \usepackage{hyperref}
 \usepackage{multirow}
@@ -127,13 +127,16 @@ Department of Mathematical Sciences \\
 \addcontentsline{toc}{chapter}{\protect\numberline{}Preface} 
 \input{Chapters/01Preface}
 
+\addtocontents{toc}{\protect\contentsline{chapter}{\numberline{}Contents}{\thepage}{chapter.1}}
 \tableofcontents
+\clearpage
 %\addcontentsline{toc}{chapter}{\protect\numberline{}Contents}
 %add to table of contents list of figures and tables, and insert list of figures and tables
 \addcontentsline{toc}{chapter}{\protect\numberline{}\listfigurename}
 \listoffigures
 \addcontentsline{toc}{chapter}{\protect\numberline{}\listtablename}
 \listoftables
+\clearpage
 
 
 % \chapter*{Abbreviations}

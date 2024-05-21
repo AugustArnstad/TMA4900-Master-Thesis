@@ -56,7 +56,7 @@ In general, the BVI method is in agreement with the theoretical results for unco
     \label{fig:relimp_X3_fig}
   \end{subfigure}
   
-  \caption{Violin plots for the relative importance of the fixed effects $X_1$ (top), $X_2$ (middle) and $X_3$ (bottom) for different correlation levels calculated from the ensemble of simulated datasets by the BVI, ELMG, ERW, and the Relaimpo methods. The horizontal line displays the theoretically correct importance of each fixed effect in the case of uncorrelated data. For the BVI method, the distributions of posterior means are shown to compare to the distribution of point estimates from the other three methods. }
+  \caption[Relative importance of the fixed effects in Gaussian LMM]{Violin plots for the relative importance of the fixed effects $X_1$ (top), $X_2$ (middle) and $X_3$ (bottom) for different correlation levels calculated from the ensemble of simulated datasets by the BVI, ELMG, ERW, and the Relaimpo methods. The horizontal line displays the theoretically correct importance of each fixed effect in the case of uncorrelated data. For the BVI method, the distributions of posterior means are shown to compare to the distribution of point estimates from the other three methods. }
   \label{fig:relimp_all}
 \end{figure}
 
@@ -94,7 +94,7 @@ To re-emphasize, this is both expected and desirable since the increase in respo
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.7\linewidth]{Figures/ViolinPlots/Variance_gamma.png}
-  \caption{Violin plots for the relative importance of the random effect $\boldsymbol{\alpha}$, that is, $\hat{\sigma}^2_{\alpha}$ for different correlation levels calculated from the ensemble of simulated datasets by the BVI, ELMG and the ERW method. For the BVI method the distributions of posterior means of the marginal distribution of $\hat{\sigma}^2_{\alpha}$ are shown to compare to the point estimates of the other two methods. The horizontal line displays the theoretically correct importance $\sigma^2_{\alpha}$ of the random effect in the case of uncorrelated data.}
+  \caption[Relative importance of the random effect $\boldsymbol{\alpha}$ in Gaussian LMM]{Violin plots for the relative importance of the random effect $\boldsymbol{\alpha}$, that is, $\hat{\sigma}^2_{\alpha}$ for different correlation levels calculated from the ensemble of simulated datasets by the BVI, ELMG and the ERW method. For the BVI method the distributions of posterior means of the marginal distribution of $\hat{\sigma}^2_{\alpha}$ are shown to compare to the point estimates of the other two methods. The horizontal line displays the theoretically correct importance $\sigma^2_{\alpha}$ of the random effect in the case of uncorrelated data.}
   \label{fig:relimp_alpha}
 \end{figure}
 
@@ -124,7 +124,7 @@ The centering of the distributions for both the marginal and conditional varianc
     \includegraphics[width=0.55\linewidth]{Figures/ViolinPlots/Conditional_Variance.png}
     \label{fig:variance_conditional}
   }
-  \caption{Violin plots for the total marginal (top) and conditional (bottom) variance explained for different correlation levels calculated from the ensemble of simulated datasets by the BVI, ELMG, the ERW and the Relaimpo method(only marginal variance explained can be computed). For the BVI method the posterior means of the sampled posterior distributions of $\boldsymbol{\beta}$ and the marginal distribution of $\hat{\sigma}^2_{\alpha}$ in each simulation are used to compare to the point estimates of the other two methods. The horizontal lines display the theoretical explained variance for each correlation level $\rho$ as in \Cref{table:2}.}
+  \caption[Marginal and conditional $R^2$ in Gaussian LMM]{Violin plots for the total marginal (top) and conditional (bottom) variance explained ($R^2$) for different correlation levels calculated from the ensemble of simulated datasets by the BVI, ELMG, the ERW and the Relaimpo method(only marginal variance explained can be computed). For the BVI method the posterior means of the sampled posterior distributions of $\boldsymbol{\beta}$ and the marginal distribution of $\hat{\sigma}^2_{\alpha}$ in each simulation are used to compare to the point estimates of the other two methods. The horizontal lines display the theoretical explained variance for each correlation level $\rho$ as in \Cref{table:2}.}
   \label{fig:total_variance}
 \end{figure}
 
@@ -143,28 +143,28 @@ We now investigate the results of applying our method to the house sparrow datas
   $h^2_{\text{tarsus}}$  & 0.415 & [0.333, 0.497] & - & - & 0.401 & [0.330, 0.470] \\ 
   \bottomrule
   \end{tabular}
-  \caption{Heritability estimates and confidence interval from \citet{Silva2017}, posterior means of additive genetic variance divided by the posterior means of total phenotypic variance in \citet{Muff2019Genetic} with corresponding confidence interval and the mean and confidence interval of the heritability samples obtained from the BVI method for the phenotypic traits; body mass, wing length and tarsus length.}
+  \caption[Heritability estimates and confidence intervals]{Heritability estimates and confidence interval from \citet{Silva2017}, posterior means of additive genetic variance divided by the posterior means of total phenotypic variance in \citet{Muff2019Genetic} with corresponding confidence interval and the mean and confidence interval of the heritability samples obtained from the BVI method for the phenotypic traits; body mass, wing length and tarsus length.}
   \label{table:summary_heritability}
 \end{table}
 \noindent For the sampled heritability of body mass (\Cref{fig:heritability_mass}), we have a mean of $0.2838$ (\Cref{table:summary_heritability}) and a distribution that is centered around the mean. The distribution does not seem to be symmetric, and might show signs of being bimodal, with one larger peak at the mean and possibly one smaller peak to the left of the larger peak. Furthermore, the distribution exhibits a longer tail to the right and the $95$th percentile is approximately the interval $[0.2324, 0.3430]$. To fit the model and obtain the samples, the method took about $73$ seconds.
 \begin{figure}[H]
   \centering
     \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_mass.png}
-    \caption{Histogram depicting the estimated heritability values of body mass by the BVI method for the house sparrow dataset. The mean of the samples is marked as a circle at the bottom of the histogram, with the lower and upper value for the $95\%$ percentile marked as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
+    \caption[Estimated heritability of body mass]{Histogram depicting the estimated heritability values of body mass by the BVI method for the house sparrow dataset. The mean of the samples is marked as a circle at the bottom of the histogram, with the lower and upper value for the $95\%$ percentile marked as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
     \label{fig:heritability_mass}
 \end{figure}
 \noindent The samples of wing length heritability form a more symmetric curve, centered around a mean of $0.3560$ (\Cref{fig:heritability_wing} and \Cref{table:summary_heritability}). There are fewer signs of another mode for these samples, but one could argue that the right tail is a bit longer also for the heritability of wing length. The $95$th percentile is approximated by the interval $[0.3224, 0.3930]$, which is smaller than the same percentile for the body mass by a factor of $0.63$. The samples of heritability for wing length therefore exhibits less dispersion than those for heritability of body mass. In this case, the model fit and sampling procedure took $76$ seconds.
 \begin{figure}[H]%\ContinuedFloat
   \centering
   \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_wing.png}
-  \caption{Histogram of heritability values for wing length of the house sparrows estimated by the BVI method. The mean of the samples is marked as a circle at the bottom of the histogram, and the lower and upper value for the $95\%$ percentile are featured as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
+  \caption[Estimated heritability of wing length]{Histogram of heritability values for wing length of the house sparrows estimated by the BVI method. The mean of the samples is marked as a circle at the bottom of the histogram, and the lower and upper value for the $95\%$ percentile are featured as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
   \label{fig:heritability_wing}
 \end{figure}
 \noindent The heritability samples of tarsus length (\Cref{fig:heritability_tarsus}) has a mean of $0.4015$ (\Cref{table:summary_heritability}) and the distribution is centered around this value. An obvious observation here is that the samples form a trimodal distribution, with three very distinct peaks. The center peak is the highest and centered around the mean and the right and left peak seem to be of equal height and symmetric about the center peak. A possible explanation for this pattern is that for this trait, the grid used for numerical integration might not be fine enough, forcing the sampling to occur most frequently at the three modal values. The $95$th percentile is captured by the interval $[0.3316, 0.4669]$ and the time spent to fit the model and draw the samples was reported to be $74$ seconds.  
 \begin{figure}[!ht]%\ContinuedFloat
   \centering
   \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_tarsus.png}
-  \caption{Histogram showing estimated heritability values for tarsus length of the house sparrows from the BVI method. The two dots at the bottom represent the mean of the samples (pink) and the estimate from \citep{Silva2017} (gold). The dashed lines represent the lower and upper value for the $95\%$ percentile.}
+  \caption[Estimated heritability of tarsus length]{Histogram showing estimated heritability values for tarsus length of the house sparrows from the BVI method. The two dots at the bottom represent the mean of the samples (pink) and the estimate from \citep{Silva2017} (gold). The dashed lines represent the lower and upper value for the $95\%$ percentile.}
   \label{fig:heritability_tarsus}
 \end{figure}
 \noindent We see it as natural that we see different patterns that are hard to fully interpret, as the dataset is from real life and relatively small. Further, the measurements are taken on birds that are quite small, so one should expect measurement error to some degree.
@@ -220,7 +220,7 @@ Generally, it seems that the method is able to capture the expected effects of v
 \begin{figure}[H]
   \centering
   \includegraphics[width=1.1\linewidth]{Figures/Simulation study/Fixed_combined_logit.png}
-  \caption{Histogram with the distribution of relative importance of the fixed effects present in the binomial regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The vertical green line for $\rho=0$ displays the expected relative importance in the case of uncorrelated data. The mean of the relative importance for all simulations is denoted at the bottom of each histogram as a circle.}
+  \caption[Relative importance of the fixed effects in Binomial GLMM]{Histogram with the distribution of relative importance of the fixed effects present in the binomial regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The vertical green line for $\rho=0$ displays the expected relative importance in the case of uncorrelated data. The mean of the relative importance for all simulations is denoted at the bottom of each histogram as a circle.}
   \label{fig:fixed_combined_logit}
 \end{figure}
   %\label{fig:fixed_effects_logit}
@@ -232,7 +232,7 @@ The sampled posterior importances for the random effect in the logit model (\Cre
 \begin{figure}[H]
   \centering
     \includegraphics[width=1\linewidth]{Figures/Simulation study/Random_logit.png}
-    \caption{Histogram with values from the BVI method for each of the $N_{\text{sim}}=500$ simulations, estimating relative importance of the random effect $\boldsymbol{\alpha}$ across the different correlation levels $\rho$. The mean of the estimated relative importance from all simulations is displayed at the bottom as a circle and the orange dot at the bottom displays the estimate fron the \texttt{rptR} package. The vertical green line for $\rho=0$ is the expected relative importance as in \Cref{table:3}.}
+    \caption[Relative importance of the random effect $\boldsymbol{\alpha}$ in Binomial GLMM]{Histogram with values from the BVI method for each of the $N_{\text{sim}}=500$ simulations, estimating relative importance of the random effect $\boldsymbol{\alpha}$ across the different correlation levels $\rho$. The mean of the estimated relative importance from all simulations is displayed at the bottom as a circle and the orange dot at the bottom displays the estimate fron the \texttt{rptR} package. The vertical green line for $\rho=0$ is the expected relative importance as in \Cref{table:3}.}
     \label{fig:relimp_random_logit}
 \end{figure}
 \subsubsection{$R^2$ estimates}
@@ -270,7 +270,7 @@ An important measure in this simulation study is the models sampled posterior di
 \begin{figure}[H]
   \centering
   \includegraphics[width=1.1\linewidth]{Figures/Simulation study/R2_combined_logit.png}
-  \caption{Histograms with the estimated marginal $R^2$ (left) and conditional $R^2$ (right) from the BVI method for the binomial regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}, while the orange dot denotes the estimate from the \texttt{rptR} package. The mean value of the $R^2$ values for all simulations is marked with a circle at the bottom of each histogram.}
+  \caption[Marginal and conditional $R^2$ in Binomial GLMM]{Histograms with the estimated marginal $R^2$ (left) and conditional $R^2$ (right) from the BVI method for the binomial regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}, while the orange dot denotes the estimate from the \texttt{rptR} package. The mean value of the $R^2$ values for all simulations is marked with a circle at the bottom of each histogram.}
   \label{fig:r2_combined_logit}
 \end{figure}
 
@@ -354,7 +354,7 @@ It is apparent that for the case $\rho=0.4$, the distribution of relative import
 \begin{figure}[H]
   \centering
   \includegraphics[width=1.1\linewidth]{Figures/Simulation study/Fixed_combined_poisson.png}
-  \caption{Histogram with relative importance of the fixed effects present in the poisson regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The true regression coefficients are $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$ and the vertical green line for $\rho=0$ displays the expected relative importance in the case of uncorrelated data. The mean of the relative importance for all simulations is denoted at the bottom of each histogram as a circle.}
+  \caption[Relative importance of the fixed effects in Poisson GLMM]{Histogram with relative importance of the fixed effects present in the poisson regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The true regression coefficients are $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$ and the vertical green line for $\rho=0$ displays the expected relative importance in the case of uncorrelated data. The mean of the relative importance for all simulations is denoted at the bottom of each histogram as a circle.}
   \label{fig:fixed_combined_poisson}
 \end{figure}
 \subsubsection{Random effect}
@@ -365,7 +365,7 @@ As previously mentioned, for $\rho=0.4$, some models estimated all the fixed eff
 \begin{figure}[H]
   \centering
     \includegraphics[width=1\linewidth]{Figures/Simulation study/Random_poisson.png}
-    \caption{Histogram with relative importance estimates for the random effect $\boldsymbol{\alpha}$ for varying values of $\rho$ calculated by the BVI method. The study conducted $N_{\text{sim}}=500$ simulations and the mean of the relative importance for all simulations is displayed at the bottom of each histogram as a circle. The vertical green line for $\rho=0$ is the expected relative importance as in \Cref{table:2}.}
+    \caption[Relative importance of the random effect $\boldsymbol{\alpha}$ in Poisson GLMM]{Histogram with relative importance estimates for the random effect $\boldsymbol{\alpha}$ for varying values of $\rho$ calculated by the BVI method. The study conducted $N_{\text{sim}}=500$ simulations and the mean of the relative importance for all simulations is displayed at the bottom of each histogram as a circle. The vertical green line for $\rho=0$ is the expected relative importance as in \Cref{table:2}.}
     \label{fig:relimp_random_poisson}
 \end{figure}
 \subsubsection{$R^2$ estimates}
@@ -404,7 +404,7 @@ Moving on to the estimated posterior $R^2$ distributions for the Poisson model (
 \begin{figure}[H]
   \centering
   \includegraphics[width=1.1\linewidth]{Figures/Simulation study/R2_combined_poisson.png}
-  \caption{Histograms with the estimated marginal $R^2$ (left) and conditional $R^2$ (right) from the BVI method for the binomial regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}, while the orange dot denotes the estimate from the \texttt{rptR} package. The mean value of the $R^2$ values for all simulations is marked with a circle at the bottom of each histogram.}
+  \caption[Marginal and conditional $R^2$ in Poisson GLMM]{Histograms with the estimated marginal $R^2$ (left) and conditional $R^2$ (right) from the BVI method for the binomial regression for the different correlation levels $\rho=-0.4$ (top), $\rho=-0.1$ (second from the top), $\rho=0$ (middle), $\rho=0.1$ (second from bottom) and $\rho=0.4$ (bottom). The values are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}, while the orange dot denotes the estimate from the \texttt{rptR} package. The mean value of the $R^2$ values for all simulations is marked with a circle at the bottom of each histogram.}
   \label{fig:r2_combined_poisson}
 \end{figure}
 
@@ -447,7 +447,7 @@ The repeatability of the color of male beetles is modelled by a binomial GLMM wi
     \includegraphics[width=1\linewidth]{Figures/Stoffel Comparison/Heritability_colour_binomial.png}
     \label{fig:heritability_colour_binomial}
   }
-  \caption{Histogram with heritability values for the color of male beetles from the BVI method, with the estimate from the \texttt{rptR} package marked as a dashed line with orange color.}
+  \caption[Estimated repeatability of color in male beetles]{Histogram with heritability values for the color of male beetles from the BVI method, with the estimate from the \texttt{rptR} package marked as a dashed line with orange color.}
 \end{figure}
 % We see that the approximated distribution from the BVI method is centered a bit to the right of the point estimate from \texttt{rptR}. The stochasticity of the BVI method makes it so that the distributions return will vary based on what seed was made to generate the results. Therefore, we expect to see a difference between the centering of the distribution and point estimates. 
 \noindent To estimate the heritability of the number of eggs laid by female beetles, we use a Poisson GLMM with log-link. The model used in our method corresponds to \texttt{rep9}, but as is described in the vignette after fitting \texttt{rep9}, we set the option \texttt{expect="latent"} so that the method calculates the distributional variance as in \Cref{table:1}. This corresponds to the recommendations of \citet{nakagawa2017} as previously mentioned. Also this model is estimated from the \texttt{rptR} package with \texttt{adjusted=FALSE}. From the plotted samples of posterior heritability of eggs laid (\Cref{fig:heritability_eggs_poisson}), we see a very similar distribution as that of the binomial color model. The distribution is symmetric and centered around a mean of $0.3585$. Further, the estimate from the \texttt{rptR} model is $0.3795$ with a confidence interval of $[0.131, 0.542]$, compared to our $95$th percentile of $[0.278, 0.445]$. The $10^3$ bootstrap samples and model fit for the \texttt{rptR} package took $2$ minutes and $13$ seconds, whereas the BVI method used $8$ seconds to obtain the model fit and $10^4$ samples.
@@ -473,7 +473,7 @@ The repeatability of the color of male beetles is modelled by a binomial GLMM wi
     \includegraphics[width=1\linewidth]{Figures/Stoffel Comparison/Heritability_egg_poisson.png}
     \label{fig:heritability_eggs_poisson}
   }
-  \caption{Histogram with heritability values for eggs laid by female beetles from BVI method, with the estimate from the \texttt{rptR} package marked as a dashed line with orange color.}
+  \caption[Estimated repeatability of eggs laid by female beetles]{Histogram with heritability values for eggs laid by female beetles from BVI method, with the estimate from the \texttt{rptR} package marked as a dashed line with orange color.}
 \end{figure}
 \noindent Importantly, note that the estimates from the BVI method will vary each time a model is fit, as it is stochastic. Therefore, it could be that another fit from the BVI method might align closer with Stoffels results, but it could also be further off. 
 
@@ -482,17 +482,17 @@ To explore other possible relative variable importance tools in the Bayesian fra
 \begin{figure}[H]%\ContinuedFloat
   \centering
   \includegraphics[width=1\linewidth]{Figures/R2D2_BVI_Comparison/R2D2_BVI_boxplot.png}
-  \caption{Boxplots of the relative importance distributions for $X_1$ (left), $X_2$ (middle) and $X_3$ (right) for varying correlation levels by the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the green diamond represents the relative variable importance calculated from the LMG method.}
+  \caption[Comparison of the relative importance from the BVI method and the shrinkage prior methods]{Boxplots of the relative importance distributions for $X_1$ (left), $X_2$ (middle) and $X_3$ (right) for varying correlation levels by the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the green diamond represents the relative variable importance calculated from the LMG method.}
   \label{fig:r2d2_importance}
 \end{figure}
 \noindent The first thing one notices from the posterior relative importance distributions (\Cref{fig:r2d2_importance}), is that the spread from the R2D2 method is larger than the spread of the GDR2 method, which again is significantly larger than the spread of the BVI method. In the boxplots, the $25$th and $75$th quantiles define the interval of each box. The mean values of the relative importance distributions for the R2D2 and GDR2 methods do not seem to follow any pattern at all for varying correlation. They are more similar across correlation levels for all covariates, and do not adjust for correlation as the benchmark LMG method. Although it is hard to find patterns and the R2D2 and GDR methods give very flexible results, it becomes clear from they grasp the larger aspects, in that $X_3$ is estimated to be the covariate with the largest variance contribution, followed by $X_2$ and lastly $X_1$. The BVI method is in close agreement with the LMG method, with deviation for $X_1$ and $X_3$ when $\rho=-0.4$. Overall the BVI and LMG methods follow the same pattern for varying correlation, as we expect and have previously discussed.
 \begin{figure}[H]%\ContinuedFloat
   \centering
   \includegraphics[width=1\linewidth]{Figures/R2D2_BVI_Comparison/R2D2_BVI_R2_plot.png}
-  \caption{Boxplots of the estimated $R^2$ distributions for varying correlation levels $\rho$ for the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the green diamond represents the relative variable importance calculated from the LMG method.}
+  \caption[Comparison of the marginal $R^2$ from the BVI method and the shrinkage prior methods]{Boxplots of the estimated $R^2$ distributions for varying correlation levels $\rho$ for the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the green diamond represents the relative variable importance calculated from the LMG method.}
   \label{fig:r2d2_r2}
 \end{figure}
-\noindent The estimated posterior $R^2$ distributions for the R2D2 and GDR2 priors (\Cref{fig:r2d2_r2}) are uniform across the correlation levels, and significantly larger than both the estimates of the BVI and LMG methods. For the $R^2$, the spread of the R2D2 and GDR2 methods are quite similar, with both being much larger than that of the BVI method. Overall, the R2D2 and GDR2 estimates a much larger $R^2$ than the BVI and LMG methods, and the means deviate quite much from the expected values. The BVI method is consistent with the LMG method, and they both follow the expected pattern of the $R^2$. For the expected $R^2$, the BVI and LMG methods seem to align closely with the expectation, with a small deviation for both methods when $\rho=0$.
+\noindent The estimated posterior marginal $R^2$ distributions for the R2D2 and GDR2 priors (\Cref{fig:r2d2_r2}) are uniform across the correlation levels, and significantly larger than both the estimates of the BVI and LMG methods. For the $R^2$, the spread of the R2D2 and GDR2 methods are quite similar, with both being much larger than that of the BVI method. Overall, the R2D2 and GDR2 estimates a much larger $R^2$ than the BVI and LMG methods, and the means deviate quite much from the expected values. The BVI method is consistent with the LMG method, and they both follow the expected pattern of the $R^2$. For the expected $R^2$, the BVI and LMG methods seem to align closely with the expectation, with a small deviation for both methods when $\rho=0$.
 \\
 \\
 As the R2D2 and GDR2 methods are not specifically relative variable importance measures, one should also interpret the results with this in mind. The development of the R2D2 and GDR2 priors have been done to produce robust predictions for high dimensional linear regression models, and the results presented here are therefore not an evaluation of the R2D2 and GDR2 priors as relative importance measures. Moreover, the interpretation made to obtain these results was made by the author, and the results should be taken with caution. The main motivation behind this comparison was to explore other possible relative importance measures in the Bayesian framework, as this is a small field with few available methods. 

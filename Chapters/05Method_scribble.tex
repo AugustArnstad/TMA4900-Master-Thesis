@@ -65,7 +65,7 @@ respectively, where $\sigma_{\varepsilon, s}^2 = \sigma^2_{e, s} + \sigma^2_d$ i
     % Poisson & Square Root & $\lambda>0$ & 0.25 \\
     \hline
     \end{tabular}
-    \caption{Distribution-specific variance \(\sigma^2_d\) for the Gaussian, Binomial and Poisson distributions with link functions. The full expression $\mathbb{E}[\lambda]$ is given in \eqref{eq:lambda}. Distributional variances correspond to the variances in \citet{nakagawa2013general} and the calculation for the log-link Poisson follow the recommendations of \citet{nakagawa2017}.}
+    \caption[Distribution-specific variance \(\sigma^2_d\) for the Gaussian, Binomial and Poisson distributions]{Distribution-specific variance \(\sigma^2_d\) for the Gaussian, Binomial and Poisson distributions with link functions. The full expression $\mathbb{E}[\lambda]$ is given in \eqref{eq:lambda}. Distributional variances correspond to the variances in \citet{nakagawa2013general} and the calculation for the log-link Poisson follow the recommendations of \citet{nakagawa2017}.}
     \label{table:1}
 \end{table}
 
@@ -160,7 +160,7 @@ The $R^2$ values are listed in \Cref{table:2}.
     $0.9$ & $0.889$ & $0.945$\\ 
     \hline
     \end{tabular}
-    \caption{The theoretically correct marginal variance explained (left column) and conditional variance explained (right column) for different correlation levels between the fixed effects.}
+    \caption[Expected $R^2$ for Gaussian LMM]{The theoretically expected marginal variance explained (left column) and conditional variance explained (right column) for different correlation levels between the fixed effects.}
     \label{table:2}
 \end{table}
 \noindent These values provide an empiric way of checking if our method fulfills the proper decomposition criteria listed in \Cref{sec:rel_imp}, by seeing if the relative importances for each effect sum to the model $R^2$.
@@ -237,7 +237,7 @@ is the quantity used in \Cref{table:1} \citep{nakagawa2017}. So we obtain, using
     Poisson, log & 0.1338 & 0.1338 & 0.2676 & 0.4014 \\ 
     \hline
     \end{tabular}
-    \caption{The expected relative importance of the covariates in the different models when uncorrelated.}
+    \caption[Expected relative importance of independent covariates for non-Gaussian GLMMs]{The expected relative importance of the covariates in the different models when they are uncorrelated.}
     \label{table:3}
 \end{table}
 \noindent In practice, the distributional variance of the Poisson model should be calculated using the estimated values, and the distributional variance will therefore be dependent on the fitted model \citep{nakagawa2017}.
@@ -270,7 +270,7 @@ and similarly for the expected conditional $R^2$ as
     Poisson Log  & 0.4  & 0.877 & 0.960 \\
     \bottomrule
     \end{tabular}
-    \caption{Expected marginal and conditional $R^2$ values for the binomial regression with logit-link (top) and Poisson regression with log-link (bottom) for different correlation levels $\rho$.}
+    \caption[Expected $R^2$ for non-Gaussian GLMMs]{Expected marginal and conditional $R^2$ values for the binomial regression with logit-link (top) and Poisson regression with log-link (bottom) for different correlation levels $\rho$.}
     \label{table:r2values}
 \end{table}
 
@@ -310,7 +310,7 @@ which gives values that are summarized in \Cref{table:r2values_r2d2}.
     0.4  & 0.913 \\
     \bottomrule
     \end{tabular}
-    \caption{$R^2$ values for the correlation levels $\rho$ used in the linear regression for analyzing the BVI method in comparison to the R2D2 priors.}
+    \caption[Expected $R^2$ for comparison of BVI and shirnkage prior methods]{Expected $R^2$ values for the correlation levels $\rho$ used in the linear regression for analyzing the BVI method in comparison to the R2D2 priors.}
     \label{table:r2values_r2d2}
 \end{table}
 \noindent To fit the linear regression using R2D2 priors for the marginal $R^2$ we use functions from the Github repository \citet{zhang2024r2d2_git} by the author of \citet{zhang2020bayesian}. For the GDR2 priors, we utilize the Stan code available on \citet{aguilar2024GDR_code} by the authors of \citet{aguilar2024generalized}. The hyperparameters for the marginal $R^2 \sim \text{Beta}(a, b)$ are set so that $\mathbb{E}[R^2] \simeq 0.857$ which is approximately the theoretical $R^2$ of $6/7$. This is done for the R2D2 priors by using the default value $b=0.5$ from \citet{zhang2024r2d2_git} and noting that the expected value of the $\text{Beta}(a, b)$ distribution is $a/(a+b)$ \citep{stats_book}. We follow the Gibbs sampler for the marginal R2D2 prior as described in \citep[section 5.3]{zhang2020bayesian} and run the MCMC iteration $N=10^4$ times, with a burn in of $9000$ samples. This gives $1000$ samples from the posterior distribution of the marginal $R^2$ as well as $1000$ samples of each $\phi_j$ for $j=1, 2, 3$. The BVI draws the same amount of samples from the posterior distribution of the model.

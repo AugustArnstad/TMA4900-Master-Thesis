@@ -23,9 +23,10 @@
 %\counterwithout{figure}{section} %change counter for figures within sections (also possible to choose for each chapter
 %\counterwithout{table}{section} %change counter for tables within sections
 \usepackage{color, xcolor} %edit e.g. text colors
-\usepackage{hyperref}
+%\usepackage{hyperref}
 \usepackage{multirow}
-\usepackage{cleveref}
+%\usepackage{cleveref}
+%\usepackage[nottoc]{tocbibind}
 \usepackage{appendix}
 \usepackage{subcaption}
 %\usepackage[backend = biber,
@@ -49,6 +50,8 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{url}
+\usepackage{hyperref}
+\usepackage{cleveref}
     
 \lstset{ 
     language=R,
@@ -118,22 +121,26 @@ Department of Mathematical Sciences \\
 \setcounter{page}{1}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Abstract} %add the chapter to the table of contents, this is not automatically added when creating unnumbered chapters (*). Add it in a chapter style, and keep all chapters on the same numberline indent regardless of number or not on the chapter
 \input{Chapters/00Abstract} %insert the chapter text from the files
+\clearpage
 
 \chapter*{Sammendrag} %pre-chapters should not be numbered, hence the "*"
 \addcontentsline{toc}{chapter}{\protect\numberline{}Sammendrag} %add the chapter to the table of contents, this is not automatically added when creating unnumbered chapters (*). Add it in a chapter style, and keep all chapters on the same numberline indent regardless of number or not on the chapter
 \input{Chapters/00Sammendrag} %insert the chapter text from the files
+\clearpage
 
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Preface} 
 \input{Chapters/01Preface}
+\clearpage
 
-\addtocontents{toc}{\protect\contentsline{chapter}{\numberline{}Contents}{\thepage}{chapter.1}}
+\addtocontents{toc}{\protect\contentsline{chapter}{\numberline{}Contents}{\thepage}{chapter.1}} 
 \tableofcontents
 \clearpage
 %\addcontentsline{toc}{chapter}{\protect\numberline{}Contents}
 %add to table of contents list of figures and tables, and insert list of figures and tables
 \addcontentsline{toc}{chapter}{\protect\numberline{}\listfigurename}
 \listoffigures
+\clearpage
 \addcontentsline{toc}{chapter}{\protect\numberline{}\listtablename}
 \listoftables
 \clearpage
@@ -225,10 +232,11 @@ Department of Mathematical Sciences \\
 
 
 \addcontentsline{toc}{chapter}{\protect\numberline{}References}
-%\printbibliography[title={References}] %you may change the title in the toc here if you want
+\bibliography{bibliography} % assuming your .bib file is named 'bibliography.bib'
 \cleardoublepage
 
-\bibliography{bibliography} % assuming your .bib file is named 'bibliography.bib'
+%\printbibliography[title={References}] %you may change the title in the toc here if you want
+
 
 \appendix
 \addcontentsline{toc}{chapter}{\protect\numberline{}Appendices}

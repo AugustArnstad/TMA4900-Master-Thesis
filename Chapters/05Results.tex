@@ -56,7 +56,7 @@ In general, the BVI method is in agreement with the theoretical results for unco
     \label{fig:relimp_X3_fig}
   \end{subfigure}
   
-  \caption[Relative importance of the fixed effects in Gaussian LMM]{Violin plots for the relative importance of the fixed effects $X_1$ (top), $X_2$ (middle) and $X_3$ (bottom) for different correlation levels calculated from the ensemble of simulated datasets by the BVI, ELMG, ERW, and the Relaimpo methods. The horizontal line displays the theoretically correct importance of each fixed effect in the case of uncorrelated data. For the BVI method, the distributions of posterior means are shown to compare to the distribution of point estimates from the other three methods. }
+  \caption[Relative importance of the fixed effects in Gaussian LMM]{Violin plots for the relative importance of the fixed effects $X_1$ (top), $X_2$ (middle) and $X_3$ (bottom) for different correlation levels displayed along the x-axis, calculated from the ensemble of simulated datasets by the BVI, ELMG, ERW, and the Relaimpo methods. The horizontal line displays the theoretically correct importance of each fixed effect in the case of uncorrelated data. For the BVI method, the distributions of posterior means are shown to compare to the distribution of point estimates from the other three methods. }
   \label{fig:relimp_all}
 \end{figure}
 
@@ -98,7 +98,7 @@ To re-emphasize, this is both expected and desirable since the increase in respo
   \label{fig:relimp_alpha}
 \end{figure}
 
-\subsection{Total variance explained - $R^2$ estimates}
+\subsection{Total variance explained - \texorpdfstring{$R^2$}{Lg} estimates}
 \label{sec:R2} 
 As a useful by-product from the previous results we can get the total variances explained by our model (\Cref{fig:total_variance}).
 The marginal variance explained, $R^2_{\text{marg}}$, is the variance explained by the fixed effects, and we get results for all four methods, including Relaimpo.
@@ -477,7 +477,7 @@ The repeatability of the color of male beetles is modelled by a binomial GLMM wi
 \end{figure}
 \noindent Importantly, note that the estimates from the BVI method will vary each time a model is fit, as it is stochastic. In this comparison, we only fit a single Bayesian GLMM with the BVI method. Therefore, it could be that another fit from the BVI method might align closer with the results of Stoffel and Nakagawa, but it could also be further off. 
 
-\section{Comparing the BVI method with $R^2$-induced Dirichlet decomposition priors and Generalized Decomposition Priors on $R^2$}
+\section{Comparing the BVI method with \texorpdfstring{$R^2$}{Lg}-induced Dirichlet decomposition priors and Generalized Decomposition Priors on \texorpdfstring{$R^2$}{Lg}}
 To explore other possible relative variable importance tools in the Bayesian framework, we have discussed R2D2 and GDR2 priors in \Cref{sec:R2D2} and \Cref{sec:r2d2method}. We now present the results of applying the R2D2 and GDR2 priors to a linear regression, and see how they can be interpreted as relative importance measures. The results are compared to the BVI method and the LMG method serves as a robust benchmark for all methods. Please note once again that the R2D2 and GDR2 priors are originally developed for prediction models, and that the results presented here are based on our interpretation of how the R2D2 and GDR2 priors can be used for relative importance. The theoretical importances for uncorrelated covariates are found in \eqref{eq:RI_R2D2} and the theoretical $R^2$ for all correlation levels are found in \Cref{table:r2values_r2d2}. 
 \begin{figure}[H]%\ContinuedFloat
   \centering

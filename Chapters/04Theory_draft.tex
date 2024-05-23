@@ -115,7 +115,7 @@ As mentioned, it is the middle term that poses the problem of assigning importan
 %     \text{Var}(\mathbf{y}) = \sum_{j=1}^p\beta_j^2v_j + \sum_{j=1}^{p-1}\sum_{k=j+1}^{p} \beta_j\beta_k\sqrt{v_jv_k}\rho_{jk} + \sigma_{\varepsilon}^2 \ ,
 % \end{equation}
 % where $\beta_j$ is the $j$-th regression coefficient, $v_j$ is the variance of the $j$-th covariate, $\rho_{jk}$ is the correlation between the $j$-th and $k$-th covariate and $\sigma_{\varepsilon}^2$ is the variance of the error term.
-\subsection{Naive decompositions of $R^2$}
+\subsection{Naive decompositions of \texorpdfstring{$R^2$}{Lg}}
 \label{sec:naive_decomp}
 To make it clear that some simple decompositions fail the conditions of relative importance measures, we will consider two naive approaches for decomposing the $R^2$. 
 We denote the $R^2$ of a linear regression with regressors $X_1, \dots, X_p$ as $R^2(\{1, \dots, p\})$ and the relative importance of regressor $X_i$ as $\text{RI}(\{i\})$
@@ -216,7 +216,7 @@ As $\mathbf{Z}$ is orthogonal, the relative importance for each column $\mathbf{
 The notation $\boldsymbol{\xi}^{[2]}$ for some $\boldsymbol{\xi}$ represents the Schur product of $\boldsymbol{\xi}$ with itself, \textit{i.e.} element wise squaring of each element in $\boldsymbol{\xi}$.
 Once these importances are obtained, \citet{johnson_relative_weights} argues that we should regress $\mathbf{X}$ on $\mathbf{Z}$ to obtain the weights that relate the importance of each column of $\mathbf{Z}$ to each column of $\mathbf{X}$. These weights can be calculated as the matrix
 \begin{equation}
-    \label{eq:lambda}
+    \label{eq:lambda_rw}
     \boldsymbol{\Lambda} = (\mathbf{Z}^T\mathbf{Z})^{-1}\mathbf{Z}^T\mathbf{X} = (\mathbf{V}\mathbf{U}^T\mathbf{U}\mathbf{V}^T)^{-1}\mathbf{V}\mathbf{U}^T\mathbf{U}\mathbf{D}\mathbf{V}^T = \mathbf{V}\mathbf{D}\mathbf{V}^T \ ,
 \end{equation}
 and since $\mathbf{Z}$ is orthogonal, the contribution from a column of $\mathbf{z_i}$ with respect to a column $\mathbf{x}_j$ is the squared entry $\boldsymbol{\Lambda}_{ij}^2$.
@@ -406,13 +406,13 @@ where $\alpha_j \sim \mathcal{N}(0, \tau_0^2)$, has a log-normal distribution. T
 
 
 
-\section{Extending $R^2$ to GLMMs}
+\section{Extending \texorpdfstring{$R^2$}{Lg} to GLMMs}
 \label{sec:R2_GLMM}
 As we generalized the linear regression to LMMs, GLMs and GLMMs, we have to find a generalization of the concept of $R^2$ in order to generalize the concept of variable importance. This is fundamental to be able to propose a method for decomposing the $R^2$ and thereby assigning relative importance to covariates.
 However, the task of determining the $R^2$, and decomposing it, is not a trivial task in the linear regression case and becomes even more complex in the case of GLMMs.
 Many extensions have been proposed, but due to a variety of theoretical problems and/or computational difficulties, no consensus has been reached on a framework for calculating the $R^2$ for GLMMs \citep{nakagawa2013general}.
 To get an overview of the status quo for $R^2$, we will follow the paper by \citet{nakagawa2013general} and go through the different components added to the linear regression to compose the GLMMs.
-\subsection{$R^2$ for GLMs}
+\subsection{\texorpdfstring{$R^2$}{Lg} for GLMs}
 Recalling the definition of the $R^2$ from \Cref{eq:R2}, we now generalize this to the GLMs. This topic has been subject to significant research, (see for example \citet{maddala1983limited, cameron1997r, menard2000coefficients,  nakagawa2013general}). The methods first suggested was based on the likelihood function of the model to be analyzed. We will not implement such methods, as they are not suitable for the full generalization to be made later on, however they are important in building a framework for the $R^2$ value and are therefore included.
 To illustrate the likelihood based generalization of the $R^2$ value to GLMs, consider the deviance $\mathcal{D}(\mathbf{y}\lvert \theta)$ function which is defined as twice the difference between the log likelihood of the \textbf{saturated model} and the log-likelihood of the model of interest \citep{GLMM_book_old}.
 The saturated model denotes the model of the maximum achievable log likelihood, and therefore fits the data perfectly. 
@@ -453,7 +453,7 @@ The reason why we will not apply likelihood based $R^2$ measures is that when ge
 The REML estimator transforms the data, meaning that models cannot be compared when fitted, and therefore the proposed measure of $R^2$ is not applicable to the REML framework \citep{nakagawa2013general}.
 However, the extension of the $R^2$ measure to the larger class GLMMs will also cover the special case of GLMs, and is discussed further below in \Cref{sec:R2GLMM}.
 
-\subsection{$R^2$ for LMMs and random slope models}
+\subsection{\texorpdfstring{$R^2$}{Lg} for LMMs and random slope models}
 \label{sec:R2_LMM}
 In the LMMs, as opposed to the linear regression, one wishes to estimate two or more variance components instead of only the residual error variance.
 This increases complexity and makes the task of assigning relative importance to the covariates even more challenging.
@@ -568,7 +568,7 @@ For the random intercept model with $\sigma_{r, i, j}^2 = \sigma^2_r$, this defi
 \end{equation}
 The $R^2_{\text{LMM}}$ proposed by Johnson now lets us compute the $R^2$ for general LMMs, however it is argued in \citet{Johnson2014} whether the improved $R^2$ estimate by taking the random slope into account is worth the added complexity and computational cost.
 
-\subsection{$R^2$ for GLMMs}
+\subsection{\texorpdfstring{$R^2$}{Lg} for GLMMs}
 \label{sec:R2GLMM}
 The final step towards a complete generalization for the $R^2$ value of regression models is to extend it to the GLMMs. 
 When considering non-normal responses, the link function introduces an aspect not yet discussed, which is to define the residual variance.
@@ -746,7 +746,7 @@ For a general GLMM belonging to the exponential family defined in \eqref{eq:exp_
 \end{equation}
 where the vector $\mathbf{y}_j$ denotes the $j$th cluster of observations \citep{fong2010bayesian}.
 
-\subsection{$R^2$ in the Bayesian framework}
+\subsection{\texorpdfstring{$R^2$}{Lg} in the Bayesian framework}
 \label{sec:bayes_R2}
 When working in the Bayesian framework, the definition of $R^2$ for the linear regression is not as straightforward as in the classical framework. As parameters are not treated as fixed, but as random variables, the $R^2$ value will also be a random variable. A possible remedy to this could be to use the posterior mode of the parameters $\boldsymbol{\beta}$ in \eqref{eq:R2}, however \citet{gelman2017rsquared} states two conflicts that this poses. Firstly, the use of point estimates to calculate statistics in the Bayesian framework rejects the fundamental uncertainty of the Bayesian framework. Secondly, when the parameters are estimated in a Bayesian framework, there is no guarantee that the $R^2 \in [0, 1]$, reducing its intuitive interpretability. 
 In \citet{gelman2017rsquared} a definition of the $R^2$ for the Bayesian linear regression is proposed. Consider a draw $s$ of the parameters $\boldsymbol{\beta}$ from the posterior distribution. Then, the proposed definition is

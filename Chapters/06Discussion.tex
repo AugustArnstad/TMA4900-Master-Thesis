@@ -61,36 +61,36 @@ We did not consider random slopes when developing the BVI method, but this could
 Conceptually, variable importance is in itself a debated topic. The first question one can ask is what the definition of relative importance is. In \citet{gromping_relaimpo}, relative importance is based on variance decomposition and we have chosen to follow this notion. However, this definition has the disadvantage that an agreement of allocation of importances for correlated covariates seems impossible \citep{Gromping_2015}. This problematic issue is present in our results when the fixed effects were correlated, making evaluation of the method difficult. For our method, the pattern observed was a consequence of the relative weights method, rather than a general method for distributing the shared variance between covariates. The search for a unified variable importance framework has given us methods such as the LMG \citep{gromping_relaimpo}, Proportional marginal variance decomposition (PMVD) \citep{gromping_relaimpo}, the relative weights method \citep{johnson_relative_weights} and dominance analysis methods \citep{budescu1993dominance}. Yet, no one has been able to provide a method that is completely accepted by the field of mathematics. For these reasons, variable importance as a subject, and its methods, have received criticism \citep{gromping_relaimpo}. However, we believe that variable importance methods can give researchers valuable information and spark ideas, and that they therefore should have a place in the statistical toolbox. That being the case, we wish to emphasize that all statistical methods are limited by the assumptions they rely on and the data they are applied to. As \citet{Sutherland_91} put it; \textit{Statistical techniques do not build theory - theoreticians do}.
 
 
-\begin{itemize}
-    \item Summarize the method. Similar to that of the project thesis. 
-    \item State that it can be used across diciplines, and that a Bayesian approach is useful when prior information is available.
-    \item Now the discussion really begins. State that the methodology for LMMs proved to imply that we have a proper decomposition of the $R^2$. Even though this was not a main focus in this thesis, the results of uncorrelated covariates and marginal and conditional $R^2$ values seem to be in line with the what one would expect. 
-    \item State that we have addressed two main points from the project thesis, namely testing the methodology on real data and expanding it to handle GLMMs.
-    \item Further, we allow for a covariance structure in the random effects, which is not possible in the project thesis.
-    \item Emphasize that the results in this thesis are calculated based on theory from a subject that in itself has been subject to criticism. Therefore, the results should be interpreted with caution, especially when we also use the definitions of $R^2$ from Nakagawa, which may be oversimplified. (See last discussion section of project thesis)
-\end{itemize}
+% \begin{itemize}
+%     \item Summarize the method. Similar to that of the project thesis. 
+%     \item State that it can be used across diciplines, and that a Bayesian approach is useful when prior information is available.
+%     \item Now the discussion really begins. State that the methodology for LMMs proved to imply that we have a proper decomposition of the $R^2$. Even though this was not a main focus in this thesis, the results of uncorrelated covariates and marginal and conditional $R^2$ values seem to be in line with the what one would expect. 
+%     \item State that we have addressed two main points from the project thesis, namely testing the methodology on real data and expanding it to handle GLMMs.
+%     \item Further, we allow for a covariance structure in the random effects, which is not possible in the project thesis.
+%     \item Emphasize that the results in this thesis are calculated based on theory from a subject that in itself has been subject to criticism. Therefore, the results should be interpreted with caution, especially when we also use the definitions of $R^2$ from Nakagawa, which may be oversimplified. (See last discussion section of project thesis)
+% \end{itemize}
 
-Further work:
-\begin{itemize}
-    \item Extend the package to encompass the models with known distributional variance as in \citet{nakagawa2013general} and \citet{nakagawa2017}.
-    \item No proofs were considered due to time limitation
-    \item Random slopes could be featured, at least if one can say they improve the model.
-    \item Correlated random effects (?)
-\end{itemize}
+% Further work:
+% \begin{itemize}
+%     \item Extend the package to encompass the models with known distributional variance as in \citet{nakagawa2013general} and \citet{nakagawa2017}.
+%     \item No proofs were considered due to time limitation
+%     \item Random slopes could be featured, at least if one can say they improve the model.
+%     \item Correlated random effects (?)
+% \end{itemize}
 
-DET BØR NEVNES AT USIKKERHETEN I RESULTATENE FRA BVI ER GANSKE SMÅ OFTE, SÆRLIG NÅR DATAEN ER SIMULERT, OG AT DET SÅLEDES IKKE KAN SIDESTILLES MED ET KONFIDENSINTERVALL.
+% DET BØR NEVNES AT USIKKERHETEN I RESULTATENE FRA BVI ER GANSKE SMÅ OFTE, SÆRLIG NÅR DATAEN ER SIMULERT, OG AT DET SÅLEDES IKKE KAN SIDESTILLES MED ET KONFIDENSINTERVALL.
 
 
-HUSK Å NEVNE AT DET ER HELT NATURLIG AT VI FÅR RESULTATER SOM VARIERER LITT FRA GANG TIL GANG. DETTE KAN FORKLARE HVORFOR VI FOR EKSEMPEL IKKE TREFFER STOFFELS ESTIMATER OG BIOLOGENES ESTIMATER, MEN, BASERT PÅ SIMULERINGSSTUDIEN, FØLER VI OSS TRYGGE PÅ AT DENNE SPREDNINGEN IKKE ER FOR STOR, OG AT EN KJØRING AV METODEN KAN SEES PÅ SOM EN TILFELDIG PRØVE FRA EN FORDELING SOM ER SENTRERT RUNDT DEN KORREKTE VERDIEN.
+% HUSK Å NEVNE AT DET ER HELT NATURLIG AT VI FÅR RESULTATER SOM VARIERER LITT FRA GANG TIL GANG. DETTE KAN FORKLARE HVORFOR VI FOR EKSEMPEL IKKE TREFFER STOFFELS ESTIMATER OG BIOLOGENES ESTIMATER, MEN, BASERT PÅ SIMULERINGSSTUDIEN, FØLER VI OSS TRYGGE PÅ AT DENNE SPREDNINGEN IKKE ER FOR STOR, OG AT EN KJØRING AV METODEN KAN SEES PÅ SOM EN TILFELDIG PRØVE FRA EN FORDELING SOM ER SENTRERT RUNDT DEN KORREKTE VERDIEN.
 
-LEGG TIL TO GITHUB LINKER, EN FOR PAKKEN OG EN FOR MASTEREN.
+% LEGG TIL TO GITHUB LINKER, EN FOR PAKKEN OG EN FOR MASTEREN.
 
-KAN DISKUTERES OM VI BURDE UNDERSØKT BEDRE PRIORS FOR ANIMAL MODEL OG DE ANDRE SIMULERINGENE
-KAN DISKUTERES OM VI BURDE BRUKT HØYERE KORRELASJON, MEN DA TROR JEG IKKE MODELLENE VILLE BLITT KONVERGENTE
-JEG TROR METODEN HELT FINT KLARER KATEGORISKE KOVARIATER NÅR DUMMY ENCODING BRUKES
+% KAN DISKUTERES OM VI BURDE UNDERSØKT BEDRE PRIORS FOR ANIMAL MODEL OG DE ANDRE SIMULERINGENE
+% KAN DISKUTERES OM VI BURDE BRUKT HØYERE KORRELASJON, MEN DA TROR JEG IKKE MODELLENE VILLE BLITT KONVERGENTE
+% JEG TROR METODEN HELT FINT KLARER KATEGORISKE KOVARIATER NÅR DUMMY ENCODING BRUKES
 
-DISKUTER SHRINKAGE PÅ RANDOM EFFECTS MED POSITIVT KORRELERTE FIXED EFFECTS OG INCREASE PÅ NEGATIVT KORRELERTE
-DISKUTER HVORFOR POISSON MED HØY KORRELASJON GIR SÅ RARE RESULTATER
+% DISKUTER SHRINKAGE PÅ RANDOM EFFECTS MED POSITIVT KORRELERTE FIXED EFFECTS OG INCREASE PÅ NEGATIVT KORRELERTE
+% DISKUTER HVORFOR POISSON MED HØY KORRELASJON GIR SÅ RARE RESULTATER
 
 %All code used to produced the presented results can be found on the authors Github, and a link to the repository is provided in \Cref{ap:github-repository_thesis}. In the Github, the fully developed package is available, with all files found in the repository linked in \Cref{ap:github-repository_package}. To make it easy to apply, the author has provided a usage example of the package in \Cref{ap:bayesian-importance}. This covers installation, simulates data, formulates and fits a model before drawing samples and obtaining relative importance plots and summary statistics. 
 

@@ -3,6 +3,11 @@
 ## GENERAL SETUP
 First, we set up the necessary libraries and configure the environment for our analysis. This includes loading essential packages and setting options for chunk output and plot dimensions."
 
+
+
+## GENERAL SETUP
+First, we set up the necessary libraries and configure the environment for our analysis. This includes loading essential packages and setting options for chunk output and plot dimensions."
+
 ```{r setup, input=FALSE, echo=FALSE}
 library(formatR)
 showsol <- FALSE
@@ -20,16 +25,16 @@ knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 68),
 ```
 
 ## INSTALLING THE PACKAGE
-This section ensures the devtools package is installed, which is required for installing packages from GitHub. We then install the BayesianImpGLMM package directly from GitHub using devtools::install_github(). In the package under the Hello.R file, all functions are defined with corresponding documentation.
+This section ensures the devtools package is installed, which is required for installing packages from GitHub. We then install the BayesianVariableImportance package directly from GitHub using devtools::install_github(). In the package under the Hello.R file, all functions are defined with corresponding documentation.
 ```{r}
 # If not already installed, install the 'devtools' package
 if(!require(devtools)) install.packages("devtools")
-devtools::install_github("AugustArnstad/BayesianImpGLMM")
-library(BayesianImpGLMM)
+devtools::install_github("AugustArnstad/BayesianVariableImportance")
+library(BayesianVariableImportance)
 ```
 
 ## SIMULATE DATA
-In this part, we simulate data to demonstrate the functionality of the BayesianImpGLMM package. We generate random variables used as fixed effects with different correlation structures and random effects. The data is then structured into data frames for further analysis. If you have a suitable dataset you can use this instead.
+In this part, we simulate data to demonstrate the functionality of the BayesianVariableImportance package. We generate random variables used as fixed effects with different correlation structures and random effects. Note that the coefficients used here are a bit large for the Poisson model, consider lowering them. The data is then structured into data frames for further analysis. If you have a suitable dataset you can use this instead.
 
 ```{r}
 library(remotes)
@@ -58,6 +63,8 @@ simulate_data <- function(n = 10000, n_groups = 100, covariance_level=0) {
   # Simulate random effects groups
   Z1 <- sample(1:n_groups, n, replace = TRUE)
   random_effect_contributions_z1 <- rnorm(n_groups, mean = 0, sd = 1)[Z1]
+  # Z2 <- sample(1:(n_groups/10), n, replace = TRUE)
+  # random_effect_contributions_z2 <- rnorm(n_groups/10, mean = 0, sd = 1)[Z2]
 
   # Coefficients for fixed effects
   beta1 <- 1
@@ -65,7 +72,7 @@ simulate_data <- function(n = 10000, n_groups = 100, covariance_level=0) {
   beta3 <- sqrt(3)
 
   # Linear predictor
-  eta <- beta1*X1 + beta2*X2 + beta3*X3 + random_effect_contributions_z1
+  eta <- beta1*X1 + beta2*X2 + beta3*X3 + random_effect_contributions_z1 #+ random_effect_contributions_z2 
 
   # Binomial with logit link
   p_logit <- exp(eta) / (1 + exp(eta))
@@ -93,17 +100,17 @@ simulate_data <- function(n = 10000, n_groups = 100, covariance_level=0) {
        normal = data_normal)
 }
 
-datasets <- simulate_data()
-
 
 
 ```
 
 
 ## USAGE
-Here we demonstrate the usage of the BayesianImpGLMM package. We fit Bayesian binomial, Poisson and gaussian models and sample posterior distributions for different simulated datasets using functions from the package.
+Here we demonstrate the usage of the BayesianVariableImportance package. We fit Bayesian binomial, Poisson and gaussian models and sample posterior distributions for different simulated datasets using functions from the package. Then, plots are made to display the results.
 ```{r}
 set.seed(1234)
+
+datasets <- simulate_data()
 
 glmm_logit <- y_logit_bin ~ X1 + X2 + X3 + f(Z1, model="iid", hyper=list(prec = list(
         prior = "pc.prec",
@@ -126,17 +133,55 @@ lmm <- y_normal ~ X1 + X2 + X3 + f(Z1, model="iid", hyper=list(prec = list(
       ))
 )
     
-model_logit <- BayesianImpGLMM::perform_inla_analysis(datasets$binomial_logit, glmm_logit, family = "binomial", link_func = "logit")
-model_pois <- BayesianImpGLMM::perform_inla_analysis(datasets$poisson, glmm_pois, family = "poisson", link_func = "log")
-model_normal <- BayesianImpGLMM::perform_inla_analysis(datasets$normal, lmm, family = "gaussian", link_func = "identity")
+model_logit <- BayesianVariableImportance::perform_inla_analysis(datasets$binomial_logit, glmm_logit, family = "binomial", link_func = "logit")
+model_pois <- BayesianVariableImportance::perform_inla_analysis(datasets$poisson, glmm_pois, family = "poisson", link_func = "log")
+model_normal <- BayesianVariableImportance::perform_inla_analysis(datasets$normal, lmm, family = "gaussian", link_func = "identity")
 
-samples_logit <- BayesianImpGLMM::sample_posterior_count(model_logit, glmm_logit, datasets$binomial_logit, n_samp=5000, additive_param = "Z1")
-samples_pois <- BayesianImpGLMM::sample_posterior_count(model_pois, glmm_pois, datasets$poisson, n_samp=5000, additive_param = "Z1")
-samples_lmm <- BayesianImpGLMM::sample_posterior_gaussian(model_normal, lmm, datasets$normal, n_samp=5000, additive_param = "Z1")
 
-plots_logit <- BayesianImpGLMM::plot_samples(samples_logit)
-plots_pois <- BayesianImpGLMM::plot_samples(samples_pois)
-plots_lmm <- BayesianImpGLMM::plot_samples(samples_lmm)
+imp_logit <- BayesianVariableImportance::extract_importances(model = model_logit, 
+                                                  data = datasets$binomial_logit,
+                                                  random_names=c("Z1"), 
+                                                  fixed_names=c("X1", "X2", "X3"))
+
+
+imp_pois <- BayesianVariableImportance::extract_importances(model_pois, 
+                                datasets$poisson,
+                                random_names=c("Z1"), 
+                                fixed_names=c("X1", "X2", "X3"))
+
+#One can also use the dist_factor argument to specify the distribution factor one wishes to use
+imp_pois_2 <- BayesianVariableImportance::extract_importances(model_pois, 
+                                datasets$poisson,
+                                random_names=c("Z1"), 
+                                fixed_names=c("X1", "X2", "X3"),
+                                dist_factor = log(1 + 1/exp(summary(model_pois)$fixed[1] + 0.5)))
+
+
+imp_lmm <- BayesianVariableImportance::extract_importances(model_normal, datasets$normal,
+                                random_names=c("Z1"), 
+                                fixed_names=c("X1", "X2", "X3"))
+
+
+samples_logit <- BayesianVariableImportance::sample_posterior_count(model_logit, glmm_logit, datasets$binomial_logit, n_samp=5000, additive_param = "Z1")
+samples_pois <- BayesianVariableImportance::sample_posterior_count(model_pois, glmm_pois, datasets$poisson, n_samp=5000, additive_param = "Z1")
+samples_lmm <- BayesianVariableImportance::sample_posterior_gaussian(model_normal, lmm, datasets$normal, n_samp=5000, additive_param = "Z1")
+
+plots_logit <- BayesianVariableImportance::plot_samples(samples_logit)
+plots_pois <- BayesianVariableImportance::plot_samples(samples_pois)
+plots_lmm <- BayesianVariableImportance::plot_samples(samples_lmm)
+
+
+
+```
+
+## IMPORTANCES
+The simplest way of obtaining the importances can be done by looking at these objects. Note that these are sampled, so they do not represent the mean of the samples used for plotting further down.
+```{r}
+imp_logit
+
+imp_pois
+
+imp_lmm
 ```
 
 ## PLOTS
@@ -167,8 +212,8 @@ random <- "Z1"
 
 random_plot <- ggplot(samples_pois$scaled_random_samples, aes(x = !!sym(random))) +
   geom_histogram(aes(y = ..density..), fill = "#C6CDF7", alpha = 0.7, bins = 40, color = "black") +
-  geom_density(color = "#E6A0C4", adjust = 1.5, linewidth=1.5) +
-  geom_point(aes(x = mean(samples_mass$scaled_random_samples$Z1), y = 0), color = "#E6A0C4", size = 4) +
+  geom_density(color = "#E6C6DF", adjust = 1.5, linewidth=1.5) +
+  geom_point(aes(x = mean(samples_pois$scaled_random_samples$Z1), y = 0), color = "#E6C6DF", size = 4) +
   labs(#title = paste("Heritability of mass"),
        x = "Samples of relative importance of random effect",
        y = "Frequency") +
@@ -191,7 +236,7 @@ data_long <- samples_pois$scaled_importance_samples %>%
 # Updated plot code
 fixed_plot <- ggplot(data_long, aes(x = Value)) +
   geom_histogram(aes(y = ..density..), fill = "#C6CDF7", alpha = 0.7, bins = 40, color = "black") +
-  geom_density(color = "#E6A0C4", adjust = 1.5, linewidth=1.5) +
+  geom_density(color = "#E6C6DF", adjust = 1.5, linewidth=1.5) +
   facet_wrap(~ Variable, scales = "free_x") +
   labs(x = "Samples of relative importance of random effect",
        y = "Frequency") +
@@ -219,7 +264,7 @@ r2_plot <- ggplot(r2_long, aes(x = Value, fill = R2_Type)) +
   geom_histogram(aes(y = ..density..), alpha = 0.7, bins = 40, color = "black") +
   geom_density(adjust = 1.5, color = "black", alpha = 0.7) +
   labs(x = "R2 Values", y = "Density") +
-  scale_fill_manual(values = c("Marginal_R2" = "#C6CDF7", "Conditional_R2" = "#E6A0C4")) +
+  scale_fill_manual(values = c("Marginal_R2" = "#C6CDF7", "Conditional_R2" = "#E6C6DF")) +
   theme_minimal() +
   theme(legend.title = element_blank(),
         legend.position = "top",

@@ -94,7 +94,7 @@ To re-emphasize, this is both expected and desirable since the increase in respo
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.7\linewidth]{Figures/ViolinPlots/Variance_gamma.png}
-  \caption[Relative importance of the random effect $\boldsymbol{\alpha}$ in Gaussian LMM]{Violin plots for the relative importance of the random effect $\boldsymbol{\alpha}$, that is, $\hat{\sigma}^2_{\alpha}$ for different correlation levels calculated from the ensemble of simulated datasets by the BVI, ELMG and the ERW method. For the BVI method the distributions of posterior means of the marginal distribution of $\hat{\sigma}^2_{\alpha}$ are shown to compare to the point estimates of the other two methods. The horizontal line displays the theoretically correct importance $\sigma^2_{\alpha}$ of the random effect in the case of uncorrelated data.}
+  \caption[Relative importance of the random effect $\boldsymbol{\alpha}$ in Gaussian LMM]{Violin plots for the relative importance of the random effect $\boldsymbol{\alpha}$, that is, $\hat{\sigma}^2_{\alpha}$ for different correlation levels displayed along the x-axis, calculated from the ensemble of simulated datasets by the BVI, ELMG and the ERW method. For the BVI method the distributions of posterior means of the marginal distribution of $\hat{\sigma}^2_{\alpha}$ are shown to compare to the point estimates of the other two methods. The horizontal line displays the theoretically correct importance $\sigma^2_{\alpha}$ of the random effect in the case of uncorrelated data.}
   \label{fig:relimp_alpha}
 \end{figure}
 
@@ -124,50 +124,91 @@ The centering of the distributions for both the marginal and conditional varianc
     \includegraphics[width=0.55\linewidth]{Figures/ViolinPlots/Conditional_Variance.png}
     \label{fig:variance_conditional}
   }
-  \caption[Marginal and conditional $R^2$ in Gaussian LMM]{Violin plots for the total marginal (top) and conditional (bottom) variance explained ($R^2$) for different correlation levels calculated from the ensemble of simulated datasets by the BVI, ELMG, the ERW and the Relaimpo method(only marginal variance explained can be computed). For the BVI method the posterior means of the sampled posterior distributions of $\boldsymbol{\beta}$ and the marginal distribution of $\hat{\sigma}^2_{\alpha}$ in each simulation are used to compare to the point estimates of the other two methods. The horizontal lines display the theoretical explained variance for each correlation level $\rho$ as in \Cref{table:2}.}
+  \caption[Marginal and conditional $R^2$ in Gaussian LMM]{Violin plots for the total marginal (top) and conditional (bottom) variance explained ($R^2$) for different correlation levels displayed along the x-axis, calculated from the ensemble of simulated datasets by the BVI, ELMG, the ERW and the Relaimpo method(only marginal variance explained can be computed). For the BVI method the posterior means of the sampled posterior distributions of $\boldsymbol{\beta}$ and the marginal distribution of $\hat{\sigma}^2_{\alpha}$ in each simulation are used to compare to the point estimates of the other two methods. The horizontal lines display the theoretical explained variance for each correlation level $\rho$ as in \Cref{table:2}.}
   \label{fig:total_variance}
 \end{figure}
 
 \section{Heritability of house sparrow traits}
+\label{sec:heritability_results}
 We now investigate the results of applying our method to the house sparrow dataset. As previously discussed (\Cref{sec:heritability}), estimating the heritability of phenotypic traits can be seen as a special case of relative variable importance and so the findings we present are directly obtained by our method. The samples of relative variable importance, are sampled from the variance component that captures additive genetic variance, and we use the results from \citet{Silva2017} and \citet{Muff2019Genetic} for comparison. For this analysis, the covariance structure of the pedigree required us to model more complex random effects than i.i.d. random intercepts, and so the \texttt{rptR} package could not be used for comparisons. In \Cref{table:summary_heritability} the mean of sampled heritability along with confidence intervals is presented, as well as the corresponding measures from the comparable studies.
+% \begin{table}[H]
+%   \centering
+%   \begin{tabular}{lccccccc}
+%   \toprule
+%    & \multicolumn{2}{c}{\citet{Silva2017}} & \multicolumn{2}{c}{\citet{Muff2019Genetic}} & \multicolumn{2}{c}{BVI} \\ 
+%    \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+%    & Estimate & CI & Estimate & CI & Mean & CI \\ 
+%   \midrule
+%   $h^2_{\text{mass}}$    & 0.300 & [0.231, 0.369] & 0.288 & [0.219, 0.371] & 0.283 & [0.232, 0.344] \\
+%   $h^2_{\text{wing}}$    & 0.388 & [0.353, 0.461] & 0.344 & [0.294, 0.409] & 0.356 & [0.322, 0.393] \\
+%   $h^2_{\text{tarsus}}$  & 0.415 & [0.333, 0.497] & - & - & 0.401 & [0.330, 0.470] \\ 
+%   \bottomrule
+%   \end{tabular}
+%   \caption[Heritability estimates and confidence intervals]{Heritability estimates and confidence interval from \citet{Silva2017}, posterior means of additive genetic variance divided by the posterior means of total phenotypic variance in \citet{Muff2019Genetic} with corresponding confidence interval and the mean and confidence interval of the heritability samples obtained from the BVI method for the phenotypic traits; body mass, wing length and tarsus length.}
+%   \label{table:summary_heritability}
+% \end{table}
 \begin{table}[H]
   \centering
+  \small
   \begin{tabular}{lccccccc}
-  \toprule
-   & \multicolumn{2}{c}{\citet{Silva2017}} & \multicolumn{2}{c}{\citet{Muff2019Genetic}} & \multicolumn{2}{c}{BVI} \\ 
-   \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
-   & Estimate & CI & Estimate & CI & Mean & CI \\ 
-  \midrule
-  $h^2_{\text{mass}}$    & 0.300 & [0.231, 0.369] & 0.288 & [0.219, 0.371] & 0.283 & [0.232, 0.344] \\
-  $h^2_{\text{wing}}$    & 0.388 & [0.353, 0.461] & 0.344 & [0.294, 0.409] & 0.356 & [0.322, 0.393] \\
-  $h^2_{\text{tarsus}}$  & 0.415 & [0.333, 0.497] & - & - & 0.401 & [0.330, 0.470] \\ 
-  \bottomrule
+    \toprule
+    & \multicolumn{2}{c}{$h^2_{\text{mass}}$} & \multicolumn{2}{c}{$h^2_{\text{wing}}$} & \multicolumn{2}{c}{$h^2_{\text{tarsus}}$} \\
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+    & Est. & CI & Est. & CI & Est. & CI \\
+    \midrule
+    \citet{Silva2017} & 0.300 & [0.231, 0.369] & 0.388 & [0.353, 0.461] & 0.415 & [0.333, 0.497] \\
+    \citet{Muff2019Genetic} & 0.288 & [0.219, 0.371] & 0.344 & [0.294, 0.409] & - & - \\
+    BVI grid & 0.282 & [0.231, 0.342] & 0.356 & [0.322, 0.393] & 0.401 & [0.329, 0.468] \\
+    BVI CCD & 0.284 & [0.255, 0.315] & 0.356 & [0.334, 0.380] & 0.401 & [0.363, 0.438] \\
+    \bottomrule
   \end{tabular}
-  \caption[Heritability estimates and confidence intervals]{Heritability estimates and confidence interval from \citet{Silva2017}, posterior means of additive genetic variance divided by the posterior means of total phenotypic variance in \citet{Muff2019Genetic} with corresponding confidence interval and the mean and confidence interval of the heritability samples obtained from the BVI method for the phenotypic traits; body mass, wing length and tarsus length.}
+  \caption[Heritability estimates and confidence intervals]{Heritability estimates and confidence intervals from \citet{Silva2017}, posterior means of additive genetic variance divided by the posterior means of total phenotypic variance in \citet{Muff2019Genetic} with corresponding confidence intervals, and the mean and confidence intervals of the heritability samples obtained from the BVI method with grid and CCD integration strategies for the phenotypic traits: body mass, wing length, and tarsus length. Note that in \citet{Muff2019Genetic} no estimate of tarsus length heritability was provided.}
   \label{table:summary_heritability}
 \end{table}
-\noindent For the sampled heritability of body mass (\Cref{fig:heritability_mass}), we have a mean of $0.2838$ (\Cref{table:summary_heritability}) and a distribution that is centered around the mean. The distribution does not seem to be symmetric, and might show signs of being bimodal, with one larger peak at the mean and possibly one smaller peak to the left of the larger peak. Furthermore, the distribution exhibits a longer tail to the right and the $95$th percentile is approximately the interval $[0.2324, 0.3430]$. To fit the model and obtain the samples, the method took about $73$ seconds.
+\noindent For the sampled heritability of body mass (\Cref{fig:heritability_mass_combined}), we have a mean of $0.282$ (\Cref{table:summary_heritability}) for the grid strategy and $0.284$ for the CCD strategy. Both distributions are centered around the mean, with the CCD strategy having a smaller spread. This is also seen from the $95$th percentile, which is approximately the interval $[0.231, 0.342]$ for the grid strategy compared to $[0.255, 0.315]$ for the CCD strategy. The grid strategy provides a distribution that does not seem to be fully symmetric, having a longer tail to the right then on the left. The CCD strategy, on the other hand, gives a more symmetric distribution with lighter tails. Perhaps a longer tail to the right is observable also here. To fit both the grid and CCD model and obtain the samples, the BVI method took about $156$ seconds.
+% The distribution does not seem to be symmetric, and might show signs of being bimodal, with one larger peak at the mean and possibly one smaller peak to the left of the larger peak. 
+% Furthermore, the distribution exhibits a longer tail to the right and the $95$th percentile is approximately the interval $[0.2324, 0.3430]$. 
+% \begin{figure}[H]
+%   \centering
+%     \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_mass.png}
+%     \caption[Estimated heritability of body mass]{Histogram depicting the estimated heritability values of body mass by the BVI method for the house sparrow dataset. The mean of the samples is marked as a pink circle at the bottom of the histogram, with the lower and upper value for the $95\%$ percentile marked as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
+%     \label{fig:heritability_mass}
+% \end{figure}
 \begin{figure}[H]
   \centering
-    \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_mass.png}
-    \caption[Estimated heritability of body mass]{Histogram depicting the estimated heritability values of body mass by the BVI method for the house sparrow dataset. The mean of the samples is marked as a circle at the bottom of the histogram, with the lower and upper value for the $95\%$ percentile marked as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
-    \label{fig:heritability_mass}
+  \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_mass_combined.png}
+  \caption[Estimated heritability of body mass from grid and CCD strategy]{Histogram depicting the estimated heritability values of body mass by the BVI method for the grid integration strategy(left) and CCD integration strategy (right) for the house sparrow dataset. The mean of the samples is marked as a pink circle at the bottom of the histogram, with the lower and upper value for the $95\%$ percentile marked as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
+  \label{fig:heritability_mass_combined}
 \end{figure}
-\noindent The samples of wing length heritability form a more symmetric curve, centered around a mean of $0.3560$ (\Cref{fig:heritability_wing} and \Cref{table:summary_heritability}). There are fewer signs of another mode for these samples, but one could argue that the right tail is a bit longer also for the heritability of wing length. The $95$th percentile is approximated by the interval $[0.3224, 0.3930]$, which is smaller than the same percentile for the body mass by a factor of $0.63$. The samples of heritability for wing length therefore exhibits less dispersion than those for heritability of body mass. In this case, the model fit and sampling procedure took $76$ seconds.
-\begin{figure}[H]%\ContinuedFloat
+\noindent The samples of wing length heritability both form a roughly symmetric curve, with the grid and CCD samples centered around the same mean of $0.356$. The grid strategy has again a slightly larger spread, with the $95$th percentile being approximately the interval $[0.322, 0.393]$, compared to the CCD strategy with the interval $[0.334, 0.380]$. One could argue that for the grid strategy, the right tail is a bit longer also for the heritability of wing length. The samples of heritability for wing length therefore exhibits less dispersion than those for heritability of body mass. In this case, the model fit and sampling procedure took $162$ seconds for both integration strategies in total.
+% form a more symmetric curve, centered around a mean of $0.3560$ (\Cref{fig:heritability_wing_combined} and \Cref{table:summary_heritability}). There are fewer signs of another mode for these samples, but one could argue that the right tail is a bit longer also for the heritability of wing length. The $95$th percentile is approximated by the interval $[0.3224, 0.3930]$, which is smaller than the same percentile for the body mass by a factor of $0.63$. The samples of heritability for wing length therefore exhibits less dispersion than those for heritability of body mass. In this case, model fit and sampling procedure took $76$ seconds.
+% \begin{figure}[H]%\ContinuedFloat
+%   \centering
+%   \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_wing.png}
+%   \caption[Estimated heritability of wing length]{Histogram of heritability values for wing length of the house sparrows estimated by the BVI method. The mean of the samples is marked as a pink circle at the bottom of the histogram, and the lower and upper value for the $95\%$ percentile are featured as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
+%   \label{fig:heritability_wing}
+% \end{figure}
+\begin{figure}[H]
   \centering
-  \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_wing.png}
-  \caption[Estimated heritability of wing length]{Histogram of heritability values for wing length of the house sparrows estimated by the BVI method. The mean of the samples is marked as a circle at the bottom of the histogram, and the lower and upper value for the $95\%$ percentile are featured as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
-  \label{fig:heritability_wing}
+  \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_wing_combined.png}
+  \caption[Estimated heritability of wing length]{Histogram of heritability values for wing length of the house sparrows estimated by the BVI method for the grid integration strategy (left) and the CCD integration strategy (right). The mean of the samples is marked as a pink circle at the bottom of the histogram, and the lower and upper value for the $95\%$ percentile are featured as dashed lines. The heritability estimate from \citet{Silva2017} and \citet{Muff2019Genetic} are marked as gold and green dots respectively at the bottom of the histogram.}
+  \label{fig:heritability_wing_combined}
 \end{figure}
-\noindent The heritability samples of tarsus length (\Cref{fig:heritability_tarsus}) has a mean of $0.4015$ (\Cref{table:summary_heritability}) and the distribution is centered around this value. An obvious observation here is that the samples form a trimodal distribution, with three very distinct peaks. The center peak is the highest and centered around the mean and the right and left peak seem to be of equal height and symmetric about the center peak. A possible explanation for this pattern is that for this trait, the grid used for numerical integration might not be fine enough, forcing the sampling to occur most frequently at the three modal values. The $95$th percentile is captured by the interval $[0.3316, 0.4669]$ and the time spent to fit the model and draw the samples was reported to be $74$ seconds.  
-\begin{figure}[!ht]%\ContinuedFloat
+\noindent The heritability samples of tarsus length (\Cref{fig:heritability_tarsus_combined}) has a mean of $0.401$ (\Cref{table:summary_heritability}) for both integration strategies. Both are centered at this value, but while the CCD strategy gives of an approximately normal, unimodal distribution, the grid strategy gives a trimodal distribution. The peaks of the trimodal distribution are distinct, with the center peak being the highest and the right and left peaks symmetric about the center peak at equal height. A possible explanation for this pattern is that for this trait, the grid used for numerical integration might force the sampling to occur most frequently at the three modal values. Again, we see that the grid strategy exhibits a larger spread than the CCD strategy. The $95$th percentile of the grid strategy is captured by the interval $[0.329, 0.468]$, whereas the percentile of the CCD strategy is covered by the interval $[0.363, 0.438]$. For the heritability of tarsus length, the quantiles for both strategies are larger than the quantiles for heritability of body mass and wing length. The time spent to fit the model and draw the samples was reported to be $151$ seconds.  
+% and the distribution is centered around this value. An obvious observation here is that the samples form a trimodal distribution, with three very distinct peaks. The center peak is the highest and centered around the mean and the right and left peak seem to be of equal height and symmetric about the center peak. A possible explanation for this pattern is that for this trait, the grid used for numerical integration might not be fine enough, forcing the sampling to occur most frequently at the three modal values. The $95$th percentile is captured by the interval $[0.3316, 0.4669]$ and the time spent to fit the model and draw the samples was reported to be $74$ seconds.  
+% \begin{figure}[!ht]%\ContinuedFloat
+%   \centering
+%   \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_tarsus.png}
+%   \caption[Estimated heritability of tarsus length]{Histogram showing estimated heritability values for tarsus length of the house sparrows from the BVI method. The two dots at the bottom represent the mean of the samples (pink) and the estimate from \citep{Silva2017} (gold). The dashed lines represent the lower and upper value for the $95\%$ percentile.}
+%   \label{fig:heritability_tarsus}
+% \end{figure}
+\begin{figure}[H]
   \centering
-  \includegraphics[width=1\linewidth]{Figures/House sparrow study/Heritability_tarsus.png}
-  \caption[Estimated heritability of tarsus length]{Histogram showing estimated heritability values for tarsus length of the house sparrows from the BVI method. The two dots at the bottom represent the mean of the samples (pink) and the estimate from \citep{Silva2017} (gold). The dashed lines represent the lower and upper value for the $95\%$ percentile.}
-  \label{fig:heritability_tarsus}
+  \includegraphics[width=\linewidth]{Figures/House sparrow study/Heritability_tarsus_combined.png}
+  \caption[Estimated heritability of tarsus length]{Histogram showing estimated heritability values for tarsus length of the house sparrows from the BVI method for the grid integration strategy (left) and the CCD integration strategy (right). The two dots at the bottom represent the mean of the samples (pink) and the estimate from \citep{Silva2017} (gold). The dashed lines represent the lower and upper value for the $95\%$ percentile.}
+  \label{fig:heritability_tarsus_combined}
 \end{figure}
-\noindent We see it as natural that we see different patterns that are hard to fully interpret, as the dataset is from real life and relatively small. Further, the measurements are taken on birds that are quite small, so one should expect measurement error to some degree.
+\noindent We see it as natural that some different patterns that are hard to fully interpret occur, as the dataset is from real life and relatively small. Further, the measurements are taken on birds that are quite small, so one should expect measurement error to some degree.
 
 \section{Non-Gaussian simulation study}
 In this section, we lay forth the results of our simulation study on a binomial and a Poisson regression. In this study, we draw one sample of the posterior distribution for each fitted model to construct the estimates presented. We note that it has been difficult to find suitable methods to compare the non-Gaussian models with. In parallel to fitting our model as described in \Cref{sec:simulation_study}, we fit a model using the \texttt{rptR} package with $100$ bootstrap samples. This allows us to directly compare the importance of the random effect and the marginal and conditional $R^2$ values. However, it does not compute the importance of each isolated fixed effect.  
@@ -482,14 +523,14 @@ To explore other possible relative variable importance tools in the Bayesian fra
 \begin{figure}[H]%\ContinuedFloat
   \centering
   \includegraphics[width=1\linewidth]{Figures/R2D2_BVI_Comparison/R2D2_BVI_boxplot.png}
-  \caption[Comparison of the relative importance from the BVI method and the shrinkage prior methods]{Boxplots of the relative importance distributions for $X_1$ (left), $X_2$ (middle) and $X_3$ (right) for varying correlation levels by the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the green diamond represents the relative variable importance calculated from the LMG method.}
+  \caption[Comparison of the relative importance from the BVI method and the shrinkage prior methods]{Boxplots of the relative importance distributions for $X_1$ (left), $X_2$ (middle) and $X_3$ (right) for varying correlation levels by the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the red diamond represents the relative variable importance calculated from the LMG method.}
   \label{fig:r2d2_importance}
 \end{figure}
 \noindent The first thing one notices from the posterior relative importance distributions (\Cref{fig:r2d2_importance}), is that the spread from the R2D2 method is larger than the spread of the GDR2 method, which again is significantly larger than the spread of the BVI method. In the boxplots, the $25$th and $75$th quantiles define the interval of each box. The mean values of the relative importance distributions for the R2D2 and GDR2 methods do not seem to follow any pattern at all for varying correlation. They are more similar across correlation levels for all covariates, and do not adjust for correlation as the benchmark LMG method. Although it is hard to find patterns and the R2D2 and GDR methods give very flexible results, it becomes clear from they grasp the larger aspects, in that $X_3$ is estimated to be the covariate with the largest variance contribution, followed by $X_2$ and lastly $X_1$. The BVI method is in close agreement with the LMG method, with deviation for $X_1$ and $X_3$ when $\rho=-0.4$. Overall the BVI and LMG methods follow the same pattern for varying correlation, as we expect and have previously discussed.
 \begin{figure}[H]%\ContinuedFloat
   \centering
   \includegraphics[width=1\linewidth]{Figures/R2D2_BVI_Comparison/R2D2_BVI_R2_plot.png}
-  \caption[Comparison of the marginal $R^2$ from the BVI method and the shrinkage prior methods]{Boxplots of the estimated $R^2$ distributions for varying correlation levels $\rho$ for the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the green diamond represents the relative variable importance calculated from the LMG method.}
+  \caption[Comparison of the marginal $R^2$ from the BVI method and the shrinkage prior methods]{Boxplots of the estimated $R^2$ distributions for varying correlation levels $\rho$ for the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the red diamond represents the relative variable importance calculated from the LMG method.}
   \label{fig:r2d2_r2}
 \end{figure}
 \noindent The estimated posterior marginal $R^2$ distributions for the R2D2 and GDR2 priors (\Cref{fig:r2d2_r2}) are uniform across the correlation levels, and significantly larger than both the estimates of the BVI and LMG methods. For the $R^2$, the spread of the R2D2 and GDR2 methods are quite similar, with both being much larger than that of the BVI method. Overall, the R2D2 and GDR2 estimates a much larger $R^2$ than the BVI and LMG methods, and the means deviate quite much from the expected values. The BVI method is consistent with the LMG method, and they both follow the expected pattern of the $R^2$. For the expected $R^2$, the BVI and LMG methods seem to align closely with the expectation, with a small deviation for both methods when $\rho=0$.

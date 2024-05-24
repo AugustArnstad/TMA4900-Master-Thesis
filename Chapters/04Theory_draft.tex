@@ -172,7 +172,7 @@ This iterative process gives rise to the general formula for share of explained 
 where $n(S)$ is the number of regressors in $S$.
 Equation \eqref{eq:LMG} averages the increase in $R^2$, $\text{svar}(\{X_i\})$, when adding the covariate of interest, $X_i$, over all possible orderings of covariates. 
 This mean increase over orderings is assigned as the proportion of $R^2$ explained by $X_i$.
-The LMG method fulfills all but the exclusion criteria described previously \citep{gromping_relaimpo}, but \citet{gromping_relaimpo} argues that this "must be seen as a natural result of model uncertainty" and therefore that this criterion is not indispensable.
+The LMG method fulfills all but the exclusion criteria described previously \citep{gromping_relaimpo}, but \citet{gromping_relaimpo} argues that this \textit{"must be seen as a natural result of model uncertainty"} and therefore that this criterion is not indispensable.
 Therefore, we find it also suitable for our purposes to focus on the three other criteria.
 The setback of the LMG method is the great computational expense that the permutations require when $p$ is large. The complexity is $2^{p-1}$ summations \citep{gromping_relaimpo}, and therefore, the LMG is not suitable for high dimensional models. 
 
@@ -673,7 +673,7 @@ Generally, a Bayesian model is built by first introducing some prior knowledge t
 The prior distribution must be chosen based on the prior knowledge available, and can either be informative, noninformative or weakly informative \citep{gelman2015Bayesian}. 
 As a compromise of the information in the prior and the likelihood of the data, the posterior distribution is obtained. 
 The resulting posterior will be different from analysis to analysis, but some general relations between the prior and posterior are discussed in \citet{gelman2015Bayesian}.
-In particular, it is stated that \textit{the posterior variance is on average smaller than prior variance by an amount that depends on the variation in posterior means over the distribution of possible data} \citep{gelman2015Bayesian}.
+In particular, it is stated that \textit{"the posterior variance is on average smaller than prior variance by an amount that depends on the variation in posterior means over the distribution of possible data"} \citep{gelman2015Bayesian}.
 This further means that if one wishes to reduce the variability in the posterior, the potential for this lies in reducing the variation of possible posterior means.
 The posterior distribution will therefore, in general, be a compromise between the prior and the likelihood, which with increasing sampling size will be increasingly influenced by the likelihood \citep{gelman2015Bayesian}.
 
@@ -865,7 +865,7 @@ for $k=1, ..., K$ where $\alpha_K$ is a reference unit, $\delta(\alpha_k)$ denot
 \label{sec:INLA_framework}
 As we have seen, the analytical posterior is possible to obtain for some hierarchical structures (e.g. \eqref{eq:hierarchical_posterior_analytical}). 
 However, in the case of GLMMs, the posterior distribution is not in general analytically tractable \citep{fong2010bayesian}. This calls for the use of numerical methods, such as Markov Chain Monte Carlo (MCMC) methods, to be able to sample from the posterior distribution. 
-Such methods are computationally expensive, and require careful analysis to justify convergence and proper mixing of the Markov chains to make sure we sample from the steady state the posterior distribution. Therefore it is desirable, under certain conditions, to look at other methods that are more computationally efficient.
+Such methods are computationally expensive, and require careful analysis to justify convergence and proper mixing of the Markov chains to make sure we sample from the steady state posterior distribution. Therefore, it is desirable, under certain conditions, to look at other methods that are more computationally efficient.
 In this thesis we will consider the Integrated Nested Laplace Approximation (INLA) method \citep{gomezrubio2020inla}.
 \subsection{Introduction to INLA}
 The INLA method is an alternative to the classical Marko Chain Monte Carlo methods, that has significant advantages at the cost of some structural assumptions. 
@@ -969,9 +969,9 @@ We will now describe how this can be seen as a special case of wanting to estima
 \subsection*{The Animal Model}
 To introduce the animal model and biological terminology, the section will rely heavily on the work of \citet{Kruuk2004} and \citet{ConnerHartl2004}. 
 The animal model is a mathematical model, used as a tool for quantitative genetic analysis in evolutionary biology where the aim is to explain the phenotypic variation in a population.
-A phenotype is defined as \textit{the outward appearance of an organism for a given characteristic} \citep{ConnerHartl2004}, such as eye color, height or behavior. 
+A phenotype is defined as \textit{"the outward appearance of an organism for a given characteristic"} \citep{ConnerHartl2004}, such as eye color, height or behavior. 
 In an organism, the observed phenotypic trait in an individual is a result of the complex combination of environmental effects and genotype. 
-The genotype of a trait can be defined as \textit{the diploid pair of alleles present at a given locus}, and is the outcome of genetic inheritance \citep{ConnerHartl2004}. 
+The genotype of a trait can be defined as \textit{"the diploid pair of alleles present at a given locus"}, and is the outcome of genetic inheritance \citep{ConnerHartl2004}. 
 As evolutionary biology seeks to explain diversity among individuals in a population \citep{Kruuk2004}, a decomposition of the phenotypic variance is of great interest. 
 The simplest partition is to define the phenotypic variance as the sum of the genetic variance and environmental variance \citep{ConnerHartl2004}. 
 However, for species that mate with other individuals in the population rather than self-fertilize, it is common to further decompose the genetic variance into three parts. 
@@ -990,7 +990,7 @@ where $\boldsymbol{\mu}$ is the mean of the observations $\mathbf{y}$ of the phe
 %, and $\boldsymbol{\varepsilon}$ the vector of residuals.
 One of the random effects in the animal model, $\boldsymbol{\alpha}_A \sim \mathcal{N}(0, \mathbf{G})$,  accounts for the additive genetic effect. The values of the vector $\boldsymbol{\alpha}_A$ containes the so-called breeding values \citet{Wilson_guide_animal_model}, which are defined as the effect of an individuals genes on the value of the phenotypic trait in its offspring \citep{ConnerHartl2004} 
 As in \Cref{sec:LMM}, we let $\mathbf{G}$ denote the covariance matrix of the random effect $\boldsymbol{\alpha}_A$, which in the animal model can be derived from the expected covariance between relatives \citep{Kruuk2004}.
-This derivation can be done by considering the coefficient of coancestry, $\Theta_{i,j}$, defined as \textit{the probability that an allele drawn at random from an individual $i$ will be identical by descent to an allele drawn at random from individual $j$} \citep{Kruuk2004}. 
+This derivation can be done by considering the coefficient of coancestry, $\Theta_{i,j}$, defined as \textit{"the probability that an allele drawn at random from an individual $i$ will be identical by descent to an allele drawn at random from individual $j$"} \citep{Kruuk2004}. 
 We use the coefficient of coancestry to define the expected covariance between relatives, or additive relationship matrix, as $\mathbf{A}_{i, j}=2\Theta_{i, j}$ and consequently $\mathbf{G}=\sigma^2_A\mathbf{A}$ \citep{Kruuk2004}. 
 \subsection*{Heritability}
 \label{sec:heritability}

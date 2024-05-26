@@ -231,12 +231,12 @@ In our simulation study, the Binomial model with logit-link is assigned $\sigma^
 \begin{equation}
     \sigma_d^2 = \ln (1 + 1/\mathbb{E}[\mathbf{y}]) = \ln (1 + 1/\mathbb{E}[\lambda]) \ ,
 \end{equation}
-where 
+with
 \begin{equation}
     \label{eq:lambda}
-    \mathbb{E}[\lambda]=\exp\left(\beta_0 + 0.5 (\sum_{k=1}^q \sigma_{\alpha_k}^2 + \sigma^2_e)\right) \ ,
+    \mathbb{E}[\lambda]=\exp\left(\beta_0 + 0.5 (\sigma^2_{\tau})\right) \ ,
 \end{equation}
-is the quantity used in \Cref{table:1} \citep{nakagawa2017}. So we obtain, using a single random intercept, $\sigma_{d}^2=0.6581$ with $\beta_0=0$, $\sigma^2_{\alpha}=1/7$ and $\sigma^2_e=0$. Therefore, we can summarize the expected relative importance of our three models as in \Cref{table:3}. For the case of correlated covariates, no expected results for the relative importance of covariates are available, as there is no consensus on how to properly distribute the variance explained shared by covariates \citep{gromping_relaimpo}.
+being the quantity used in \Cref{table:1} and where $\sigma^2_{\tau}$ denotes the total model variance on the latent scale \citep{nakagawa2017}. So we obtain, using a single random intercept, $\sigma_{d}^2=0.4741$ with $\beta_0=0$, $\sigma^2_{\tau}=1$. Therefore, we can summarize the expected relative importance of our three models as in \Cref{table:3}. For the case of correlated covariates, no expected results for the relative importance of covariates are available, as there is no consensus on how to properly distribute the variance explained shared by covariates \citep{gromping_relaimpo}.
 \begin{table}[H]
     \centering
     \begin{tabular}{lrrrr}
@@ -245,7 +245,7 @@ is the quantity used in \Cref{table:1} \citep{nakagawa2017}. So we obtain, using
     \hline
     Binomial, logit & 0.0972 & 0.0972 & 0.1944 & 0.2915 \\ 
     %Binomial, probit & 0.1250 & 0.1250 & 0.2500 & 0.3750 \\ 
-    Poisson, log & 0.0861 & 0.0861 & 0.1723 & 0.2585 \\ 
+    Poisson, log & 0.0969 & 0.0969 & 0.1938 & 0.2907 \\ 
     \hline
     \end{tabular}
     \caption[Expected relative importance of independent covariates for non-Gaussian GLMMs]{The expected relative importance of the covariates in the different models when they are uncorrelated.}
@@ -274,11 +274,11 @@ and similarly for the expected conditional $R^2$ as
     Binomial Logit & 0.1  & 0.624 & 0.712 \\
     Binomial Logit & 0.4  & 0.709 & 0.777 \\
     \midrule
-    Poisson Log  & -0.4 & 0.214 & 0.354 \\
-    Poisson Log  & -0.1 & 0.465 & 0.561 \\
-    Poisson Log  & 0    & 0.517 & 0.603 \\
-    Poisson Log  & 0.1  & 0.559 & 0.638 \\
-    Poisson Log  & 0.4  & 0.651 & 0.714 \\
+    Poisson Log  & -0.4 & 0.225 & 0.373 \\
+    Poisson Log  & -0.1 & 0.518 & 0.625 \\
+    Poisson Log  & 0    & 0.581 & 0.678 \\
+    Poisson Log  & 0.1  & 0.634 & 0.723 \\
+    Poisson Log  & 0.4  & 0.747 & 0.820 \\
     \bottomrule
     \end{tabular}
     \caption[Expected $R^2$ for non-Gaussian GLMMs]{Expected marginal and conditional $R^2$ values for the Binomial regression with logit-link (top) and Poisson regression with log-link (bottom) for different correlation levels $\rho$.}

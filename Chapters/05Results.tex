@@ -2,7 +2,7 @@
 \label{sec:simulation_study_gauss}
 This section, like \Cref{sec:simulations}, is reproduced from \citet{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024} and is included here for completeness. We present the results of the Gaussian simulation study, where the BVI method is compared to the ELMG, ERW, and Relaimpo methods. The ELMG and ERW methods were implemented by \citet{matre} and the Relaimpo method denotes the LMG method, implemented in the R package \texttt{Relaimpo} \citep{gromping_relaimpo}. Note that the Relaimpo method only considers models without random effects.
 % First we compare the fixed effects, and then random effects. Lastly, we consider how our BVI model estimates the conditional and marginal $R^2$ values from a Bayesian perspective, comparing these results to the $R^2$ value obtained from the decompositions by the Relaimpo, ELMG, and ERW methods, where the first method only considers models without random effects. 
-\subsection{Relative importance of the fixed effects}
+\subsection{Fixed effects}
 \label{sec:relimp_fixed}
 Here, we review the relative importance allocated to each fixed effect from the simulations.
 There are four different distributions for each method, which corresponds to the four different correlation levels. 
@@ -77,7 +77,7 @@ In general, the BVI method is in agreement with the theoretical results for unco
 %     \label{fig:relimp_X3}
 % \end{figure}
 
-\subsection{Relative importance of the random effects}
+\subsection{Random effects}
 \label{sec:relimp_random}
 Considering a model with one random intercept, we can no longer compare our model with the Relaimpo method, which is only implemented for the linear regression in the Relaimpo R package \citep{gromping_relaimpo}. Therefore, we now compare the BVI method only with the ELMG and ERW methods, which have been extended from the Relaimpo method \citep{matre}.
 We display (\Cref{fig:relimp_alpha}) the distribution of the relative importance, or variance, assigned to the random intercept $\boldsymbol{\alpha}$ for different correlation levels. 
@@ -96,7 +96,7 @@ To re-emphasize, this is both expected and desirable since the increase in respo
   \label{fig:relimp_alpha}
 \end{figure}
 
-\subsection{Total variance explained - \texorpdfstring{$R^2$}{Lg} estimates}
+\subsection{\texorpdfstring{$R^2$}{Lg} estimates}
 \label{sec:R2} 
 As a useful by-product from the previous results we can get the total variances explained by our model (\Cref{fig:total_variance}).
 The marginal variance explained, $R^2_{\text{marg}}$, is the variance explained by the fixed effects, and we get results for all four methods, including Relaimpo.
@@ -193,7 +193,7 @@ We now investigate the results of applying our method to the house sparrow datas
 The posterior importance distributions for all covariates seem reasonable, but the small importances allocated to the random error (Gaussian observations) should be met with caution. 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{Figures/House sparrow study/Tarsus_ccd.png}
+  \includegraphics[width=1\linewidth]{Figures/House sparrow study/Tarsus_ccd.png}
   \caption[Estimated posterior importance of all covariates in the tarsus length model from the BVI method]{Histogram of the sampled posterior importance values for covariates used in the tarsus length model of the house sparrows, estimated by the BVI method. The heritability estimates correspond to the random effect \textit{IDC2}, and the estimates from the BVI method and \citet{Silva2017} of heritability are found in \Cref{table:summary_heritability}. No estimate from \citet{Muff2019Genetic} was available.}
   \label{fig:heritability_tarsus_combined}
 \end{figure}
@@ -205,11 +205,12 @@ The posterior importance distributions for all covariates seem reasonable, but t
 % \end{figure}
 \noindent We see it as natural that some different patterns that are hard to fully interpret occur, as the dataset is from real life and relatively small. Further, the measurements are taken on birds that are quite small, so one should expect measurement error to some degree.
 
-\section{Non-Gaussian simulation study}
-In this section, we display the results of our simulation study of a binomial and a Poisson regression. We note that it has been difficult to find suitable methods to compare the non-Gaussian models with, as we are not aware of any method that calculates relative variable importance for all covariates in the same manner. In parallel to fitting our model as described in \Cref{sec:simulation_study}, we fit a model using the \texttt{rptR} package with $100$ bootstrap samples. This allows us to directly compare the importance of the random effect and the marginal and conditional $R^2$ values. However, it does not compute the importance of each fixed effect.  
-\subsection{Binomial simulation}
-The first model to be analysed is the binomial regression on binary response, modelled with the logit-link function. As mentioned, we fit $N_{sim}=500$ models for each correlation level using the Bayesian Variable Importance method. Then, the BVI method extracts the posterior mode, and calculates the derived measures as described in \Cref{ch:method} to estimate the mode of relative importance for all covariates in each model. A summary of the $500$ estimated modes are shown in the supplementary material (\Cref{ap:supplementary}, specifically \Cref{table:summary_logit}), which contains the mean and values for the lower and upper $95\%$ quantile.
-\subsubsection{Fixed effects}
+% \section{Non-Gaussian simulation study}
+% In this section, we display the results of our simulation study of a binomial and a Poisson regression. We note that it has been difficult to find suitable methods to compare the non-Gaussian models with, as we are not aware of any method that calculates relative variable importance for all covariates in the same manner. In parallel to fitting our model as described in \Cref{sec:simulation_study}, we fit a model using the \texttt{rptR} package with $100$ bootstrap samples. This allows us to directly compare the importance of the random effect and the marginal and conditional $R^2$ values. However, it does not compute the importance of each fixed effect.  
+\section{Binomial simulation}
+In this section, we display the results of our simulation study of a binomial regression. We note that it has been difficult to find suitable methods to compare the non-Gaussian models with, as we are not aware of any method that calculates relative variable importance for all covariates in the same manner. In parallel to fitting our model as described in \Cref{sec:simulation_study}, we fit a model using the \texttt{rptR} package with $100$ bootstrap samples. This allows us to directly compare the importance of the random effect and the marginal and conditional $R^2$ values. However, it does not compute the importance of each fixed effect. The model to be analysed is the binomial regression on binary response, modeled with the logit-link function. As mentioned, we fit \( N_{\text{sim}} = 500 \) models for each correlation level using the Bayesian Variable Importance method. Then, the BVI method extracts the posterior mode and calculates the derived measures as described in \Cref{ch:method} to estimate the mode of relative importance for all covariates in each model. A summary of the 500 estimated modes is shown in the supplementary material (\Cref{ap:supplementary}, specifically \Cref{table:summary_logit}), which contains the mean value and values for the lower and upper 95% quantile.
+% The first model to be analysed is the binomial regression on binary response, modelled with the logit-link function. As mentioned, we fit $N_{sim}=500$ models for each correlation level using the Bayesian Variable Importance method. Then, the BVI method extracts the posterior mode, and calculates the derived measures as described in \Cref{ch:method} to estimate the mode of relative importance for all covariates in each model. A summary of the $500$ estimated modes are shown in the supplementary material (\Cref{ap:supplementary}, specifically \Cref{table:summary_logit}), which contains the mean and values for the lower and upper $95\%$ quantile.
+\subsection{Fixed effects}
 The sampled distribution for the posterior modes of relative importance allocated to the three fixed effects $X_1, X_2$ and $X_3$ are shown for each correlation level (\Cref{fig:fixed_combined_logit}). We see that the distributions generally form a normal shape around the mean, with somewhat varying spread. As correlation levels go from negative to positive, meaning that the variance contribution from the fixed effects increase, the importances of the fixed effects also increase. This is expected, as the marginal $R^2$ increases and is spread across the correlated fixed effects. The difference is quite substantial, with the average relative importance allocated to $X_1$ for $\rho=-0.4$ being $0.020$ compared to $0.173$ for $\rho=0.4$. The same pattern is seen for $X_2$ and $X_3$, with the average relative importance increasing from $0.077$ to $0.239$ for $X_2$ and from $0.166$ to $0.299$ for $X_3$ when going from $\rho=-0.4$ to $\rho=0.4$. For $\rho=0$ (middle plot of \Cref{fig:fixed_combined_logit}), it is clear that the average estimate for relative importance of all fixed effects is very similar to the expected importance (\Cref{table:3}) shown as a dashed green line. 
 \\
 \\
@@ -219,183 +220,59 @@ We notice that the covariates $X_1$ and $X_2$ are allocated a significantly larg
 Generally, it seems that the method is able to capture the expected effects of varying correlation levels, and is in close agreement with the expected theoretical values when the fixed effects are uncorrelated. 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/Fixed_combined_logit.png}
+  \includegraphics[width=1\linewidth]{Figures/Simulation study/Fixed_combined_logit.png}
   \caption[Relative importance of the fixed effects in binomial GLMM]{Histogram with the distribution of posterior modes of relative importance for the fixed effects present in the binomial regression for the different correlation levels $\rho$. The modes of relative importance are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The vertical green line for $\rho=0$ displays the expected relative importance in the case of uncorrelated data. The mean of the mode values for all simulations is denoted at the bottom of each histogram as a circle.}
   \label{fig:fixed_combined_logit}
 \end{figure}
   %\label{fig:fixed_effects_logit}
 %\end{figure}
-\subsubsection{Random effect}
+\subsection{Random effect}
 The sampled posterior modes of importances for the random effect in the logit model (\Cref{fig:relimp_random_logit}) all seem to be roughly normally distributed around the mean. The spread of the random effects seem to be larger than the spread seen in the fixed effects for negative correlations, and more similar for independent and positively correlated covariates. One can see that when the correlation in fixed effects go from negative to positive, the estimated importance of the random effect shrinks. Specifically, when $\rho=-0.4$ the average estimate of relative importance for the random effect is $0.171$ compared to only $0.067$ when $\rho=0.4$. This naturally occurs as the variance contribution from the random effect should be held constant for the correlation levels, and the variance contribution from the fixed effects rise as the correlation increases. Therefore, the proportion of variance explained, which is our definition of relative variable importance, will decrease for the random effect. For $\rho=0$ we see that the average relative importance estimate lies very near the expected value of $0.097$ (\Cref{table:3}). The orange dot at the bottom of the histograms in \Cref{fig:relimp_random_logit} displays the estimated relative importance of the fixed effect from the \texttt{rptR} package, and we see that the estimates are quite close to the mean of the BVI method. The largest difference from the BVI and the \texttt{rptR} package is $0.021$ and are found when $\rho=0$. This difference is $22\%$ of the average estimated relative importance from the BVI method, and is therefore not negligible. However, the methods seem to be in agreement for the overall trends and the methods are closer in accordance with each other for the other correlation levels.
 \\
 \\
-\begin{figure}[H]
+\begin{figure}[ht]
   \centering
     \includegraphics[width=1\linewidth]{Figures/Simulation study/Random_logit.png}
     \caption[Relative importance of the random effect $\boldsymbol{\alpha}$ in binomial GLMM]{Histogram with the posterior modes from the BVI method for each of the $N_{\text{sim}}=500$ simulations, estimating relative importance of the random effect $\boldsymbol{\alpha}$ across the different correlation levels $\rho$. The mean of the mode values from all simulations is displayed at the bottom as a circle and the orange dot at the bottom displays the estimate from the \texttt{rptR} package. The vertical green line for $\rho=0$ is the expected relative importance as in \Cref{table:3}.}
     \label{fig:relimp_random_logit}
 \end{figure}
-\subsubsection{$R^2$ estimates}
+\subsection{\texorpdfstring{$R^2$}{Lg} estimates}
 An important measure in this simulation study is the modes for the sampled posterior distribution of marginal and conditional $R^2$ (\Cref{fig:r2_combined_logit}). The expected values for the marginal and conditional $R^2$ are shown in \Cref{table:r2values}, and are displayed as vertical green lines in each plot. It is clear that, regardless of correlation level, the BVI method is able to estimate the marginal and conditional $R^2$ close to what we expect. The distributions of $R^2$ values seem to have the shape of a bell curve and are symmetric around the mean value. The spread is naturally larger than for the individual fixed effects and random effects, as the $R^2$ is constructed from these importances. For both the marginal and conditional $R^2$ estimates, there is only a negligible difference between the results from the BVI method and the expected values. When comparing to the results from the \texttt{rptR} package, there are some larger differences. The marginal $R^2$ deviates the most when $\rho=0$ with a difference of $0.014$, which is $3\%$ of the average estimated value. For the conditional $R^2$ the largest difference is $0.018$ which also makes up $3\%$ of the average estimated value, found for $\rho=0.1$. Generally, the BVI method seems to be in line with our expectation for $R^2$ values, deviating slightly more from the \texttt{rptR} package estimates.
-% it seems that the BVI method consistently estimates larger $R^2$ values both marginally and conditionally. The largest difference in means between the BVI and the \texttt{rptR} estimates for the marginal $R^2$ is found when $\rho=0$ and is $0.0448$ which makes up $7\%$ of the average estimated value. For $\rho=-0.4$, the mean difference accounts for $14\%$ of the average estimated marginal $R^2$ value. For the conditional $R^2$ the largest difference is $0.0617$ and found for $\rho=-0.4$, which also makes up $14\%$ of the average estimated value. Generally, the BVI method seems to be in line with our expectation for $R^2$ values, but deviates somewhat from the \texttt{rptR} package estimates.
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_logit_high_neg.png}
-%   \caption{Histogram with the estimated marginal $R^2$ (left) and conditional $R^2$ (right) from the BVI method for the binomial regression for the different correlation levels $\rho$ across $N_{\text{sim}}=500$ simulations. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}. The mean value of the $R^2$ values for all simulations is marked with a circle at the bottom. (a) Marginal and conditional $R^2$ estimates for $\rho=-0.4$.}
-%   \label{fig:r2_logit_high_neg}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_logit_low_neg.png}
-%   \caption{(b) Marginal and conditional $R^2$ estimates for $\rho=-0.1$.}
-%   \label{fig:r2_logit_low_neg}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_logit_no.png}
-%   \caption{(c) Marginal and conditional $R^2$ estimates for $\rho=0$.}
-%   \label{fig:r2_logit_no}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_logit_low_pos.png}
-%   \caption{(d) Marginal and conditional $R^2$ estimates for $\rho=0.1$.}
-%   \label{fig:r2_logit_low_pos}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_logit_high_pos.png}
-%   \caption{(e) Marginal and conditional $R^2$ estimates for $\rho=0.4$.}
-%   \label{fig:r2_logit_high_pos}
-% \end{figure}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/R2_combined_logit.png}
+  \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_combined_logit.png}
   \caption[Marginal and conditional $R^2$ in binomial GLMM]{Histograms with the posterior modes of the estimated marginal and conditional $R^2$ from the BVI method for the binomial regression for the different correlation levels $\rho$. The posterior modes are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}, while the orange dot denotes the estimate from the \texttt{rptR} package. The mean value of the $R^2$ modes for all simulations is marked with a circle at the bottom of each histogram.}
   \label{fig:r2_combined_logit}
 \end{figure}
-
-\subsection{Poisson simulation}
-The second model fit in the simulation study is a Poisson regression with log-link. The Poisson models were fit with the same correlation levels as the binomial simulation and $N_{\text{sim}}=500$ models for each level were fitted. For each fitted model, the Bayesian Variable Importance method extracts the posterior mode and then calculates the relative variable importance measures as described in \Cref{ch:method}. In the supplementary material (\Cref{ap:supplementary}, see \Cref{table:summary_poisson}), a summary of the mean and $95\%$ quantile values of the $500$ importance estimates for different correlation levels is displayed.
-\subsubsection{Fixed effects}
+\section{Poisson simulation}
+In this section, we present the results of our simulation study of a Poisson regression. Similar to the binomial regression, we faced challenges in finding suitable methods for comparison. The \texttt{rptR} package was used with 100 bootstrap samples to fit the models. This comparison allowed us to evaluate the importance of the random effect and the marginal and conditional \( R^2 \) values, but did not provide the importance of each fixed effect. The second model fit in the simulation study is a Poisson regression with log-link and consideres count data. The Poisson models were fit with the same correlation levels as the binomial simulation and $N_{\text{sim}}=500$ models for each level were fitted. For each fitted model, the Bayesian Variable Importance method extracts the posterior mode and then calculates the relative variable importance measures as described in \Cref{ch:method}. In the supplementary material (\Cref{ap:supplementary}, see \Cref{table:summary_poisson}), a summary of the mean and $95\%$ quantile values of the $500$ importance estimates for different correlation levels is displayed.
+\subsection{Fixed effects}
 As for the binomial model, we first look at the fixed effects. The estimates of posterior modes for relative importance for the fixed effects (\Cref{fig:fixed_combined_poisson}) are very similar in shape as the binomial model. Again, the spread is somewhat varying for the different correlation levels. Overall, the estimates for the Poisson model are marginally larger than the binomial for negative correlations, and marginally smaller for positive correlations. This is mainly due to the log-link having a distributional variance which is dependent on the correlation of covariates, and the logit-link having a constant distributional variance. When covariates are negatively correlated, the distributional variance of the log-link decreases and the importance allocated to covariates increases. Similarily, the opposite happens when covariates are positively correlated. The quantiles of the Poisson model is marginally more narrow than that of the binomial model. It seems the estimates form a normal curve about the mean, and for $\rho=0$ the average estimated importance is close to the expected value. The same influence of varying correlation levels can be seen as in the binomial model, namely that we obtain larger importance of the fixed effects when the correlation increases. Again the difference is notably large, with the average relative importance of $X_1$ going from $0.017$ for $\rho=-0.4$ to $0.181$ for $\rho=0.4$. For $X_2$ and $X_3$ the average relative importance for the same correlation levels increases from $0.066$ to $0.251$ and from $0.143$ to $0.314$ respectively.
 \\
 \\
 Further, we see the same pattern of larger increase in importance to $X_1$ than for $X_2$ and larger for $X_2$ than $X_3$, as for the binomial model, when correlation increases from $\rho=0$ to $\rho=0.4$. Specifically, $X_1$ increases with $0.084$, $X_2$ with $0.058$ and $X_3$ with $0.024$ when we go from uncorrelated covariates to the highest correlation level. This is in line with our expectations, as the diagonal elements of $\boldsymbol{\Lambda}$ decrease with increasing correlation levels and the off-diagonal elements increase. The inverse pattern is once again not so clear, as the decrease of $X_3$ is larger than the decrease of $X_1$ and $X_2$. However, if one looks at the relative decrease in importance, it is clear that the decrease is larger for $X_1$ and $X_2$ than for $X_3$ when going from $\rho=0$ to $\rho=-0.4$. The inverse pattern may therefore be hard to detect, due to the relatively large difference in magnitude of the coefficients. For the case $\rho=0$, we see that the mean of our samples coincides with the expected relative importance (\Cref{table:3}), and it seems the model express the expected pattern of relative importance for varying correlation levels.
-% \newline
-% \newline
-% It is apparent that for the case $\rho=0.4$, the distribution of relative importance of all covariates contains values very close to zero. After some investigation of the fitted models, it turns out that INLA sometimes returns a model that estimates all fixed coefficients to be $0$, but estimates the random effect almost as expected. One might expect that such a model is not sensible and that a model fit should not have been possible. However, it seems that the models are fit and therefore the resulting variable importance measures have been included in results of the simulation study. With the coefficients estimated to be close to zero, the model will consequently estimate the relative importance of the fixed effects close to zero. It is therefore plausible to believe that the method correctly estimates relative importance, and that this model fit might be caused by some problem with the simulated dataset or INLA.
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/Fixed_high_neg_poisson.png}
-%   \caption{Histogram with relative importance estimates for the fixed effects in the Poisson regression with different correlation levels $\rho$. The values are estimated from $N_{\text{sim}}=500$ simulations by the Bayesian Variable Importance method in the simulation study. The regression coefficients are set to be  $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$ and the vertical green line in (c) is the expected relative importance in the case of uncorrelated data. The mean of the relative importance for all simulations is denoted at the bottom of each histogram as a circle. (a) Relative importance of the fixed effects $\mathbf{X_1},  \mathbf{X}_2, \mathbf{X}_3$ for $\rho=-0.4$.}
-%   \label{fig:fixed_effects_poisson_high_neg}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/Fixed_low_neg_poisson.png}
-%   \caption{(b) Relative importance of the fixed effects $\mathbf{X_1},  \mathbf{X}_2, \mathbf{X}_3$ for $\rho=-0.1$.}
-%   \label{fig:fixed_effects_poisson_low_neg}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/Fixed_no_poisson.png}
-%   \caption{(c) Relative importance of the fixed effects $\mathbf{X_1},  \mathbf{X}_2, \mathbf{X}_3$ for $\rho=0$.}
-%   \label{fig:fixed_effects_poisson_no}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/Fixed_low_pos_poisson.png}
-%   \caption{(d) Relative importance of the fixed effects $\mathbf{X_1},  \mathbf{X}_2, \mathbf{X}_3$ for $\rho=0.1$.}
-%   \label{fig:fixed_effects_poisson_low_pos}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/Fixed_high_pos_poisson.png}
-%   \caption{(e) Relative importance of the fixed effects $\mathbf{X_1},  \mathbf{X}_2, \mathbf{X}_3$ for $\rho=0.4$.}
-%   \label{fig:fixed_effects_poisson_high_pos}
-% \end{figure}
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/Fixed_combined_poisson.png}
-%   \caption{(e) Relative importance of the fixed effects $\mathbf{X_1},  \mathbf{X}_2, \mathbf{X}_3$ for $\rho=0.4$.}
-%   \label{fig:fixed_combined_poisson}
-% \end{figure}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/Fixed_combined_poisson.png}
+  \includegraphics[width=1\linewidth]{Figures/Simulation study/Fixed_combined_poisson.png}
   \caption[Relative importance of the fixed effects in Poisson GLMM]{Histogram with the posterior modes of relative importance of the fixed effects present in the Poisson regression for the different correlation levels $\rho$. The modes are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The true regression coefficients are $\boldsymbol{\beta}=(1, \sqrt{2}, \sqrt{3})^T$ and the vertical green line for $\rho=0$ displays the expected relative importance in the case of uncorrelated data. The mean of the modes for all simulations is denoted at the bottom of each histogram as a circle.}
   \label{fig:fixed_combined_poisson}
 \end{figure}
-\subsubsection{Random effect}
+\subsection{Random effect}
 When looking at the sampled posterior distribution of relative importance estimates of the random effect in the Poisson model, we see that they too are in general a bit smaller than the same estimates for the binomial case (\Cref{fig:relimp_random_poisson}). This is again a consequence of the Poisson model having a relatively larger distributional variance, and so we expect these results. Likewise, the distributions can be said to be normal and symmetric around the mean also for the random effect in the Poisson model. We notice a somewhat larger spread in the random effect importances than the fixed effects for the Poisson model. The shrinkage effect of increasing correlation is also here apparent, with the average relative importance of the random effect going from $0.149$ for $\rho=-0.4$ to $0.072$ for $\rho=0.4$. We again emphasize that this is natural and anticipated, as the random effect variance is constant across correlation levels, while the variance of the fixed effects vary. The expected value when $\rho=0$ is $0.097$ as shown in \Cref{table:3}, and we see that the average estimate is close to this value. The orange dots, denoting the estimates from the \texttt{rptR} package are close to the average estimate from the BVI method, with the largest difference being seen for $\rho=0.4$ with a difference of $0.017$. This is also the largest relative difference, being $24\%$ of the average estimated relative importance. The method seems to be in agreement with the expected values for the relative importance of the random effect, and the \texttt{rptR} estimates are close to the BVI method.
-% \\
-% \\
-% As previously mentioned, for $\rho=0.4$, some models estimated all the fixed effects to be zero. As a consequence of this, the random effect for these models are in turn estimated to have a corresponding larger importance,  due to the way we have defined relative importance. Although it is not so clear from \Cref{fig:relimp_random_poisson}, it can be seen that we have values of approximately $0.3$, $0.9$ and $1$ when $\rho=0.4$. Again, albeit unfortunate, we believe that the method correctly estimates the relative importance, based on the given model, and that the fitted models might be results of some problem with the simulated data or INLA.
 \begin{figure}[H]
   \centering
     \includegraphics[width=1\linewidth]{Figures/Simulation study/Random_poisson.png}
     \caption[Relative importance of the random effect $\boldsymbol{\alpha}$ in Poisson GLMM]{Histogram with posterior modes of the relative importance estimates for the random effect $\boldsymbol{\alpha}$ for varying values of $\rho$ calculated by the BVI method. The study conducted $N_{\text{sim}}=500$ simulations and the mean of the mode of relative importance for all simulations is displayed at the bottom of each histogram as a circle. The vertical green line for $\rho=0$ is the expected relative importance as in \Cref{table:3} and the orange dot is the corresponding estimate from the \texttt{rptR} package.}
     \label{fig:relimp_random_poisson}
 \end{figure}
-\subsubsection{$R^2$ estimates}
+\subsection{\texorpdfstring{$R^2$}{Lg} estimates}
 Moving on to the estimated posterior $R^2$ distributions for the Poisson model (\Cref{fig:r2_combined_poisson}), we see that the expected values from \Cref{table:r2values} are in close agreement with the average marginal and conditional $R^2$ estimated from the BVI method for all correlation levels. The largest difference in expected values and average values from the BVI method is found for $\rho=0$ and is $0.001$ for the marginal and for the conditional $R^2$ the difference is negligible. The $R^2$ distributions seem roughly normal and symmetric around the mean value, with a plausible size of the spread. Again, there are some more notable differences between the BVI method and the \texttt{rptR} package. For $\rho=0.1$ we observe the difference to be $0.010$ for the marginal $R^2$ and for the conditional $R^2$ when $\rho=-0.4$ it is also $0.010$. These differences are $2\%$ and $4\%$ of the average estimated values, respectively. In general, we also see here that our method aligns closely with our expectation, and deviates a bit more from the \texttt{rptR} package estimates.
-% Contrary to what was the case, it now seems that the BVI method consistently estimates lower values than the \texttt{rptR} package. The estimates from the \texttt{rptR} package deviate quite a bit from our method, and they seem to deviate more as the correlation increases. For $\rho=-0.4$ the methods agree, but in general the differences are noticeable. It is hard to say why this occurs, especially since our method coincides very closely with the expected values as well.
-% A possible explanation for this, is that the \texttt{rptR} package internally estimates an overdispersion parameter for Poisson models. This is then 
-% and are consistently larger for both marginal and conditional $R^2$. Overall, the distributions seem to form a reasonably symmetric normal curve centered at the mean, close to what we would expect.
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_poisson_high_neg.png}
-%   \caption{Histogram for the estimated marginal $R^2$ (left) and conditional $R^2$ (right) for the Poisson regression using the BVI method. The results are from the $N_{\text{sim}}=500$ simulations in the simulation study for different correlation levels $\rho$. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}. The mean value of the $R^2$ values for all simulations is marked with a circle at the bottom. (a) Marginal and conditional $R^2$ estimates for $\rho=-0.4$.}
-%   \label{fig:r2_poisson_high_neg}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_poisson_low_neg.png}
-%   \caption{(b) Marginal and conditional $R^2$ estimates for $\rho=-0.1$.}
-%   \label{fig:r2_poisson_low_neg}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_poisson_no.png}
-%   \caption{(c) Marginal and conditional $R^2$ estimates for $\rho=0$.}
-%   \label{fig:r2_poisson_no}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_poisson_low_pos.png}
-%   \caption{(d) Marginal and conditional $R^2$ estimates for $\rho=0.1$.}
-%   \label{fig:r2_poisson_low_pos}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_poisson_high_pos.png}
-%   \caption{(e) Marginal and conditional $R^2$ estimates for $\rho=0.4$.}
-%   \label{fig:r2_poisson_high_pos}
-% \end{figure}
-
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.1\linewidth]{Figures/Simulation study/R2_combined_poisson.png}
+  \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_combined_poisson.png}
   \caption[Marginal and conditional $R^2$ in Poisson GLMM]{Histograms with the posterior modes of the estimated marginal and conditional $R^2$ from the BVI method for the binomial regression for the different correlation levels $\rho$. The modes are calculated by the Bayesian Variable Importance method from the $N_{\text{sim}}=500$ simulations in the simulation study. The expected values are displayed as vertical green lines, and can be found in \Cref{table:r2values}, while the orange dot denotes the estimate from the \texttt{rptR} package. The mean value of the $R^2$ values for all simulations is marked with a circle at the bottom of each histogram.}
   \label{fig:r2_combined_poisson}
 \end{figure}
-
-
-% \begin{figure}[H]
-%   \centering
-%     \includegraphics[width=1\linewidth]{Figures/Simulation study/Fixed_poisson.png}
-%     \caption{Relative importance of fixed effects for poisson GLMM}
-%     \label{fig:relimp_poisson_fixed}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-%   \centering
-%   \includegraphics[width=1\linewidth]{Figures/Simulation study/R2_logit.png}
-%   \caption{Conditional and marginal $R^2$ for poisson GLMM. The magenta line is Stoffel, green line is expected importance}
-%     \label{fig:relimp_poisson_R2}
-% \end{figure}
-
-
 \section{Case study with \texttt{rptR} package}
 % \begin{figure}[H]
 %     \centering

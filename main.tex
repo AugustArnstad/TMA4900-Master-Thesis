@@ -120,28 +120,34 @@ Department of Mathematical Sciences \\
 \pagenumbering{roman} %introductory pages should be roman
 \setcounter{page}{1}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Abstract} %add the chapter to the table of contents, this is not automatically added when creating unnumbered chapters (*). Add it in a chapter style, and keep all chapters on the same numberline indent regardless of number or not on the chapter
+\label{abstract}
 \input{Chapters/00Abstract} %insert the chapter text from the files
 \clearpage
 
 \chapter*{Sammendrag} %pre-chapters should not be numbered, hence the "*"
 \addcontentsline{toc}{chapter}{\protect\numberline{}Sammendrag} %add the chapter to the table of contents, this is not automatically added when creating unnumbered chapters (*). Add it in a chapter style, and keep all chapters on the same numberline indent regardless of number or not on the chapter
+\label{sammendrag}
 \input{Chapters/00Sammendrag} %insert the chapter text from the files
 \clearpage
 
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Preface} 
+\label{preface}
 \input{Chapters/01Preface}
 \clearpage
 
 \addtocontents{toc}{\protect\contentsline{chapter}{\numberline{}Contents}{\thepage}{chapter.1}} 
+\label{contents}
 \tableofcontents
 \clearpage
 %\addcontentsline{toc}{chapter}{\protect\numberline{}Contents}
 %add to table of contents list of figures and tables, and insert list of figures and tables
 \addcontentsline{toc}{chapter}{\protect\numberline{}\listfigurename}
+\label{listoffigures}
 \listoffigures
 \clearpage
 \addcontentsline{toc}{chapter}{\protect\numberline{}\listtablename}
+\label{listoftables}
 \listoftables
 \clearpage
 

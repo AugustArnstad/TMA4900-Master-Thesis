@@ -11,7 +11,7 @@ This can be modeled by the equation
     y_i = \beta_0 + \beta_1x_i + \varepsilon_i \ ,
 \end{equation}
 where $\beta_0$ is the intercept, $\beta_1$ is the slope, and $\varepsilon_i$ is the error term.
-The error term, or residual, is assumed to be normally distributed with mean zero and variance $\sigma^2$, i.e. $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$.
+The error term, or residual, is assumed to be normally distributed with mean zero and variance $\sigma^2$, \textit{i.e.} $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$.
 Generalizing to multiple covariates is straightforward by defining the $n\times p$ matrix $\mathbf{X}$ as a design matrix with, including an intercept, the $p$ covariates in the columns and the $n$ observations in the rows.
 With this definition, the linear regression model can be written as
 \begin{equation}
@@ -20,7 +20,7 @@ With this definition, the linear regression model can be written as
 \end{equation}
 where now $\mathbf{y}=(y_1, y_2, ..., y_n)$ is a vector of $n$ responses, $\boldsymbol{\beta}=(\beta_0, \beta_1, ..., \beta_{p-1})$ is a vector of coefficients including the intercept $\beta_0$, and $\mathbf{\varepsilon}=(\varepsilon_1, \varepsilon_2, ..., \varepsilon_n)$ is a vector of error terms.
 The error terms are assumed to be independent and identically distributed (i.i.d.) with $\boldsymbol{\varepsilon} \sim \mathcal{N}(0, \sigma^2 \mathbf{I})$, where $\mathbf{I}$ is the identity matrix of size $n \times n$.
-Consequently, the response $\mathbf{y}$ is conditionally independent given the covariates $\mathbf{X}$, i.e.
+Consequently, the response $\mathbf{y}$ is conditionally independent given the covariates $\mathbf{X}$, \textit{i.e.}
 \begin{equation}
     \mathbf{y} \lvert \mathbf{X} \sim \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \sigma^2\mathbf{I}) \ .
 \end{equation}
@@ -154,9 +154,9 @@ In contrast to the first naive approach, this decomposition assigns importances 
 \newline
 As we have seen from these naive approaches, the task of decomposing the $R^2$ value is far from trivial, and calls for more sophisticated methods.
 
-\subsection{The Lindemann, Merenda and Gold(LMG) method}
+\subsection{The Lindeman, Merenda and Gold(LMG) method}
 \label{sec:lmg}
-A method that handles correlation among covariates, and is frequently reinvented from different approaches, is the Lindemann, Merenda and Gold (LMG) method \citep{gromping_relaimpo}.
+A method that handles correlation among covariates, and is frequently reinvented from different approaches, is the Lindeman, Merenda and Gold (LMG) method \citep{gromping_relaimpo}.
 We shall therefore discuss it, as it serves an important role as a leading method for assigning relative variable importance.  
 The LMG method takes use of averaging over orders, meaning that it permutes the index set $\{1, ..., p\}$  of the regressors $(p-1)!$ times, excluding the intercept, and sequentially adds the regressors to the model for each permuted index set.
 By adding regressors sequentially for each permutation, one can investigate how the importance of the regressors vary depending on what other regressors are included, which is useful when they are correlated.
@@ -221,12 +221,12 @@ is minimized. The relative weights approximation now utilizes the matrix \citep{
 \end{equation} 
 As $\mathbf{Z}$ is orthogonal, the relative importance for each column $\mathbf{z_i}$ with respect to the response $\mathbf{y}$ can be found as the square of $\beta_{Z, i}^2$, denoted as $\boldsymbol{\beta_Z}^{[2]}$. 
 The notation $\boldsymbol{\xi}^{[2]}$ for some $\boldsymbol{\xi}$ represents the Schur product of $\boldsymbol{\xi}$ with itself, \textit{i.e.} element wise squaring of each element in $\boldsymbol{\xi}$.
-Once these importances are obtained, \citet{johnson_relative_weights} argues that we should regress $\mathbf{X}$ on $\mathbf{Z}$ to obtain the weights that relate the importance of each column of $\mathbf{Z}$ to each column of $\mathbf{X}$. These weights can be calculated as the matrix
+Once these importances are obtained, \citet{johnson_relative_weights} argues that we should regress $\mathbf{X}$ on $\mathbf{Z}$ to obtain the weights that relate the importance of each column of $\mathbf{Z}$ to each column of $\mathbf{X}$. These weights can be calculated from the matrix
 \begin{equation}
     \label{eq:lambda_rw}
     \boldsymbol{\Lambda} = (\mathbf{Z}^T\mathbf{Z})^{-1}\mathbf{Z}^T\mathbf{X} = (\mathbf{V}\mathbf{U}^T\mathbf{U}\mathbf{V}^T)^{-1}\mathbf{V}\mathbf{U}^T\mathbf{U}\mathbf{D}\mathbf{V}^T = \mathbf{V}\mathbf{D}\mathbf{V}^T \ ,
 \end{equation}
-and since $\mathbf{Z}$ is orthogonal, the contribution from a column of $\mathbf{z_i}$ with respect to a column $\mathbf{x}_j$ is the squared entry $\boldsymbol{\Lambda}_{ij}^2$.
+where $\mathbf{Z}$ is orthogonal. The contribution from a column of $\mathbf{z_i}$ with respect to a column $\mathbf{x}_j$ is the squared entry $\boldsymbol{\Lambda}_{ij}^2$, with the squared columns of $\mathbf{\Lambda}$ summing to one and acting as weights.
 The contribution from a column $\mathbf{x}_j$ with respect to the response $\mathbf{y}$, \textit{i.e.} the relative importance, is then estimated as the matrix product \citep{johnson_relative_weights}
 \begin{equation}
     \label{eq:RI_lambda}
@@ -689,7 +689,7 @@ This was generalized by Pierre Simon Laplace \citep{laplace1774}, to also apply 
     \pi(\boldsymbol{\theta} \lvert \mathbf{y}) = \frac{\pi(\mathbf{y} \lvert \boldsymbol{\theta})\pi(\boldsymbol{\theta})}{\pi(\mathbf{y})} \ ,
 \end{equation}
 where $\pi(\boldsymbol{\theta} \lvert \mathbf{y})$ is called the posterior distribution of $\boldsymbol{\theta}$, $\pi(\mathbf{y} \lvert \boldsymbol{\theta})$ is the likelihood, or sampling, distribution of $\mathbf{y}$, $\pi(\boldsymbol{\theta})$ is the prior distribution of the parameters and $\pi(\mathbf{y}) = \int \pi(\mathbf{y} \lvert \boldsymbol{\theta}) \pi(\boldsymbol{\theta}) < \infty$ is the marginal distribution of the data, which is required to be finite in order to have a proper posterior distribution \citep{gelman2015Bayesian}.
-In practice, the marginal distribution is often omitted and one only consider the proportionality of \eqref{eq:bayes_theorem_func}, i.e.
+In practice, the marginal distribution is often omitted and one only consider the proportionality of \eqref{eq:bayes_theorem_func}, \textit{i.e.}
 \begin{equation}
     \label{eq:bayes_theorem_func_prop}
     \pi(\boldsymbol{\theta} \lvert \mathbf{y}) \propto \pi(\mathbf{y} \lvert \boldsymbol{\theta})\pi(\boldsymbol{\theta}) \ .
@@ -714,7 +714,7 @@ In this paper, four main principles are desirable to follow when choosing a prio
 \begin{enumerate}
     \item \textbf{Occam's razor} - If there is no evidence for a complex mode, a base model should be preferred. 
     \item \textbf{Measure of complexity} - The measure of model complexity is defined as $d(f \lvert \lvert g) = \sqrt{2 \text{KLD}(f \lvert \lvert g)}$ where $\text{KLD}(f \lvert \lvert g)$ denotes the Kullback-Leibler divergence \citep[for more information]{simpson2017penalising}.
-    \item \textbf{Constant rate penalisation} - The penalisation, i.e. the decay of prior mass, grows as the complexity grows, but it is desirable that this growth is constant.
+    \item \textbf{Constant rate penalisation} - The penalisation, \textit{i.e.} the decay of prior mass, grows as the complexity grows, but it is desirable that this growth is constant.
     \item \textbf{User defined scaling} - Assuming that the user has an idea of the magnitude of the parameter of interest, the user should be able to scale the prior accordingly.
 \end{enumerate}
 The PC priors therefore pose interpretable, applicable priors which are consistent with the above principles, and are therefore a practical choice for the Bayesian framework \citep{simpson2017penalising}. 
@@ -731,7 +731,7 @@ When fitting additive models, thereby modelling additive overdispersion, using P
 When modelling in the Bayesian framework, the posterior distribution of the parameters $\boldsymbol{\theta}$ given the data is what one wants to infer.
 For many applications, $\boldsymbol{\theta}$ is a high dimensional vector, with naturally connected entries \citep{gelman2015Bayesian}.
 It may therefore be reasonable to assume that the parameters themselves are drawn from a population distribution, which can further be modelled by what is called hyperparameters.
-The main idea is that the prior $\pi(\boldsymbol{\theta})$ itself contains a hierarchical structure and can be split into levels of conditional prior distributions, i.e. $\pi(\boldsymbol{\theta}) =  \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi})$ for some hyperparameter $\boldsymbol{\phi}$ \citep{robert2007bayesian}.
+The main idea is that the prior $\pi(\boldsymbol{\theta})$ itself contains a hierarchical structure and can be split into levels of conditional prior distributions, \textit{i.e.} $\pi(\boldsymbol{\theta}) =  \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi})$ for some hyperparameter $\boldsymbol{\phi}$ \citep{robert2007bayesian}.
 Assuming that the data $\mathbf{y}$ depends only on the parameter $\boldsymbol{\theta}$, and that $\boldsymbol{\theta}$ depends on the hyperparameters $\boldsymbol{\phi}$, we can write the joint posterior distribution of $(\boldsymbol{\theta}, \boldsymbol{\phi})$ as
 \begin{equation}
     \pi(\boldsymbol{\theta}, \boldsymbol{\phi} \lvert \mathbf{y}) \propto \pi(\mathbf{y} \lvert \boldsymbol{\theta}, \phi) \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi}) = \pi(\mathbf{y} \lvert \boldsymbol{\theta}) \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi}) \ ,
@@ -892,7 +892,7 @@ for $k=1, ..., K$ where $\alpha_K$ is a reference unit, $\delta(\alpha_k)$ denot
 
 \section{The INLA framework}
 \label{sec:INLA_framework}
-As we have seen, the analytical posterior is possible to obtain for some hierarchical structures (e.g. \eqref{eq:hierarchical_posterior_analytical}). 
+As we have seen, the analytical posterior is possible to obtain for some hierarchical structures (\textit{e.g.} \eqref{eq:hierarchical_posterior_analytical}). 
 However, in the case of GLMMs, the posterior distribution is not in general analytically tractable \citep{fong2010bayesian}. This calls for the use of numerical methods, such as Markov chain Monte Carlo (MCMC) methods, to be able to sample from the posterior distribution. 
 Such methods are computationally expensive, and require careful analysis to justify convergence and proper mixing of the Markov chains to make sure we sample from the steady state posterior distribution. Therefore, it is desirable, under certain conditions, to look at other methods that are more computationally efficient.
 In this thesis we will consider the Integrated Nested Laplace Approximation (INLA) method \citep{Rue2009}.

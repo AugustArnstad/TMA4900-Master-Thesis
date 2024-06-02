@@ -226,7 +226,7 @@ Once these importances are obtained, \citet{johnson_relative_weights} argues tha
     \label{eq:lambda_rw}
     \boldsymbol{\Lambda} = (\mathbf{Z}^T\mathbf{Z})^{-1}\mathbf{Z}^T\mathbf{X} = (\mathbf{V}\mathbf{U}^T\mathbf{U}\mathbf{V}^T)^{-1}\mathbf{V}\mathbf{U}^T\mathbf{U}\mathbf{D}\mathbf{V}^T = \mathbf{V}\mathbf{D}\mathbf{V}^T \ ,
 \end{equation}
-where $\mathbf{Z}$ is orthogonal. The contribution from a column of $\mathbf{z_i}$ with respect to a column $\mathbf{x}_j$ is the squared entry $\boldsymbol{\Lambda}_{ij}^2$, with the squared columns of $\mathbf{\Lambda}$ summing to one and acting as weights.
+where $\mathbf{Z}$ is orthogonal. The contribution from a column of $\mathbf{z_i}$ with respect to a column $\mathbf{x}_j$ is given by the squared entry $\boldsymbol{\Lambda}_{ij}^2$, with the squared columns of $\mathbf{\Lambda}$ summing to one and acting as weights.
 The contribution from a column $\mathbf{x}_j$ with respect to the response $\mathbf{y}$, \textit{i.e.} the relative importance, is then estimated as the matrix product \citep{johnson_relative_weights}
 \begin{equation}
     \label{eq:RI_lambda}

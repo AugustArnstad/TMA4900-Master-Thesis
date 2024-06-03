@@ -47,11 +47,18 @@
     \newpage
     } %sets new page command to insert an empty page without adding to the page counter or having a page number
 
+
 \usepackage{listings}
 \usepackage{color}
+\usepackage{breakurl}
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage{cleveref}
+\def\UrlBreaks{\do\/\do-\do\_}
+
+\hypersetup{breaklinks=true}
+
+
     
 \lstset{ 
     language=R,

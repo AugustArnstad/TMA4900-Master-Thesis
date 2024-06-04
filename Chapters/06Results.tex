@@ -1,6 +1,6 @@
 \section{Gaussian simulation study}
 \label{sec:simulation_study_gauss}
-This section, like \Cref{sec:simulations}, is reproduced from \citet{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024} and is included here for completeness. We present the results of the Gaussian simulation study, where the BVI method is compared to the ELMG, ERW, and Relaimpo methods. The ELMG and ERW methods were implemented by \citet{matre} and the Relaimpo method denotes the LMG method, implemented in the R package \texttt{Relaimpo} \citep{gromping_relaimpo}. Note that the Relaimpo method only considers models without random effects.
+This section, like \Cref{sec:simulations}, is reproduced from \citet{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024} and is included here for completeness. We present the results of the Gaussian simulation study, where the BVI method is compared to the ELMG, ERW, and LMG methods. The ELMG and ERW methods were implemented by \citet{matre}, and we use the R package \texttt{relaimpo} to apply the LMG method \citep{gromping_relaimpo}. Note that the \texttt{relaimpo} package only considers models without random effects.
 % First we compare the fixed effects, and then random effects. Lastly, we consider how our BVI model estimates the conditional and marginal $R^2$ values from a Bayesian perspective, comparing these results to the $R^2$ value obtained from the decompositions by the Relaimpo, ELMG, and ERW methods, where the first method only considers models without random effects. 
 \subsection{Fixed effects}
 \label{sec:relimp_fixed}
@@ -54,7 +54,7 @@ In general, the BVI method is in agreement with the theoretical results for unco
     \label{fig:relimp_X3_fig}
   \end{subfigure}
   
-  \caption[Relative importance of the fixed effects in Gaussian LMM]{Violin plots for the relative importance of the fixed effects $X_1$ (top), $X_2$ (middle) and $X_3$ (bottom) for different correlation levels displayed along the x-axis, calculated from the ensemble of $N_{\text{sim}}=10^4$ simulated datasets by the BVI, ELMG, ERW, and the Relaimpo methods. The horizontal line displays the theoretically expected importance of each fixed effect in the case of uncorrelated data. For the BVI method, the distributions of posterior means are shown to compare to the distribution of point estimates from the other three methods.}
+  \caption[Relative importance of the fixed effects in Gaussian LMM]{Violin plots for the relative importance of the fixed effects $X_1$ (top), $X_2$ (middle) and $X_3$ (bottom) for different correlation levels displayed along the x-axis, calculated from the ensemble of $N_{\text{sim}}=10^4$ simulated datasets by the BVI, ELMG, ERW, and the LMG methods. The horizontal line displays the theoretically expected importance of each fixed effect in the case of uncorrelated data. For the BVI method, the distributions of posterior means are shown to compare to the distribution of point estimates from the other three methods.}
   \label{fig:relimp_all}
 \end{figure}
 
@@ -79,7 +79,7 @@ In general, the BVI method is in agreement with the theoretical results for unco
 
 \subsection{Random effects}
 \label{sec:relimp_random}
-Considering a model with one random intercept, we can no longer compare our model with the Relaimpo method, which is only implemented for the linear regression in the Relaimpo R package \citep{gromping_relaimpo}. Therefore, we now compare the BVI method only with the ELMG and ERW methods, which have been extended from the Relaimpo method \citep{matre}.
+Considering a model with one random intercept, we can no longer compare our model with the LMG method, which is only implemented for the linear regression in the \texttt{relaimpo} R package \citep{gromping_relaimpo}. Therefore, we now compare the BVI method only with the ELMG and ERW methods, which are extentions of the LMG method \citep{matre}.
 We display (\Cref{fig:relimp_alpha}) the distribution of the relative importance, or variance, assigned to the random intercept $\boldsymbol{\alpha}$ for different correlation levels. 
 The random intercept $\boldsymbol{\alpha}$ follows a univariate normal distribution with mean zero and variance equal to $1$.
 As before the horizontal line shows the theoretical relative importance from \eqref{eq:RI_theoretical_simulation} that $\boldsymbol{\alpha}$ has in the model when the fixed effects are uncorrelated.
@@ -92,14 +92,14 @@ To re-emphasize, this is both expected and desirable since the increase in respo
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.7\linewidth]{Figures/ViolinPlots/Variance_gamma.png}
-  \caption[Relative importance of the random effect $\boldsymbol{\alpha}$ in Gaussian LMM]{Violin plots for the relative importance of the random effect $\boldsymbol{\alpha}$, that is, $\hat{\sigma}^2_{\alpha}$ for different correlation levels displayed along the x-axis, calculated from the ensemble of $N_{\sim=10^4}$ simulated datasets by the BVI, ELMG and the ERW method. For the BVI method the distributions of posterior means of the marginal distribution of $\hat{\sigma}^2_{\alpha}$ are shown to compare to the point estimates of the other two methods. The horizontal line displays the theoretically expected importance $\sigma^2_{\alpha}$ of the random effect in the case of uncorrelated data.}
+  \caption[Relative importance of the random effect $\boldsymbol{\alpha}$ in Gaussian LMM]{Violin plots for the relative importance of the random effect $\boldsymbol{\alpha}$, that is, $\hat{\sigma}^2_{\alpha}$ for different correlation levels displayed along the x-axis, calculated from the ensemble of $N_{\text{sim}}=10^4$ simulated datasets by the BVI, ELMG and the ERW method. For the BVI method the distributions of posterior means of the marginal distribution of $\hat{\sigma}^2_{\alpha}$ are shown to compare to the point estimates of the other two methods. The horizontal line displays the theoretically expected importance $\sigma^2_{\alpha}$ of the random effect in the case of uncorrelated data.}
   \label{fig:relimp_alpha}
 \end{figure}
 
 \subsection{\texorpdfstring{$R^2$}{Lg} estimates}
 \label{sec:R2} 
 As a useful by-product from the previous results we can get the total variances explained by our model (\Cref{fig:total_variance}).
-The marginal variance explained, $R^2_{\text{marg}}$, is the variance explained by the fixed effects, and we get results for all four methods, including Relaimpo.
+The marginal variance explained, $R^2_{\text{marg}}$, is the variance explained by the fixed effects, and we get results for all four methods, including the LMG method.
 Below, the marginal variance explained, and the total conditional variance explained, $R^2_{\text{cond}}$, is displayed. 
 This is the variance given all the fixed effects and the random effect.
 To complement the conditional and marginal variances explained, a horizontal line is drawn for each correlation level corresponding to the theoretically expected variance explained, found in \Cref{table:2}, for the correlation level. 
@@ -122,7 +122,7 @@ The centering of the distributions for both the marginal and conditional varianc
     \includegraphics[width=0.55\linewidth]{Figures/ViolinPlots/Conditional_Variance.png}
     \label{fig:variance_conditional}
   }
-  \caption[Marginal and conditional $R^2$ in Gaussian LMM]{Violin plots for the total marginal (top) and conditional (bottom) variance explained ($R^2$) for different correlation levels displayed along the x-axis, calculated from the ensemble of $N_{\text{sim}}=10^4$ simulated datasets by the BVI, ELMG, the ERW and the Relaimpo method(only marginal variance explained can be computed). For the BVI method the posterior means of the sampled posterior distributions of $\boldsymbol{\beta}$ and the marginal distribution of $\hat{\sigma}^2_{\alpha}$ in each simulation are used to compare to the point estimates of the other two methods. The horizontal lines display the theoretical explained variance for each correlation level $\rho$ as in \Cref{table:2}.}
+  \caption[Marginal and conditional $R^2$ in Gaussian LMM]{Violin plots for the total marginal (top) and conditional (bottom) variance explained ($R^2$) for different correlation levels displayed along the x-axis, calculated from the ensemble of $N_{\text{sim}}=10^4$ simulated datasets by the BVI, ELMG, the ERW and the LMG method(only marginal variance explained can be computed). For the BVI method the posterior means of the sampled posterior distributions of $\boldsymbol{\beta}$ and the marginal distribution of $\hat{\sigma}^2_{\alpha}$ in each simulation are used to compare to the point estimates of the other two methods. The horizontal lines display the theoretical explained variance for each correlation level $\rho$ as in \Cref{table:2}.}
   \label{fig:total_variance}
 \end{figure}
 

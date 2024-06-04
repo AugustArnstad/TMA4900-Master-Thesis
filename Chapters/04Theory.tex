@@ -62,7 +62,7 @@ Both coefficients and covariates affect the total marginal model variance, which
     \text{Var}(\mathbf{y}) = \text{Var}(\mathbf{X}\boldsymbol{\beta}) + \text{Var}(\boldsymbol{\varepsilon}) = \boldsymbol{\beta}^T\mathbf{V}\boldsymbol{\beta} + \sigma^2_{\varepsilon} = \sum_{j=1}^p\beta_j^2v_j +\sum_{j=1}^{p-1}\sum_{k=j+1}^{p} \beta_j\beta_k\sqrt{v_jv_k}\rho_{jk} + \sigma_{\varepsilon}^2 \ ,
 \end{equation}
 where $\mathbf{V} = \text{Cov}(\mathbf{X})$ is the $p \times p$ covariance matrix of the covariates which is assumed to be positive definite, $\boldsymbol{\beta}$ is the $p \times 1$ vector of regression coefficients, $v_j$ the regressor variances for $j=1, ..., p$ found along the diagonal of $\mathbf{V}$ and $\rho_{jk}$ the inter-regressor correlations between regressor $j$ and $k$ \citep{gromping_relaimpo}.
-The middle term in \eqref{eq:var_y} consist of the covariance between the covariates and the variance contribution from a single covariate is not immediately clear.
+The middle term in \eqref{eq:var_y} consists of the covariance between the covariates and the variance contribution from a single covariate is not immediately clear.
 
 %this term makes it hard to assess the relative importance of each covariate. 
 %To assign each covariate with an importance, we need to consider relative importance measures that can handle the correlation among covariates.
@@ -211,7 +211,7 @@ From the Eckhart-Young-Mirsky theorem \citep{mirsky-theorem} and following the d
 \begin{equation}
     \lVert \mathbf{X} - \mathbf{Z} \rVert_F^2 = tr \left( (\mathbf{X} - \mathbf{Z})^T(\mathbf{X} - \mathbf{Z}) \right) \ ,
 \end{equation}
-is minimized. The relative weights approximation now utilizes the matrix \citep{johnson_relative_weights} $\frac{1}{\sqrt{n-1}}\mathbf{{Z}}$, where the factor $\frac{1}{\sqrt{n-1}}$ is the standardization factor for $\mathbf{Z}$ \citep{matre}, and regresses on $\mathbf{Z}$ to find the MLE $\boldsymbol{\beta_Z}$ as
+is minimized. The relative weights approximation now utilizes the matrix $\frac{1}{\sqrt{n-1}}\mathbf{{Z}}$ \citep{johnson_relative_weights}, where the factor $\frac{1}{\sqrt{n-1}}$ is the standardization factor for $\mathbf{Z}$ \citep{matre}, and regresses on $\mathbf{Z}$ to find the MLE $\boldsymbol{\beta_Z}$ as
 \begin{equation}
     \begin{aligned}
         \boldsymbol{\beta_Z} & = (\mathbf{Z}^T\mathbf{Z})^{-1}\mathbf{Z}\mathbf{y} \\
@@ -219,8 +219,7 @@ is minimized. The relative weights approximation now utilizes the matrix \citep{
         & = \frac{1}{\sqrt{n-1}}\mathbf{V}\mathbf{U}^T\mathbf{y} \ .
     \end{aligned}
 \end{equation} 
-As $\mathbf{Z}$ is orthogonal, the relative importance for each column $\mathbf{z_i}$ with respect to the response $\mathbf{y}$ can be found as the square of $\beta_{Z, i}^2$, denoted as $\boldsymbol{\beta_Z}^{[2]}$. 
-The notation $\boldsymbol{\xi}^{[2]}$ for some $\boldsymbol{\xi}$ represents the Schur product of $\boldsymbol{\xi}$ with itself, \textit{i.e.} element wise squaring of each element in $\boldsymbol{\xi}$.
+As $\mathbf{Z}$ is orthogonal, the relative importance for each column $\mathbf{z_i}$ with respect to the response $\mathbf{y}$ can be found as the square of $\beta_{Z, i}^2$. %denoted as $\boldsymbol{\beta_Z}^{[2]}$. 
 Once these importances are obtained, \citet{johnson_relative_weights} argues that we should regress $\mathbf{X}$ on $\mathbf{Z}$ to obtain the weights that relate the importance of each column of $\mathbf{Z}$ to each column of $\mathbf{X}$. These weights can be calculated from the matrix
 \begin{equation}
     \label{eq:lambda_rw}
@@ -233,6 +232,7 @@ The contribution from a column $\mathbf{x}_j$ with respect to the response $\mat
     \text{RI}(\mathbf{X}) = \boldsymbol{\Lambda}^{[2]} \boldsymbol{\beta_Z}^{[2]} \ , 
 \end{equation}
 with $\text{RI}$ as a column vector where each entry $j$ contains the estimate of the relative importance corresponding to column $j$ of $\mathbf{X}$.
+The notation $\boldsymbol{\xi}^{[2]}$ for some $\boldsymbol{\xi}$ represents the Schur product of $\boldsymbol{\xi}$ with itself, \textit{i.e.} element wise squaring of each element in $\boldsymbol{\xi}$.
 In \citet[section 2.5.3]{matre} it is shown that the relative weights method fulfills the criteria same three criteria as the LMG method, because $\mathbf{Z}$ and $\mathbf{X}$ are linear combinations of each other and due to the properties of $\boldsymbol{\Lambda}$.
 
 
@@ -282,7 +282,7 @@ Two key properties, expectation and variance, of the exponential family are give
         \text{Var}(Y \lvert \theta) &= a(\phi) b''(\theta) \ ,
     \end{aligned}
 \end{equation}
-where $b''(\theta)$ may also be referred to as the variance function \citep{GLMM_book},we have left out indexing, and a proof can be found in \Cref{ap:proofs}.
+where $b''(\theta)$ may also be referred to as the variance function \citep{GLMM_book}, we have left out indexing, and a proof can be found in \Cref{ap:proofs}.
 In the canonical form, the parameter $\theta_{i}$ coincides with the linear predictor $\eta_{i}$ defined as 
 \begin{equation}
     \theta_{i} = \eta_{i} = \mathbf{x}_{i}^T\boldsymbol{\beta}  \ . %= g(\mathbb{E}(y_{i, j} \lvert \theta_{i, j})) \ ,
@@ -339,7 +339,7 @@ The linear mixed model now takes the form
     \label{eq:LMM}
     \mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{U}\boldsymbol{\alpha} + \boldsymbol{\varepsilon} \ ,
 \end{equation}
-where $\mathbf{X} \in \mathbb{R}^{N \times p}$ is the design matrix for the fixed effects, $\boldsymbol{\beta} \in \mathbb{R}^{p \times 1}$ are the regression coefficients for the fixed effects, $\mathbf{U} = \text{diag}(\mathbf{U_j}) \ , \in \mathbb{R}^{N \times q}$ is the design matrix for the random effects and $\mathbf{U}_j \in \mathbb{R}^{n_j \times q}$ is the design matrix for cluster $j$. 
+where $\mathbf{X} \in \mathbb{R}^{N \times p}$ is the design matrix for the fixed effects, $\boldsymbol{\beta} \in \mathbb{R}^{p \times 1}$ are the regression coefficients for the fixed effects, $\mathbf{U} = \text{diag}(\mathbf{U_j}) \in \mathbb{R}^{N \times q}$ is the design matrix for the random effects and $\mathbf{U}_j \in \mathbb{R}^{n_j \times q}$ is the design matrix for cluster $j$. 
 Since $\boldsymbol{\alpha}$ is a random variable, the parameter to estimate is the variance of each random effect $\mathbf{\Sigma}_{kk}=\sigma_k^2$ and their covariance $\mathbf{\Sigma}_{k, l} = \sigma_{k, l}$, where $k, l =1, ..., q$.
 In practice, it is often easier to estimate the precision rather than the variance, so calculations often involve the precision matrix $\mathbf{Q}$ rather than the covariance matrix $\mathbf{\Sigma}$.
 In this model the independence between clusters are conserved for the response as a whole, but it expresses the correlation that observations of the same cluster have through the random effects.
@@ -423,8 +423,8 @@ Many extensions have been proposed, but due to a variety of theoretical problems
 To get an overview of the status quo for $R^2$, we will follow the paper by \citet{nakagawa2013general} and go through the different components added to the linear regression to compose the GLMMs.
 \subsection{\texorpdfstring{$R^2$}{Lg} for GLMs}
 Recalling the definition of the $R^2$ from \eqref{eq:R2}, we now generalize this to the GLMs. This topic has been subject to significant research, (see for example \citet{maddala1983limited, cameron1997r, menard2000coefficients,  nakagawa2013general}). The methods first suggested was based on the likelihood function of the model to be analysed. We will not implement such methods, as they are not suitable for the full generalization to be made later on, however they are important in building a framework for the $R^2$ value and are therefore included.
-To illustrate the likelihood based generalization of the $R^2$ value to GLMs, consider the deviance $\mathcal{D}(\mathbf{y}\lvert \theta)$ function which is defined as twice the difference between the log likelihood of the \textbf{saturated model} and the log-likelihood of the model of interest \citep{GLMM_book_old}.
-The saturated model denotes the model of the maximum achievable log likelihood, and therefore fits the data perfectly. 
+To illustrate the likelihood based generalization of the $R^2$ value to GLMs, consider the deviance $\mathcal{D}(\mathbf{y}\lvert \theta)$ function which is defined as twice the difference between the log-likelihood of the \textbf{saturated model} and the log-likelihood of the model of interest \citep{GLMM_book_old}.
+The saturated model denotes the model of the maximum achievable log-likelihood, and therefore fits the data perfectly. 
 For a linear regression, with $\theta=(\boldsymbol{\beta}, \sigma^2)$, we would therefore obtain
 \begin{equation}
     \begin{aligned}
@@ -449,7 +449,7 @@ By comparing the model of interest to the \textbf{null model}, the simplest fit 
     \end{aligned}
 \end{equation}
 This is the foundation for the definitions of the generalization of $R^2$ to GLMs \citep{nakagawa2013general}, which primarily rely on a ratio of the maximum likelihood of the model of interest and null model.
-However, in \citet{nakagawa2013general}, two different $R^2$ measures are given as
+In \citet{nakagawa2013general}, two different, likelihood based, $R^2$ measures are given as
 \begin{equation}
     R^2_G = \left[1- \left(\frac{\mathcal{L}_0}{\mathcal{L}_M}\right) ^{2/n} \right] \frac{1}{1-(\mathcal{L}_0)^{2/n}}
 \end{equation}
@@ -472,9 +472,9 @@ To handle this problem, Snijders \& Bosker (1994) \citep{nakagawa2013general} pr
 Consider the simple random intercept model in scalar form;
 \begin{equation}
     \label{eq:random_intercept}
-    y_{i, j} = \beta_0 + \mathbf{x}_{i, j}^T\boldsymbol{\beta} + \alpha_{j} + \varepsilon_{i, j} \ ,
+    y_{i, j} = \beta_0 + \beta_1x_{i, j} + \alpha_{j} + \varepsilon_{i, j} \ ,
 \end{equation}
-where $y_{i, j}$ denotes the $i$th observation in cluster $j$, $\beta_0$ is the fixed intercept, $\mathbf{x}_{i, j}$ is the column vector containing the covariates for the $i$th observation in cluster $j$, $\boldsymbol{\beta}$ is the $p \times 1$ vector of fixed effects, $\alpha_{j}$ is the random intercept for cluster $j$ and $\varepsilon_{i, j}$ is the residual error for the $i$th observation in cluster $j$. The two $R^2$ components can then be expressed in two ways, with the first being
+where $y_{i, j}$ denotes the $i$th observation in cluster $j$, $\beta_0$ is the fixed intercept, $x_{i, j}$ is the covariate for the $i$th observation in cluster $j$, $\beta$ is the global coefficient of the fixed effect, $\alpha_{j}$ is the random intercept for cluster $j$ and $\varepsilon_{i, j}$ is the residual error for the $i$th observation in cluster $j$. The two $R^2$ components can then be expressed in two ways, with the first being
 \begin{equation}
     \begin{aligned}
     R_1^2 &= 1-\frac{\text{Var} (y_{i, j} - \hat{y}_{i, j})}{\text{Var} (y_{i, j})} = 1-\frac{\sigma_{\varepsilon}^2 + \sigma^2_{\alpha}}{\sigma_{\varepsilon 0}^2 + \sigma^2_{\alpha 0}} \\
@@ -519,7 +519,7 @@ This definition now covers the random intercept model, but has not taken into ac
 To further extend the $R^2$ to the random slope model, \citet{Johnson2014} proposes a method for computing the mean random effect variance.
 Consider the simple random intercept and slope model,
 \begin{equation}
-    y_{i, j} = \beta_0 + \mathbf{x}_{i, j}^T\boldsymbol{\beta} + \alpha_{0, j} + \alpha_{1, j}\mathbf{x}_{i, j} + \varepsilon_{i, j} \ ,
+    y_{i, j} = \beta_0 + \beta_1x_{i, j} + \alpha_{0, j} + \alpha_{1, j}x_{i, j} + \varepsilon_{i, j} \ ,
 \end{equation}
 where the same notation is used as in \eqref{eq:random_intercept} with $\boldsymbol{\alpha_j}=(\alpha_{0, j}, \alpha_{1, j})$ being the random effect, $\alpha_{0, j}$ denoting the random intercept and $\alpha_{1, j}$ now denoting the random deviation from the global slope $\beta_1$, for cluster $j$.
 The general assumption on the random effects are that 
@@ -546,8 +546,8 @@ Thus, we have three variance components of interest ($\frac{q(q+1)}{2}$ for $q$ 
 When inspecting the variance of the random part in the model, we see that it has a dependence on the covariates, as illustrated by 
 \begin{equation}
     \begin{aligned}
-    \text{Var}(\alpha_{0, j} + \alpha_{1, j}x_{i, j}) &= \text{Var}(\alpha_{0, j}) + 2\mathbf{x}_{i, j} \text{Cov}(\alpha_{0, j}, \alpha_{1, j}) + \mathbf{x}^2_{i, j}\text{Var}(\alpha_{1, j}) \\
-    & = \sigma^2_{\alpha_0} + 2\mathbf{x}_{i, j}\sigma_{\alpha_0, \alpha_1} + \mathbf{x}^2_{i, j}\sigma^2_{\alpha_1} =: \sigma^2_{r, i, j} \ ,
+    \text{Var}(\alpha_{0, j} + \alpha_{1, j}x_{i, j}) &= \text{Var}(\alpha_{0, j}) + 2x_{i, j} \text{Cov}(\alpha_{0, j}, \alpha_{1, j}) + x^2_{i, j}\text{Var}(\alpha_{1, j}) \\
+    & = \sigma^2_{\alpha_0} + 2x_{i, j}\sigma_{\alpha_0, \alpha_1} + x^2_{i, j}\sigma^2_{\alpha_1} =: \sigma^2_{r, i, j} \ ,
     \end{aligned}
 \end{equation}
 where we define $\sigma^2_{r, i, j}$ as the variance of the random effect $\boldsymbol{\alpha}$ for observation $i$ in the $j$th cluster. 
@@ -621,9 +621,9 @@ completing the generalization.
 
 \subsection{Extensions of the LMG and relative weights method}
 Extensions for both the LMG and the relative weights method have been proposed so that they can decompose the $R^2$ proposed by \citet{nakagawa2013general} also for random intercept models \citep{matre}. 
-The extended LMG, denoted as the ELMG, method uses the same permutations as described for the regular LMG, and now decomposes the $R^2$ value for the random intercept model instead.
+The extended LMG, denoted as the ELMG, method uses the same permutations as described for the regular LMG, and now decomposes the $R^2$ value for the random intercept model.
 % This $R^2$ is described in \Cref{sec:R2_LMM} and effectively divides the variance of the response into the variance of the fixed effects, the random effects and the random error.
-From this decomposition, the only extension needed for the LMG formula is to include also the random intercepts as model components, which for covariate $i$ gives
+For this decomposition, the only extension needed for the LMG formula is to include also the random intercepts as model components, which for covariate $i$ gives
 \begin{equation}
     \text{LMG}(i) = \frac{1}{(p+q)!} \sum_{\substack{S \subseteq \{2, ..., p \\ p+1, ..., p+q\} \setminus i }} n(S)! ((p+q) - n(S)-1)! \text{svar}(\{i\} \lvert S) \ , 
 \end{equation}
@@ -636,7 +636,7 @@ The fixed effects will receive a joint share, which is distributed by using the 
 Since the LMG approach is used for the $q$ random effects and the block of fixed effects, the complexity of the ERW will follow that of the LMG method for $q+1$ covariates.
 \newline 
 \newline
-Both extensions described comes with new considerations \citep[for full details]{matre}, for example that the inclusion criteria now should read "If a regressor $\beta_j \neq 0$, or a random intercept $\alpha$ with $\sigma^2(\alpha) > 0$, is included in the model then its share of the variance should be positive".
+Both extensions described comes with new considerations \citep[for full details]{matre}, for example that the inclusion criteria now should read \textit{"If a regressor $\beta_j \neq 0$, or a random intercept $\alpha$ with $\sigma^2(\alpha) > 0$, is included in the model then its share of the variance should be positive"}.
 
 
 
@@ -768,6 +768,7 @@ where we assume that $\boldsymbol{\alpha} \sim \mathcal{N}(0, \mathbf{Q}^{-1})$ 
 Then, to define the model, a prior must be assigned to the likelihood specific parameter $\phi$, the fixed effects coefficients $\boldsymbol{\beta}$, and the variance components of the random effects $\boldsymbol{\rho}$.
 For a general GLMM belonging to the exponential family, the posterior can be written out as 
 \begin{equation}
+    \label{eq:hierarchical_posterior}
     \begin{aligned}
     &\pi(\boldsymbol{\beta}, \boldsymbol{\alpha}, \phi, \boldsymbol{\rho} \lvert \mathbf{y}) \propto \left(\prod_{j=1}^m \pi(\mathbf{y}_j \lvert \boldsymbol{\beta}, \boldsymbol{\alpha}, \phi, \boldsymbol{\rho}) \right) \pi(\boldsymbol{\alpha} \lvert \boldsymbol{\rho}) \pi(\boldsymbol{\beta}) \pi(\phi)\pi(\boldsymbol{\rho}) \ , \\
     & \propto \exp\left( -\frac{1}{2} \boldsymbol{\alpha}^T \mathbf{Q}(\boldsymbol{\rho}) \boldsymbol{\alpha} + \sum_{j=1}^{m} \ln \pi(\mathbf{y}_j \lvert \boldsymbol{\beta}, \boldsymbol{\alpha}, \phi) \right) \lvert \mathbf{Q}(\boldsymbol{\rho}) \rvert^{1/2} \pi(\boldsymbol{\beta}) \pi(\phi)\pi(\boldsymbol{\rho}) \ ,
@@ -784,7 +785,7 @@ In \citet{gelman2017rsquared} a definition of the $R^2$ for the Bayesian linear 
     R_s^2 = \frac{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s}{\boldsymbol{\beta}_s^T \boldsymbol{\Sigma_{\mathbf{X^TX}}}\boldsymbol{\beta}_s + \sigma^2_s} \ ,
 \end{equation}
 where $\boldsymbol{\Sigma_{\mathbf{X^TX}}}$ is the covariance matrix of the design matrix $\mathbf{X}$ and $\sigma^2_s$ is the variance of the error term which can be sampled from the posterior distribution.
-Contrary to the classical definition this definition of $R^2$ contains only the estimated values from our model and not the observed values. The reasoning behind this is to carry this inherent uncertainty in the Bayesian framework by not using point estimates from the posterior mean, but rather averaging over a posterior distribution. %Should I cite Gelman here?
+Contrary to the classical definition this definition of $R^2$ contains only the estimated values from our model and not the observed values. The reasoning behind this is to carry this inherent uncertainty in the Bayesian framework by not using point estimates from the posterior mean, but rather averaging over posterior distributions. %Should I cite Gelman here?
 Drawing enough samples from \eqref{eq:bayes_r2} one would eventually obtain also an approximation of the distribution for the $R^2$ value \citep{gelman2017rsquared}.
 
 
@@ -799,14 +800,17 @@ and
 \begin{equation}
     R^2 = \frac{\text{Var}(\mathbf{x}^T\boldsymbol{\beta})}{\text{Var}(\mathbf{x}^T\boldsymbol{\beta}) + \sigma^2} = \frac{\sum_{j=1}^{p}\lambda_j}{\sum_{j=1}^{p}\lambda_j + 1} := \frac{W}{W +1}
 \end{equation}
-where $W$ is the sum of the diagonal elements of $\Lambda$. Assuming that $W \sim BP(a, b)$ where $BP$ denotes the Beta prime distribution, is equivalent to assuming that $R^2 \sim Beta(a, b)$ value follows a Beta distribution \citep{zhang2020bayesian}. Further, \citet{zhang2020bayesian} expresses each $\lambda_j=\phi_j\omega$ with $\sum_{j=1}^p \phi_j=1$ such that $W=\sum_{j=1}^p \phi_j\omega=\omega$. This is the key element that makes the R2D2 prior analogous to a variable importance measure, because $\omega$ represents the total prior variability and $\phi_j$ represents the proportion of the total variability allocated to covariate $j$ for $j=1, ..., p$ \citep{zhang2020bayesian}. Now, to decompose the model $R^2$ based on these priors, it is proposed to place the prior $\boldsymbol{\phi}=(\phi_1, ..., \phi_p) \sim Dir(a_{\pi}, ..., a_{\pi})$ where $Dir$ denotes the Dirichlet distribution, and $a_{\pi}$ is a concentration parameter \citep{zhang2020bayesian}. This means that $\phi_j$ is estimated using a Dirichlet decomposition which is analogous to assigning each covariate with a share of relative variable importance. The concentration parameters can be seen as an a priori importance for the covariates \citep{aguilar2024generalized} and larger $a_{\pi}$ leads to smaller variance of $\phi_j$ and produces a more uniform $\boldsymbol{\phi}$. Conversely, a smaller $a_{\pi}$ leads $\boldsymbol{\phi}$ to have some components with a larger $\phi_j$ \citep{zhang2020bayesian}. The authors then show the prior on $\boldsymbol{\beta}$ that is induced by the prior on $R^2$ and further develop the theory and list properties of the R2D2 priors \citep{zhang2020bayesian}. An advantage with the R2D2 priors for the marginal $R^2$ is that they allow for more extensive asymptotic analysis of both the prior and posterior distributions \citep{zhang2020bayesian}. However, the Dirichlet distribution has some limitations that make it unsuitable for many applications. Firstly, when multiple covariates compete for the shares of importance, the Dirichlet distribution has a tendency to gravitate this competition towards a negative dependency structure, which is completely determined by the mean of each component \citep{aguilar2024generalized}. Further, the Dirichlet distribution is not very flexible, and therefore struggles to model correlation structures between covariates \citep[and references therein]{aguilar2024generalized}. Moreover, the Dirichlet distribution enforces a high number of constraints on the covariance structure, making some covariance structures impossible to model \citep{aguilar2024generalized}. Therefore, \citet{aguilar2024generalized} propose what they call Generalized Decomposition Priors on $R^2$ (GDR2). The GDR2 priors address some limitations in the R2D2 priors, and suggests to rather place a Logistic Normal (LN) prior on the parameters $\boldsymbol{\phi}$. This means that $\boldsymbol{\phi} \sim LN(\boldsymbol{\mu}, \boldsymbol{\Sigma})$ and instead of specifying the parameter $a_{\pi}$, we must now specify the mean $\boldsymbol{\mu}$ and the covariance matrix $\boldsymbol{\Sigma}$ \citep{aguilar2024generalized}. The authors suggest automating the process of choosing prior values for the mean and covariance of $\boldsymbol{\phi}$ by what they call \textit{prior matching}. By letting $f\sim Dir(\alpha)$ for a fixed $\alpha = a_{\pi}$ and $g\sim LN(\boldsymbol{\mu}, \boldsymbol{\Sigma})$, the Kullback-Leibler divergence \citep{Kullback_Liebler_1951} between $f$ and $g$ can be minimized. In \citet{aguilar2024generalized} a closed form for the minimizers is obtained as 
+where $W$ is the sum of the diagonal elements of $\Lambda$. Assuming that $W \sim BP(a, b)$ where $BP$ denotes the Beta prime distribution, is equivalent to assuming that $R^2 \sim Beta(a, b)$ follows a Beta distribution \citep{zhang2020bayesian}. Further, \citet{zhang2020bayesian} expresses each $\lambda_j=\phi_j\omega$ with $\sum_{j=1}^p \phi_j=1$ such that $W=\sum_{j=1}^p \phi_j\omega=\omega$. This is the key element that makes the R2D2 prior analogous to a variable importance measure, because $\omega$ represents the total prior variability and $\phi_j$ represents the proportion of the total variability allocated to covariate $j$ for $j=1, ..., p$ \citep{zhang2020bayesian}. Now, to decompose the model $R^2$ based on these priors, it is proposed to place the prior $\boldsymbol{\phi}=(\phi_1, ..., \phi_p) \sim Dir(a_{\pi}, ..., a_{\pi})$ where $Dir$ denotes the Dirichlet distribution, and $a_{\pi}$ is a concentration parameter \citep{zhang2020bayesian}. This means that $\phi_j$ is estimated using a Dirichlet decomposition which is analogous to assigning each covariate with a share of relative variable importance. The concentration parameters can be seen as an a priori importance for the covariates \citep{aguilar2024generalized} and larger $a_{\pi}$ leads to smaller variance of $\phi_j$ and produces a more uniform $\boldsymbol{\phi}$. Conversely, a smaller $a_{\pi}$ leads $\boldsymbol{\phi}$ to have some components with a larger $\phi_j$ \citep{zhang2020bayesian}. The authors then show the prior on $\boldsymbol{\beta}$ that is induced by the prior on $R^2$ and further develop the theory and list properties of the R2D2 priors \citep{zhang2020bayesian}. 
+\\
+\\
+An advantage with the R2D2 priors for the marginal $R^2$ is that they allow for more extensive asymptotic analysis of both the prior and posterior distributions \citep{zhang2020bayesian}. However, the Dirichlet distribution has some limitations that make it unsuitable for many applications. Firstly, when multiple covariates compete for the shares of importance, the Dirichlet distribution has a tendency to gravitate this competition towards a negative dependency structure, which is completely determined by the mean of each component \citep{aguilar2024generalized}. Further, the Dirichlet distribution is not very flexible, and therefore struggles to model correlation structures between covariates \citep[and references therein]{aguilar2024generalized}. Moreover, the Dirichlet distribution enforces a high number of constraints on the covariance structure, making some covariance structures impossible to model \citep{aguilar2024generalized}. Therefore, \citet{aguilar2024generalized} propose what they call Generalized Decomposition Priors on $R^2$ (GDR2). The GDR2 priors address some limitations in the R2D2 priors, and suggests to rather place a Logistic Normal (LN) prior on the parameters $\boldsymbol{\phi}$. This means that $\boldsymbol{\phi} \sim LN(\boldsymbol{\mu}, \boldsymbol{\Sigma})$ and instead of specifying the parameter $a_{\pi}$, we must now specify the prior mean $\boldsymbol{\mu}$ and the prior covariance matrix $\boldsymbol{\Sigma}$ \citep{aguilar2024generalized}. The authors suggest automating the process of choosing prior values for the mean and covariance of $\boldsymbol{\phi}$ by what they call \textit{prior matching}. By letting $f\sim Dir(\alpha)$ for a fixed $\alpha = a_{\pi}$ and $g\sim LN(\boldsymbol{\mu}, \boldsymbol{\Sigma})$, the Kullback-Leibler divergence \citep{Kullback_Liebler_1951} between $f$ and $g$ can be minimized. In \citet{aguilar2024generalized} a closed form for the minimizers is obtained as 
 \begin{equation}
     \begin{aligned}
-    \boldsymbol{\mu}^*_k &= \delta(\alpha_k) - \delta(\alpha_K) \\ 
-    \sigma_{kk}^* &= \varepsilon(\alpha_k) + \varepsilon(\alpha_K) \\  \sigma_{kj}^* &= \varepsilon(\alpha_k) \quad k \neq j\ ,
+    \boldsymbol{\mu}^*_j &= \delta(\alpha_j) - \delta(\alpha_K) \\ 
+    \sigma_{jj}^* &= \varepsilon(\alpha_j) + \varepsilon(\alpha_K) \\  \sigma_{jk}^* &= \varepsilon(\alpha_j) \quad j \neq k\ ,
     \end{aligned}
 \end{equation}
-for $k=1, ..., K$ where $\alpha_K$ is a reference unit, $\delta(\alpha_k)$ denotes the digamma function and $\varepsilon(\alpha_k) = \delta'(\alpha_k)$ denotes the first polygamma function \citep[pages 258-260]{abramowitz1972handbook}. We will not go further into detail on R2D2 and GDR2 priors, but rather focus on the interpretation of the R2D2 and GDR2 prior as variable importance measures by assessing the values of $\boldsymbol{\phi}$.
+for $j=1, ..., p$ where $\alpha_K$ is a reference unit, $\delta(\alpha_j)$ denotes the digamma function and $\varepsilon(\alpha_j) = \delta'(\alpha_j)$ denotes the first polygamma function \citep[pages 258-260]{abramowitz1972handbook}. We will not go further into detail on R2D2 and GDR2 priors, but rather focus on the interpretation of the R2D2 and GDR2 prior as variable importance measures by assessing the values of $\boldsymbol{\phi}$.
 
 
 % Considering the model
@@ -895,7 +899,7 @@ for $k=1, ..., K$ where $\alpha_K$ is a reference unit, $\delta(\alpha_k)$ denot
 As we have seen, the analytical posterior is possible to obtain for some hierarchical structures (\textit{e.g.} \eqref{eq:hierarchical_posterior_analytical}). 
 However, in the case of GLMMs, the posterior distribution is not in general analytically tractable \citep{fong2010bayesian}. This calls for the use of numerical methods, such as Markov chain Monte Carlo (MCMC) methods, to be able to sample from the posterior distribution. 
 Such methods are computationally expensive, and require careful analysis to justify convergence and proper mixing of the Markov chains to make sure we sample from the steady state posterior distribution. Therefore, it is desirable, under certain conditions, to look at other methods that are more computationally efficient.
-In this thesis we will consider the Integrated Nested Laplace Approximation (INLA) method \citep{Rue2009}.
+In this thesis we will consider the Integrated Nested Laplace Approximation (INLA) method \citep{rue2009inla}.
 \subsection{Introduction to INLA}
 The INLA method is an alternative to the classical Marko chain Monte Carlo methods, that has significant advantages at the cost of some structural assumptions. 
 To present INLA, consider the vector of observations $\mathbf{y} = (y_1, ..., y_n)$, which may also contain missing values. 
@@ -920,8 +924,12 @@ Since it is assumed that observations are independent given the latent field, we
 \begin{equation}
     \pi(\mathbf{y} \lvert \boldsymbol{x}, \boldsymbol{\theta}) = \prod_{i\in \mathcal{I}} \pi(y_i \lvert x_i, \boldsymbol{\theta}) \ ,
 \end{equation}
-where the index set $\mathcal{I} \subset \{1, 2, 3, \ldots, n\}$ only includes actual observed data. %SHOULD I INCLUDE MORE HERE? 
-Instead of considering the full joint posterior distribution, INLA now attempts to estimate the marginals of the latent effects, and the hyperparameters, to construct the approximate joint posterior. These marginals are given by
+where the index set $\mathcal{I} \subset \{1, 2, 3, \ldots, n\}$ only includes actual observed data. Similar to the expression in \eqref{eq:hierarchical_posterior}, the joint posterior now reads
+\begin{equation}
+    \label{eq:INLA_full_posterior}
+    \pi(\boldsymbol{x}, \boldsymbol{\theta} \lvert \mathbf{y}) \propto \pi(\boldsymbol{\theta}) \lvert \mathbf{Q}(\boldsymbol{\theta})\rvert^{1/2} \exp\left( -\frac{1}{2} \boldsymbol{x}^T \mathbf{Q}(\boldsymbol{\theta}) \boldsymbol{x} + \sum_{i\in \mathcal{I}} \ln \pi(y_i \lvert x_i, \boldsymbol{\theta}) \right) \ ,
+\end{equation}
+However, instead of considering the full joint posterior distribution, INLA attempts to estimate the marginals of the latent effects, and the hyperparameters, to construct the approximate joint posterior. These marginals are given by
 \begin{equation}
     \label{eq:INLA_marginals}
     \pi(x_l \lvert \mathbf{y}) = \int \pi(x_l \lvert \boldsymbol{\theta}, \mathbf{y}) \pi(\boldsymbol{\theta} \lvert \mathbf{y}) d\boldsymbol{\theta} \ ,
@@ -982,7 +990,7 @@ A similar scheme for numerical integration can be used to obtain the marginals $
 Lastly, the joint posterior distribution can be approximated from the so-called Skew Gaussian Copula class, as specified in \citet{rue2021joint}, and allows for sampling from the joint distribution.
 \\
 \\
-The INLA method is implemented in the R-package \texttt{R-INLA} \citep{gomezrubio2020inla} and is used in this thesis to fit the models and draw from the obtained posteriors. We note that for the random effects it is common to work with the precision matrix, which is defined as the inverse covariance matrix, rather than the covariance matrix directly. Therefore, all estimates on random effects will be given as precision rather than variance. Throughout the thesis, when INLA is applied, we will place PC priors on the model parameters, as recommended by \citet{simpson2017penalising} and \citet{gomezrubio2020inla}.
+The INLA method is implemented in the R-package \texttt{R-INLA} \citep{gomezrubio2020inla} and is used in this thesis to fit the models and draw from the obtained posteriors. We note that for the random effects it is common to work with the precision matrix, which is defined as the inverse covariance matrix, rather than the covariance matrix directly. Therefore, all estimates from INLA on random effects will be given as precision rather than variance. Throughout the thesis, when INLA is applied, we will place PC priors on the model parameters, as recommended by \citet{simpson2017penalising} and \citet{gomezrubio2020inla}.
 % For the posterior marginal distribution of variance for the random effects the package has a function for transforming the precision marginal to the variance marginal.
 % The priors used for the models in this thesis follow the recommendations of penalizing priors by \citet{simpson2017penalising}.
 % EXPAND ON INLA? SINCE SOME OF THE FEEDBACK STATED THAT IT WAS A BIT UNCLEAR.
@@ -1003,7 +1011,7 @@ In an organism, the observed phenotypic trait in an individual is a result of th
 The genotype of a trait can be defined as \textit{"the diploid pair of alleles present at a given locus"}, and is the outcome of genetic inheritance \citep{ConnerHartl2004}. 
 As evolutionary biology seeks to explain diversity among individuals in a population \citep{Kruuk2004}, a decomposition of the phenotypic variance is of great interest. 
 The simplest partition is to define the phenotypic variance as the sum of the genetic variance and environmental variance \citep{ConnerHartl2004}. 
-However, for species that mate with other individuals in the population rather than self-fertilize, it is common to further decompose the genetic variance into four parts. 
+However, for species that mate with other individuals in the population rather than self-fertilize, it is common to further decompose the genetic variance into three parts. 
 The \textbf{total phenotypic variance} can therefore be partitioned as
 \begin{equation}
     \sigma^2_P = \sigma^2_G + \sigma^2_E = \sigma^2_A + \sigma^2_D + \sigma^2_I + \sigma^2_E \ ,
@@ -1041,7 +1049,7 @@ This property is readily visualized in a conditional independence graph (\Cref{f
 The pedigree of a population is a directed acyclic graph (DAG) where each node represents an individual and the directed edges represent the parent-offspring relationship. 
 This gives rise to the conditional independence graph, which can be found by inserting edges between parents that share offspring and removing the directions in the pedigree \citep{Wermuth1983Graphical}.
 An individual (node) in this graph will therefore only have edges, meaning it is conditionally dependent on, its parents, the parent(s) of its offspring, and its offspring. For example, in \Cref{fig:GMRF_animal_model} bird $U_4$ is conditionally dependent on birds $U_1$ and $U_2$ as they are its parents, bird $U_6$ as it is the offspring of $U_4$ and on bird $U_5$ as it is the other parent of the offspring of $U_4$. $U_3$ and $U_7$ therefore does not provide additional information on $U_4$ \citep{Stensland_GMRF_bayes_animal_model}. Therefore, this GMRF structure from the pedigree allows us to use the INLA framework for model fitting, which can be used to effectively sample and obtain parameter estimates from the quantities in the animal model \citep{Stensland_GMRF_bayes_animal_model}. 
-The pedigree can also be used to construct the relatedness matrix $\mathbf{A}$, previously defined as the expected covariance between relatives, and the gives rise to the sparse precision matrix $\mathbf{Q}:=(\sigma^2_A\mathbf{A})^{-1}$, reflecting the Markov structure \citep{Stensland_GMRF_bayes_animal_model}. Note that only $\mathbf{A}^{-1}$ is needed for calculations.
+The pedigree can also be used to construct the relatedness matrix $\mathbf{A}$, previously defined as the expected correlation between relatives, and the gives rise to the sparse precision matrix $\mathbf{Q}:=(\sigma^2_A\mathbf{A})^{-1}$, reflecting the Markov structure \citep{Stensland_GMRF_bayes_animal_model}. Note that only $\mathbf{A}^{-1}$ is needed for calculations.
 As we consider each node an individual, the corresponding value of that node is its breeding value $\boldsymbol{\alpha_A}$ \citep{Stensland_GMRF_bayes_animal_model}. 
 \begin{figure}[ht]
     \centering

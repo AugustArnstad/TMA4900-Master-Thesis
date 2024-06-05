@@ -5,6 +5,7 @@ All regression models are based on the assumption that the response variable is 
 The relationship between the response and the covariate is assumed not to be deterministic, so we expect our modelling of the response to be influenced by some random error \citep{GLMM_book}.
 This means that the response is treated as a random variable, and it is desirable to decompose the response into systematic components and random components. Throughout this section, we will mostly follow the derivations of \citet{GLMM_book} and \citet{GLMM_book_old}.
 \subsection{Linear regression}
+\label{sec:simple_linreg}
 Assuming that an observed response $y_i$ has a linear relationship with a covariate $x_i$ is the basis for the simple linear regression.
 This can be modeled by the equation
 \begin{equation}
@@ -51,6 +52,7 @@ where $\beta_j$ denotes the factor coefficient of observation $i$ and the dummy 
 This way of modelling qualitative covariates is intuitive and easy to interpret, but it also assumes that factor specific effects are uniform and fixed across all levels and becomes cumbersome with many categorical covariates. 
 
 \subsection{Correlation among covariates in linear regression}
+\label{sec:corr_linreg}
 Correlation among covariates is to be expected, as it is natural in many practical applications. However, if the correlation is very strong, this poses some serious problems when interpreting the linear regression model.
 The covariates $\mathbf{x}_i$ in a linear regression are assumed to be linearly independent, so that the design matrix $\mathbf{X}$ has full rank.
 If the design matrix is not of full rank, that is one or more covariates are perfectly correlated, the model \eqref{eq:linreg} is said to be \textit{multicollinear} \citep{Poole_OFarrell_1971}. 
@@ -69,6 +71,7 @@ The middle term in \eqref{eq:var_y} consists of the covariance between the covar
 
 %\subsection{Relative variable importance \protect\footnote{This subsection is slightly modified from the project thesis \citep{Arnstad:Relative_variable_importance_in_Bayesian_linear_mixed_models:2024}.}} 
 \section{Variable importance in linear regression models}
+\label{sec:rel_imp_linreg}
 In a regression setting with multiple regression coefficients, it is often desirable to be able to assign each covariate with a measure of its relative importance with respect to the model.
 The relative importance of covariate $\mathbf{x}_i$ is defined as the standardized contribution to explained variance in the response $\mathbf{y}$ from $\mathbf{x}_i$ \citep{gromping_relaimpo}.
 Assigning relative importance is no trivial task, as correlation among covariates poses a challenge in assessing the relative importance of each covariate.
@@ -158,7 +161,7 @@ As we have seen from these naive approaches, the task of decomposing the $R^2$ v
 \label{sec:lmg}
 A method that handles correlation among covariates, and is frequently reinvented from different approaches, is the Lindeman, Merenda and Gold (LMG) method \citep{gromping_relaimpo}.
 We shall therefore discuss it, as it serves an important role as a leading method for assigning relative variable importance.  
-The LMG method takes use of averaging over orders, meaning that it permutes the index set $\{1, ..., p\}$  of the regressors $(p-1)!$ times, excluding the intercept, and sequentially adds the regressors to the model for each permuted index set.
+The LMG method takes use of averaging over orders, meaning that it permutes the index set $\{1, ..., p\}$ of the regressors $(p-1)!$ times, excluding the intercept, and sequentially adds the regressors to the model for each permuted index set.
 By adding regressors sequentially for each permutation, one can investigate how the importance of the regressors vary depending on what other regressors are included, which is useful when they are correlated.
 This is justified by the assumption that there is no relevant ordering of the regressors in the index set \citep{kruskal_lmg_1987}.
 For each regressor added, starting with none, it allocates a share of explained variance, or importance, and then adds a new regressor.
@@ -167,8 +170,8 @@ This would mean that for two correlated regressors whose importance share varies
 Averaging over orders is a statistical tradition \citep{kruskal_lmg_1987} and gives a robust assessment of each regressor's importance by considering different orderings of how they are added to the model. 
 The iterative process for the regressors $\{X_0, X_1, X_2, X_3\}$, where $X_0$ is the intercept, would be
 \begin{enumerate}
-    \item Considering $\{X_1, X_2, X_3\}$,  $X_1$ is added to the model, and the share of explained variance allocated to $X_1$ is $\text{svar}(\{1\} \lvert \emptyset)$. $X_2$ is added and allocated a share of $\text{svar}(\{2\} \lvert \{1\})$, and lastly $X_3$ is added and allocated a share of $\text{svar}(\{3\} \lvert \{1, 2\})$.
-    \item Considering $\{X_1, X_3, X_2\}$,  $X_1$ is added to the model, and the share of explained variance allocated to $X_1$ is $\text{svar}(\{1\} \lvert \emptyset)$. $X_3$ is added and allocated a share of $\text{svar}(\{3\} \lvert \{1\})$, and lastly $X_2$ is added and allocated a share of $\text{svar}(\{2\} \lvert \{1, 3\})$.
+    \item Considering $\{X_1, X_2, X_3\}$, $X_1$ is added to the model, and the share of explained variance allocated to $X_1$ is $\text{svar}(\{1\} \lvert \emptyset)$. $X_2$ is added and allocated a share of $\text{svar}(\{2\} \lvert \{1\})$, and lastly $X_3$ is added and allocated a share of $\text{svar}(\{3\} \lvert \{1, 2\})$.
+    \item Considering $\{X_1, X_3, X_2\}$, $X_1$ is added to the model, and the share of explained variance allocated to $X_1$ is $\text{svar}(\{1\} \lvert \emptyset)$. $X_3$ is added and allocated a share of $\text{svar}(\{3\} \lvert \{1\})$, and lastly $X_2$ is added and allocated a share of $\text{svar}(\{2\} \lvert \{1, 3\})$.
 \end{enumerate}
 The above iteration is repeated for all 6 possible permutations of orderings among regressors to obtain the final result.
 This iterative process gives rise to the general formula for share of explained variance allocated to $X_1$ by the LMG method with $p$ regressors,
@@ -422,7 +425,7 @@ However, the task of determining the $R^2$, and decomposing it, is not a trivial
 Many extensions have been proposed, but due to a variety of theoretical problems and/or computational difficulties, no consensus has been reached on a framework for calculating the $R^2$ for GLMMs \citep{nakagawa2013general}.
 To get an overview of the status quo for $R^2$, we will follow the paper by \citet{nakagawa2013general} and go through the different components added to the linear regression to compose the GLMMs.
 \subsection{\texorpdfstring{$R^2$}{Lg} for GLMs}
-Recalling the definition of the $R^2$ from \eqref{eq:R2}, we now generalize this to the GLMs. This topic has been subject to significant research, (see for example \citet{maddala1983limited, cameron1997r, menard2000coefficients,  nakagawa2013general}). The methods first suggested was based on the likelihood function of the model to be analysed. We will not implement such methods, as they are not suitable for the full generalization to be made later on, however they are important in building a framework for the $R^2$ value and are therefore included.
+Recalling the definition of the $R^2$ from \eqref{eq:R2}, we now generalize this to the GLMs. This topic has been subject to significant research, (see for example \citet{maddala1983limited, cameron1997r, menard2000coefficients, nakagawa2013general}). The methods first suggested was based on the likelihood function of the model to be analysed. We will not implement such methods, as they are not suitable for the full generalization to be made later on, however they are important in building a framework for the $R^2$ value and are therefore included.
 To illustrate the likelihood based generalization of the $R^2$ value to GLMs, consider the deviance $\mathcal{D}(\mathbf{y}\lvert \theta)$ function which is defined as twice the difference between the log-likelihood of the \textbf{saturated model} and the log-likelihood of the model of interest \citep{GLMM_book_old}.
 The saturated model denotes the model of the maximum achievable log-likelihood, and therefore fits the data perfectly. 
 For a linear regression, with $\theta=(\boldsymbol{\beta}, \sigma^2)$, we would therefore obtain
@@ -492,7 +495,7 @@ Similarly, the second component is defined as
 where $\overline{y_j}$ is the mean for each observed value of the $j$th cluster, $\hat{\bar {y_j}}$ is the mean of the fitted values for the $j$th cluster, $k$ is the harmonic mean of the number of observations per cluster, $m_j$ is the number of observations for the $j$th cluster and $M$ is the total number of clusters \citep{nakagawa2013general}. 
 Note that we have formulated the above definitions in a notation corresponding to our previous formulation of the LMM, and therefore uses clusters in general, whereas \citet{nakagawa2013general} refers to a cluster as being individuals with repeated measurements.
 % Litt usikker på om dette blir 100% riktig?
-The reason for dividing the $R^2$ into two components, is that intuitively the $R^2_1$ measures the within cluster variance explained  and the $R^2_2$ measures the between cluster variance explained \citep{nakagawa2013general}.
+The reason for dividing the $R^2$ into two components, is that intuitively the $R^2_1$ measures the within cluster variance explained and the $R^2_2$ measures the between cluster variance explained \citep{nakagawa2013general}.
 However, three problems arise when using this definition of the $R^2$ for LMMs. 
 Firstly, the $R^2_1$ and $R^2_2$ can decrease in large models, secondly, $R_1^2$ and $R_2^2$ have not been generalized to more complex LMMs with more than one random effect and lastly, it is not clear how to generalize the $R_1^2$ and $R_2^2$ to GLMMs \citep{nakagawa2013general}.
 To overcome these obstacles, \citet{nakagawa2013general} proposes a new formulation of the $R^2$ measure. 
@@ -620,6 +623,7 @@ and
 completing the generalization. 
 
 \subsection{Extensions of the LMG and relative weights method}
+\label{sec:LMG_ext}
 Extensions for both the LMG and the relative weights method have been proposed so that they can decompose the $R^2$ proposed by \citet{nakagawa2013general} also for random intercept models \citep{matre}. 
 The extended LMG, denoted as the ELMG, method uses the same permutations as described for the regular LMG, and now decomposes the $R^2$ value for the random intercept model.
 % This $R^2$ is described in \Cref{sec:R2_LMM} and effectively divides the variance of the response into the variance of the fixed effects, the random effects and the random error.
@@ -678,6 +682,7 @@ We now expand the theory to consider the Bayesian framework, which is the framew
 % which \textit{can be interpreted as specifying a hypothetical long run of statements about $\mu$ a proportion $1-c$ of which are correct} \citep{Cox_2006}.
 % The belief that the long run behaviour of the data can be used as a basis to draw conclusions is a fundamental idea of the frequentist framework.
 \subsection{General idea} 
+\label{sec:bayes_general}
 The Bayesian framework stems from the notorious theorem developed by Thomas Bayes \citep{bayes_1763}, which states that for events $A$ and $B$, with nonzero probability of occurring, we have
 \begin{equation}
     \label{eq:bayes_theorem}
@@ -737,7 +742,7 @@ Assuming that the data $\mathbf{y}$ depends only on the parameter $\boldsymbol{\
     \pi(\boldsymbol{\theta}, \boldsymbol{\phi} \lvert \mathbf{y}) \propto \pi(\mathbf{y} \lvert \boldsymbol{\theta}, \phi) \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi}) = \pi(\mathbf{y} \lvert \boldsymbol{\theta}) \pi(\boldsymbol{\theta} \lvert \boldsymbol{\phi})\pi(\boldsymbol{\phi}) \ ,
 \end{equation}
 where $\pi(\boldsymbol{\phi})$ is a prior placed on the hyperparameters. 
-This hierarchical structure allows us to first estimate the population distribution using the hyperparameters, and then obtain inference on the parameters of interest in  $\boldsymbol{\theta}$ using the population distribution, instead of considering each component separately \citep{gelman2015Bayesian}.
+This hierarchical structure allows us to first estimate the population distribution using the hyperparameters, and then obtain inference on the parameters of interest in $\boldsymbol{\theta}$ using the population distribution, instead of considering each component separately \citep{gelman2015Bayesian}.
 It may be practical to view the model in three parts and consider an example with a tractable posterior distribution. 
 Let the observational model be $\pi(\mathbf{y} \lvert \boldsymbol{\theta})$ be defined as 
 \begin{equation}
@@ -901,6 +906,7 @@ However, in the case of GLMMs, the posterior distribution is not in general anal
 Such methods are computationally expensive, and require careful analysis to justify convergence and proper mixing of the Markov chains to make sure we sample from the steady state posterior distribution. Therefore, it is desirable, under certain conditions, to look at other methods that are more computationally efficient.
 In this thesis we will consider the Integrated Nested Laplace Approximation (INLA) method \citep{rue2009inla}.
 \subsection{Introduction to INLA}
+\label{sec:INLA_intro}
 The INLA method is an alternative to the classical Marko chain Monte Carlo methods, that has significant advantages at the cost of some structural assumptions. 
 To present INLA, consider the vector of observations $\mathbf{y} = (y_1, ..., y_n)$, which may also contain missing values. 
 Given an appropriate link function $g(\mu_i)=\eta_i$, we can model the observations as independent given the linear predictor
@@ -952,7 +958,7 @@ and
     \label{eq:INLA_marginals_hyperparameters_nested}
     \tilde{\pi}(\theta_k \lvert \mathbf{y}) = \int \tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y}) d\boldsymbol{\theta}_{-k} \ ,
 \end{equation}
-where $\tilde{\pi}(\cdot, \cdot)$ is an approximation of the density $\pi(\cdot, \cdot)$. To be able to compute the above approximations, we need to first specify the approximations under the integral sign. The first one to consider is $\tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y})$, which \citet{rue2009inla} approximates  by 
+where $\tilde{\pi}(\cdot, \cdot)$ is an approximation of the density $\pi(\cdot, \cdot)$. To be able to compute the above approximations, we need to first specify the approximations under the integral sign. The first one to consider is $\tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y})$, which \citet{rue2009inla} approximates by 
 \begin{equation}
     \label{eq:full_hyper}
     \tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y}) \propto \frac{\tilde{\pi}(\mathbf{x}, \boldsymbol{\theta}, \mathbf{y})}{\tilde{\pi}_G(\mathbf{x}\lvert\boldsymbol{\theta}, \mathbf{y})} \bigg\lvert_{\mathbf{x}=\mathbf{x}^*(\boldsymbol{\theta})} \ ,
@@ -1025,7 +1031,7 @@ The animal model can be stated as a generalized linear mixed model, by letting
 \end{equation}
 where $\boldsymbol{\mu}$ is the mean of the observations $\mathbf{y}$ of the phenotypic trait(s), $\boldsymbol{\eta}$ is the linear predictor, $\mathbf{X}$ the design matrix of the fixed effects, $\boldsymbol{\beta}$ the population coefficients, $\mathbf{U}$ the design matrix of the random effects and $\boldsymbol{\alpha}$ the vector of random effects.
 %, and $\boldsymbol{\varepsilon}$ the vector of residuals.
-One of the random effects in the animal model, $\boldsymbol{\alpha}_A \sim \mathcal{N}(0, \mathbf{G})$,  accounts for the additive genetic effect. The values of the vector $\boldsymbol{\alpha}_A$ contains the so-called breeding values \citet{Wilson_guide_animal_model}, which are defined as the effect of an individual's genes on the value of the phenotypic trait in its offspring \citep{ConnerHartl2004}. 
+One of the random effects in the animal model, $\boldsymbol{\alpha}_A \sim \mathcal{N}(0, \mathbf{G})$, accounts for the additive genetic effect. The values of the vector $\boldsymbol{\alpha}_A$ contains the so-called breeding values \citet{Wilson_guide_animal_model}, which are defined as the effect of an individual's genes on the value of the phenotypic trait in its offspring \citep{ConnerHartl2004}. 
 As in \Cref{sec:LMM}, we let $\mathbf{G}$ denote the covariance matrix of the random effect $\boldsymbol{\alpha}_A$, which in the animal model can be derived from the expected covariance between relatives \citep{Kruuk2004}.
 This derivation can be done by considering the coefficient of coancestry, $\Theta_{i,j}$, defined as \textit{"the probability that an allele drawn at random from an individual $i$ will be identical by descent to an allele drawn at random from individual $j$"} \citep{Kruuk2004}. 
 We use the coefficient of coancestry to define the expected correlation between relatives, or additive relationship matrix, as $\mathbf{A}_{i, j}=2\Theta_{i, j}$ and consequently $\mathbf{G}=\sigma^2_A\mathbf{A}$ \citep{Kruuk2004}. 

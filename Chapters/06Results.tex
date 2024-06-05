@@ -33,28 +33,28 @@ In general, the BVI method is in agreement with the theoretical results for unco
 \begin{figure}[H]
   \centering
   %\label{fig:relimp_all}
-  \begin{subfigure}[b]{0.7\linewidth}
+  \begin{subfigure}[b]{0.75\linewidth}
     \centering
     \includegraphics[width=\linewidth]{Figures/ViolinPlots/Variance_V1.png}
     %\caption{Relative importance of $X_1$ as calculated from the four methods.}
     \label{fig:relimp_X1_fig}
   \end{subfigure}
   
-  \begin{subfigure}[b]{0.7\linewidth}
+  \begin{subfigure}[b]{0.75\linewidth}
     \centering
     \includegraphics[width=\linewidth]{Figures/ViolinPlots/Variance_V2.png}
    %\caption{Relative importance of $X_2$ as calculated from the four methods.}
     \label{fig:relimp_X2_fig}
   \end{subfigure}
   
-  \begin{subfigure}[b]{0.7\linewidth}
+  \begin{subfigure}[b]{0.75\linewidth}
     \centering
     \includegraphics[width=\linewidth]{Figures/ViolinPlots/Variance_V3.png}
     %\caption{Relative importance of $X_3$ as calculated from the four methods.}
     \label{fig:relimp_X3_fig}
   \end{subfigure}
   
-  \caption[Relative importance of the fixed effects in Gaussian LMM]{Violin plots for the relative importance of the fixed effects $X_1$ (top), $X_2$ (middle) and $X_3$ (bottom) for different correlation levels displayed along the x-axis, calculated from the ensemble of $N_{\text{sim}}=10^4$ simulated datasets by the BVI, ELMG, ERW, and the LMG methods. The horizontal line displays the theoretically expected importance of each fixed effect in the case of uncorrelated data. For the BVI method, the distributions of posterior means are shown to compare to the distribution of point estimates from the other three methods.}
+  \caption[Relative importance of the fixed effects in Gaussian LMM]{Violin plots for the relative importance of the fixed effects $X_1$, $X_2$ and $X_3$ for different correlation levels displayed along the x-axis, calculated from the ensemble of $N_{\text{sim}}=10^4$ simulated datasets by the BVI, ELMG, ERW, and the LMG methods. The horizontal line displays the theoretically expected importance of each fixed effect in the case of uncorrelated data. For the BVI method, the distributions of posterior means are shown to compare to the distribution of point estimates from the other three methods.}
   \label{fig:relimp_all}
 \end{figure}
 
@@ -274,18 +274,6 @@ Moving on to the estimated posterior $R^2$ distributions for the Poisson model (
   \label{fig:r2_combined_poisson}
 \end{figure}
 \section{Case study with \texttt{rptR} package}
-% \begin{figure}[H]
-%     \centering
-%       \includegraphics[width=0.7\linewidth]{Figures/Stoffel Comparison/Heritability_colour_Binomial.png}
-%       \caption{Heritability of colour of male beetles from Stoffel}
-%       \label{fig:heritability_colour_Binomial}
-%   \end{figure}
-%   \begin{figure}[H]\ContinuedFloat
-%     \centering
-%     \includegraphics[width=0.7\linewidth]{Figures/Stoffel Comparison/Heritability_egg_poisson.png}
-%     \caption{Heritability of eggs laid by female beetles from Stoffel}
-%       \label{fig:heritability_egg_poisson}
-%   \end{figure}
 To further assess our method, a comparison to the vignette for the \texttt{rptR} was made. The package described in this vignette estimates the repeatability of phenotypic traits, which for some definitions coincide with heritability and therefore can be seen as a special case of variable importance. Thus, we were able to apply the Bayesian Variable Importance method and compare the results. No expected results were available, and so we can only compare our method to the results made by the authors of the vignette. It should however be noted, that the \texttt{rptR} package returns the marginal $R^2$ as the only measure of importance for the fixed effects, whereas our method directly decomposes this value and assigns a share to each fixed effect. To obtain uncertainty estimates in the likelihood framework, Stoffel, Nakagawa and Schielzeth have built in bootstrap functionality. This is used in our comparison, to evaluate computational complexity and confidence intervals.
 \\
 \\
@@ -298,7 +286,7 @@ The repeatability of the color of male beetles is modelled by a binomial GLMM wi
   \label{fig:heritability_colour_Binomial}
 \end{figure}
 % We see that the approximated distribution from the BVI method is centered a bit to the right of the point estimate from \texttt{rptR}. The stochasticity of the BVI method makes it so that the distributions return will vary based on what seed was made to generate the results. Therefore, we expect to see a difference between the centering of the distribution and point estimates. 
-\noindent To estimate the repeatability of the number of eggs laid by female beetles, we use a Poisson GLMM with log-link. The model used in our method corresponds to \texttt{rep9}, but as is described in the vignette after fitting \texttt{rep9}, we set the option \texttt{expect="latent"} so that the method calculates the distributional variance as in \Cref{table:1}. This corresponds to the recommendations of \citet{nakagawa2017} as previously mentioned. Likewise, this model is estimated from the \texttt{rptR} package with \texttt{adjusted=FALSE}. From the plotted samples of posterior repeatability of eggs laid (\Cref{fig:heritability_eggs_poisson}), we see a very similar distribution as that of the binomial color model. The distribution is symmetric and centered around a mean of $0.369$. Further, the estimate from the \texttt{rptR} model is $0.380$ with a confidence interval of $[0.131, 0.542]$, compared to our $95$th percentile of $[0.288, 0.453]$. The $10^3$ bootstrap samples and model fit for the \texttt{rptR} package took $2$ minutes and $13$ seconds, whereas the BVI method used $8$ seconds to obtain the model fit and $10^4$ samples.
+\noindent To estimate the repeatability of the number of eggs laid by female beetles, we use a Poisson GLMM with log-link. The model used in our method corresponds to \texttt{rep9}, but as is described in the vignette after fitting \texttt{rep9}, we set the option \texttt{expect="latent"} so that the method calculates the distributional variance as in \Cref{table:1}. This corresponds to the recommendations of \citet{nakagawa2017} as previously mentioned. Likewise, this model is estimated from the \texttt{rptR} package with \texttt{adjusted=FALSE}. From the plotted samples of posterior repeatability of eggs laid (\Cref{fig:heritability_eggs_poisson}), we see a very similar distribution as that of the binomial color model. The distribution is symmetric and centered around a mean of $0.369$. Further, the estimate from the \texttt{rptR} model is $0.380$ with a confidence interval of $[0.131, 0.543]$, compared to our $95$th percentile of $[0.288, 0.452]$. The $10^3$ bootstrap samples and model fit for the \texttt{rptR} package took $2$ minutes and $13$ seconds, whereas the BVI method used $8$ seconds to obtain the model fit and $10^4$ samples.
 % \begin{figure}[H]
 %   \centering
 %   \begin{subfloat}{0.49\linewidth}
@@ -322,7 +310,6 @@ The repeatability of the color of male beetles is modelled by a binomial GLMM wi
   \label{fig:heritability_eggs_poisson}
 \end{figure}
 \noindent Importantly, note that the estimates from the BVI method will vary each time a model is fit, as it is stochastic. In this comparison, we only fit a single Bayesian GLMM with the BVI method. Therefore, it could be that another fit from the BVI method might align closer with the results of Stoffel and Nakagawa, but it could also be further off. 
-
 % \section{Comparing the BVI method with \texorpdfstring{$R^2$}{Lg}-induced Dirichlet decomposition priors and Generalized Decomposition Priors on \texorpdfstring{$R^2$}{Lg}}
 \section{Comparing the BVI method with Dirichlet and Generalized Decomposition Priors on \texorpdfstring{$R^2$}{Lg}}
 To explore other possible relative variable importance tools in the Bayesian framework, we have discussed R2D2 and GDR2 priors in \Cref{sec:R2D2} and \Cref{sec:r2d2method}. We now present the results of applying the R2D2 and GDR2 priors to a linear regression, and see how they can be interpreted as relative importance measures. The results are compared to the sampled posterior relative importances computed by the BVI method and the LMG method serves as a robust benchmark for all methods. Please note once again that the R2D2 and GDR2 priors are originally developed for prediction models, and that the results presented here are based on our interpretation of how the R2D2 and GDR2 priors can be used for relative importance. The theoretically expected importances for uncorrelated covariates are found in \eqref{eq:RI_R2D2} and the theoretical $R^2$ for all correlation levels are found in \Cref{table:r2values_r2d2}. 
@@ -336,7 +323,7 @@ To explore other possible relative variable importance tools in the Bayesian fra
 \begin{figure}[H]%\ContinuedFloat
   \centering
   \includegraphics[width=1\linewidth]{Figures/R2D2_BVI_Comparison/R2D2_BVI_R2_plot.png}
-  \caption[Comparison of the marginal $R^2$ from the BVI method and the shrinkage prior methods]{Box plots of the estimated $R^2$ distributions for varying correlation levels $\rho$ for the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the red diamond represents the marginal $R^2$ calculated from the LMG method.}
+  \caption[Comparison of the marginal $R^2$ from the BVI method and the shrinkage prior methods]{Box plots of the estimated marginal $R^2$ distributions for varying correlation levels $\rho$ for the R2D2, GDR2 and BVI methods. The correlation levels $\rho$ are denoted along the x-axis, and the red diamond represents the marginal $R^2$ calculated from the LMG method.}
   \label{fig:r2d2_r2}
 \end{figure}
 \noindent The estimated posterior marginal $R^2$ distributions with the R2D2 and GDR2 priors (\Cref{fig:r2d2_r2}) are uniform across the correlation levels, and significantly larger than both the estimates of the BVI and LMG methods. For the $R^2$, the spread of the R2D2 and GDR2 methods are quite similar, with both being considerably larger than that of the BVI method. Overall, the R2D2 and GDR2 estimates a substantially larger $R^2$ than the BVI and LMG methods, and the means deviate significantly from the expected values. The BVI method is consistent with the LMG method, and they both follow the expected pattern of the $R^2$ when the correlation levels vary. For the expected $R^2$, the BVI and LMG methods seem to align closely with the expectation, with a small deviation for both methods when $\rho=0$.

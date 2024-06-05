@@ -910,12 +910,12 @@ Given an appropriate link function $g(\mu_i)=\eta_i$, we can model the observati
 \begin{equation}
     \eta_i = \alpha + \sum_{j=1}^{n_{\beta}} \beta_j z_{ji} + \sum_{k=1}^{n_{f}} f^{(k)}(u_{ki}) + \varepsilon_i \ , \hspace{10mm} i=1, ..., n \ ,
 \end{equation}
-where $\alpha$ is the intercept, $\beta_j$ are the regression coefficients for the covariates $z_{ji}$, $f^{(k)}$ are random effects for the vector of covariates $\mathbf{\{u_{k}\}}_{k=1}^{n_f}$ and $\varepsilon_i$ is the error term.
+where $\alpha$ is the intercept, $\beta_j$ are the regression coefficients for the covariates $z_{ji}$, $f^{(k)}$ are random effects for the vector of covariates $\mathbf{\{u_{k}\}}_{k=1}^{n_f}$ and $\varepsilon_i$ is the error term \citep{gomezrubio2020inla}.
 This gives rise to the key assumption that the INLA method needs in order to be applicable, namely that the latent field $\mathbf{x}$, denoted as
 \begin{equation}
     \mathbf{x} = (\eta_1, ..., \eta_n, \alpha, \beta_1, ..., \beta_{n}) \ ,
 \end{equation}
-is a Gaussian Markov Random Field (GMRF). This often leads to the model being called a latent Gaussian model (LMG). Further, in addition to assuming that observations are independent given this latent field, it is also assumed that the latent field is distributed with respect to some hyperparameters $\boldsymbol{\theta}$.
+is a Gaussian Markov Random Field (GMRF) \citep{gomezrubio2020inla}. This often leads to the model being called a latent Gaussian model (LMG). Further, in addition to assuming that observations are independent given this latent field, it is also assumed that the latent field is distributed with respect to some hyperparameters $\boldsymbol{\theta}$.
 The structure of the GMRF is given by a precision matrix $\mathbf{Q(\mathbf{\theta})}$, which is sparse and can be represented by a graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ (see \Cref{sec:animalmodelGMRF} for more details). 
 This along with the assumed conditional independence makes computations very fast and is why INLA is effective.
 Now, the joint posterior distribution of the latent field $\boldsymbol{x}$ is given by
@@ -927,11 +927,12 @@ Since it is assumed that observations are independent given the latent field, we
 \begin{equation}
     \pi(\mathbf{y} \lvert \boldsymbol{x}, \boldsymbol{\theta}) = \prod_{i\in \mathcal{I}} \pi(y_i \lvert x_i, \boldsymbol{\theta}) \ ,
 \end{equation}
-where the index set $\mathcal{I} \subset \{1, 2, 3, \ldots, n\}$ only includes actual observed data. Similar to the expression in \eqref{eq:hierarchical_posterior}, the joint posterior now reads
+where the index set $\mathcal{I} \subset \{1, 2, 3, \ldots, n\}$ only includes actual observed data. By following \citet{gomezrubio2020inla}, the joint posterior can now be written as
 \begin{equation}
     \label{eq:INLA_full_posterior}
     \pi(\boldsymbol{x}, \boldsymbol{\theta} \lvert \mathbf{y}) \propto \pi(\boldsymbol{\theta}) \lvert \mathbf{Q}(\boldsymbol{\theta})\rvert^{1/2} \exp\left( -\frac{1}{2} \boldsymbol{x}^T \mathbf{Q}(\boldsymbol{\theta}) \boldsymbol{x} + \sum_{i\in \mathcal{I}} \ln \pi(y_i \lvert x_i, \boldsymbol{\theta}) \right) \ ,
 \end{equation}
+which is similar to the expression obtained in \eqref{eq:hierarchical_posterior}.
 However, instead of considering the full joint posterior distribution, INLA attempts to estimate the marginals of the latent effects, and the hyperparameters, to construct the approximate joint posterior. These marginals are given by
 \begin{equation}
     \label{eq:INLA_marginals}

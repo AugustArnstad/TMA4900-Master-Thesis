@@ -73,7 +73,7 @@ The middle term in \eqref{eq:var_y} consists of the covariance between the covar
 \section{Variable importance in linear regression models}
 \label{sec:rel_imp_linreg}
 In a regression setting with multiple regression coefficients, it is often desirable to be able to assign each covariate with a measure of its relative importance with respect to the model.
-The relative importance of covariate $\mathbf{x}_i$ is defined as the standardized contribution to explained variance in the response $\mathbf{y}$ from $\mathbf{x}_i$ \citep{gromping_relaimpo}.
+The relative importance of covariate $\mathbf{x}_i$ is defined as the standardised contribution to explained variance in the response $\mathbf{y}$ from $\mathbf{x}_i$ \citep{gromping_relaimpo}.
 Assigning relative importance is no trivial task, as correlation among covariates poses a challenge in assessing the relative importance of each covariate.
 \newline
 \newline
@@ -214,7 +214,7 @@ From the Eckhart-Young-Mirsky theorem \citep{mirsky-theorem} and following the d
 \begin{equation}
     \lVert \mathbf{X} - \mathbf{Z} \rVert_F^2 = tr \left( (\mathbf{X} - \mathbf{Z})^T(\mathbf{X} - \mathbf{Z}) \right) \ ,
 \end{equation}
-is minimized. The relative weights approximation now utilizes the matrix $\frac{1}{\sqrt{n-1}}\mathbf{{Z}}$ \citep{johnson_relative_weights}, where the factor $\frac{1}{\sqrt{n-1}}$ is the standardization factor for $\mathbf{Z}$ \citep{matre}, and regresses on $\mathbf{Z}$ to find the MLE $\boldsymbol{\beta_Z}$ as
+is minimized. The relative weights approximation now utilizes the matrix $\frac{1}{\sqrt{n-1}}\mathbf{{Z}}$ \citep{johnson_relative_weights}, where the factor $\frac{1}{\sqrt{n-1}}$ is the standardisation factor for $\mathbf{Z}$ \citep{matre}, and regresses on $\mathbf{Z}$ to find the MLE $\boldsymbol{\beta_Z}$ as
 \begin{equation}
     \begin{aligned}
         \boldsymbol{\beta_Z} & = (\mathbf{Z}^T\mathbf{Z})^{-1}\mathbf{Z}\mathbf{y} \\
@@ -976,7 +976,7 @@ where $\tilde{\pi}_{GG}(\mathbf{x}_{-l}\lvert x_l, \boldsymbol{\theta}, \mathbf{
 with a cubic spline fitted to the difference of $\tilde{\pi}_{LA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ and $\tilde{\pi}_G(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ can be used \citep{rue2009inla}. The third method, which is implemented as the default strategy in the INLA framework, is named the \textit{simplified} Laplace approximation \citep{rue2009inla}. This method uses a series expansion of $\tilde{\pi}_{LA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ about the mean $x_l = \mu_l(\boldsymbol{\theta})$ to obtain the approximated density $\tilde{\pi}_{SLA}(x_l\lvert\boldsymbol{\theta}, \mathbf{y})$ \citep{gomezrubio2020inla}. With this expansion, one can correct for skewness and location in the Gaussian approximation, while at the same time maintaining the computational advantages \citep{gomezrubio2020inla}. For the full derivations of the series expansion and the simplified Laplace approximation, see \citet[Chapter 3.2.3]{rue2009inla}.
 \subsection{Parameter estimation and sampling procedure}
 \label{sec:INLA_parameter_estimation}
-The parameter estimation procedure in INLA is composed of a number of steps. The mode of the log-likelihood $\ln(\tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y}))$ of the hyperparameters are obtained by maximizing with a quasi-Newton method. Then, to obtain the negative Hessian, $\mathbf{H}$, at the modal configuration $\boldsymbol{\theta}^*$, finite differences are applied \citep{gomezrubio2020inla}. The negative Hessian is then decomposed by its eigenvalues by $\mathbf{H}^{-1} = \mathbf{V}\boldsymbol{\Lambda}\mathbf{V}^T$ and the hyperparameters are rescaled using a standardized variable $\mathbf{z}$ such that 
+The parameter estimation procedure in INLA is composed of a number of steps. The mode of the log-likelihood $\ln(\tilde{\pi}(\boldsymbol{\theta} \lvert \mathbf{y}))$ of the hyperparameters are obtained by maximizing with a quasi-Newton method. Then, to obtain the negative Hessian, $\mathbf{H}$, at the modal configuration $\boldsymbol{\theta}^*$, finite differences are applied \citep{gomezrubio2020inla}. The negative Hessian is then decomposed by its eigenvalues by $\mathbf{H}^{-1} = \mathbf{V}\boldsymbol{\Lambda}\mathbf{V}^T$ and the hyperparameters are rescaled using a standardised variable $\mathbf{z}$ such that 
 \begin{equation}
     \boldsymbol{\theta}(\mathbf{z}) = \boldsymbol{\theta}^* + \mathbf{V}\boldsymbol{\Lambda}^{1/2}\mathbf{z} \ ,
 \end{equation}
@@ -1010,7 +1010,7 @@ We will now describe how this can be seen as a special case of wanting to estima
 \subsection{The Animal Model}
 To introduce the animal model and biological terminology, the section will rely heavily on the work of \citet{Kruuk2004} and \citet{ConnerHartl2004}. 
 The animal model is a mathematical model, used as a tool for quantitative genetic analysis in evolutionary biology where the aim is to explain the phenotypic variation in a population.
-A phenotype is defined as \textit{"the outward appearance of an organism for a given characteristic"} \citep{ConnerHartl2004}, such as eye color, height or behavior. 
+A phenotype is defined as \textit{"the outward appearance of an organism for a given characteristic"} \citep{ConnerHartl2004}, such as eye colour, height or behaviour. 
 In an organism, the observed phenotypic trait in an individual is a result of the complex combination of environmental effects and genotype. 
 The genotype of a trait can be defined as \textit{"the diploid pair of alleles present at a given locus"}, and is the outcome of genetic inheritance \citep{ConnerHartl2004}. 
 As evolutionary biology seeks to explain diversity among individuals in a population \citep{Kruuk2004}, a decomposition of the phenotypic variance is of great interest. 
